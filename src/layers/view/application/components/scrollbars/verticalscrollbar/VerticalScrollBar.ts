@@ -10,4 +10,4 @@ class VerticalScrollBar extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(VerticalScrollBar);
+export default (VerticalScrollBar);

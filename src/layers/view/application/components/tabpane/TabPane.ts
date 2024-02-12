@@ -10,4 +10,4 @@ class TabPane extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(TabPane);
+export default (TabPane);

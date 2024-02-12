@@ -10,4 +10,4 @@ class HorizontalScrollBar extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(HorizontalScrollBar);
+export default (HorizontalScrollBar);

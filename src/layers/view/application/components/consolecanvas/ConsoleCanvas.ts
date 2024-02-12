@@ -10,4 +10,4 @@ class ConsoleCanvas extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(ConsoleCanvas);
+export default (ConsoleCanvas);

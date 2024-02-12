@@ -12,4 +12,4 @@ class ParserContainer extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(ParserContainer);
+export default (ParserContainer);

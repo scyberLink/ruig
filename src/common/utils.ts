@@ -1,8 +1,10 @@
 import BaseComponent from "../layers/view/application/components/base/BaseComponent";
 import NullException from "./exceptions/NullException";
 import { Request } from "express";
-import { DAY } from "./constants";
+import { DAY, DESIGN_ELEMENT_WRAPPER } from "./constants";
 import IAnyObject from "./models/IAnyObject";
+import SharedConfig from "./SharedConfig";
+import InvalidTagNameException from "../layers/view/application/components/exceptions/InvalidTagNameException";
 
 export function splitStringIntoChunks(str: string, chunkSize: number) {
     const chunks: string[] = [];
@@ -269,3 +271,31 @@ export const spreadTo = (parentObj: IAnyObject, objToSpread: IAnyObject) => {
     }
     return parentObj
 }
+
+export async function createDragImage(element: HTMLElement): Promise<HTMLImageElement> {
+    const rect = element.getBoundingClientRect();
+    const offsetX = rect.left - window.pageXOffset;
+    const offsetY = rect.top - window.pageYOffset;
+    const blob = await elementToBlob(element);
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.src = url;
+    img.width = rect.width;
+    img.height = rect.height;
+    img.style.position = 'absolute';
+    img.style.left = `${offsetX}px`;
+    img.style.top = `${offsetY}px`;
+    return img;
+}
+
+export async function elementToBlob(element: HTMLElement): Promise<Blob> {
+    const svgString = new XMLSerializer().serializeToString(element);
+    const svgBlob = new Blob([svgString], { type: 'image/svg+xml' });
+    return (await createImageBitmap(svgBlob) as any as Blob);
+}
+
+export function getDesignWrapper() {
+    let wrapper = SharedConfig.get(DESIGN_ELEMENT_WRAPPER)
+    return wrapper
+}
+

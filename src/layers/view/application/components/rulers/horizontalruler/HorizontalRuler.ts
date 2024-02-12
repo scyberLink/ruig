@@ -9,4 +9,4 @@ class HorizontalRuler extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(HorizontalRuler);
+export default (HorizontalRuler);

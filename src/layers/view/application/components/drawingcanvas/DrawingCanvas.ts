@@ -1,10 +1,10 @@
 import SharedConfig from "../../../../../common/SharedConfig";
-import { CONTEXT_MENU, DESIGN_ELEMENT_WRAPPER, DRAWING_CANVAS } from "../../../../../common/constants";
+import { ACTIVE_ELEMENT, DRAWING_CANVAS, DRAWING_CANVAS_MOUSE_COORDINATE, MIN_Z_INDEX } from "../../../../../common/constants";
 import NullException from "../../../../../common/exceptions/NullException";
 import IAnyObject from "../../../../../common/models/IAnyObject";
 import IPosition from "../../../../../common/models/IPosition";
-import { appendChildren, spreadTo } from "../../../../../common/utils";
-import ShadowMode from "../../common/ShadowMode";
+import { spreadTo } from "../../../../../common/utils";
+import DesignElement from "../../../design/DesignElement";
 import BaseComponent from "../base/BaseComponent";
 
 class DrawingCanvas extends BaseComponent {
@@ -12,8 +12,8 @@ class DrawingCanvas extends BaseComponent {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),
-      'z-index': '-9999'
-    }, ShadowMode.OPEN);
+      'z-index': MIN_Z_INDEX,
+    });
 
   }
 
@@ -25,14 +25,15 @@ class DrawingCanvas extends BaseComponent {
       throw NullException
     }
 
-    let { x = 0, y = 0 } = position ?? { x: 0, y: 0 }
+    let { x, y } = position || { x: 10, y: 10, metric: 'px' }
+
     spreadTo(element.style, {
       position: 'absolute',
-      top: y,
-      left: x,
+      top: `${y}${position?.metric || 'px'}`,
+      left: `${x}${position?.metric || 'px'}`,
     })
 
-    appendChildren(this, element)
+    this.appendChildren(element)
 
     return element
   }
@@ -40,8 +41,31 @@ class DrawingCanvas extends BaseComponent {
   /* onmouseover = (event: any) => {
     this.focus()
   }; */
+  ondragover = (event: DragEvent) => {
+    event.preventDefault(); // Allow drop
+  }
+
+  onclick = (event: MouseEvent) => {
+    event.preventDefault()
+    let element: DesignElement = SharedConfig.get(ACTIVE_ELEMENT);
+    element?.deselect()
+  }
+
+  /* ondrop = (event: DragEvent) => {
+    event.preventDefault();
+    let element =  SharedConfig.get(ACTIVE_ELEMENT) as HTMLElement
+    if (!element) {
+      return;
+    }
+    const thisRect: DOMRect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const x = event.clientX - thisRect.left;
+    const y = event.clientY - thisRect.top;
+    element!.style.left = x + 'px';
+    element!.style.top = y + 'px';
+  }
+ */
 }
 
 export { DrawingCanvas as DC }
 
-export default BaseComponent.register(DrawingCanvas);
+export default (DrawingCanvas);

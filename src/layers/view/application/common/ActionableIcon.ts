@@ -17,19 +17,17 @@ abstract class ActionableIcon extends BaseComponent implements IAction {
             width: '18px',
             height: '18px',
             border: '0',
-            'padding-left': '2px',
-            ' padding-right': '2px',
+            'padding': '1px 2px',
+            'border-radius': '5px',
             ...(style ?? {}),
         }, mode);
 
-        this.addStyle(
-            `
-            #${this.tagName?.toLowerCase()}:hover {
-              background: ${Color.lightBlue};
-              cursor: pointer;
-            }
-            `
-        )
+        this.hovered({
+            background: `${Color.lightBlue}`,
+        })
+
+        this.setCursor('pointer')
+        
         this.subscribe()
     }
 
@@ -57,7 +55,7 @@ abstract class ActionableIcon extends BaseComponent implements IAction {
 
     abstract supportedDesignElements: DesignElementTypes | DesignElementTypes[];
 
-    action = (designElement: DesignElement) => {}
+    action = (designElement: DesignElement) => { }
 
     subscribe(): void {
         window.addEventListener(EVENT_DESELECT, this.disableCheck)

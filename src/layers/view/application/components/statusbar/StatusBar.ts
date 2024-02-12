@@ -9,4 +9,4 @@ class StatusBar extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(StatusBar);
+export default (StatusBar);

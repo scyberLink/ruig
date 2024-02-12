@@ -1,5 +1,4 @@
 import IAnyObject from "../../../../../common/models/IAnyObject";
-import { appendChildren } from "../../../../../common/utils";
 import ActionableIcon from "../../common/ActionableIcon";
 import ShadowMode from "../../common/ShadowMode";
 import TextIcon from "../../common/TextIcon";
@@ -31,7 +30,7 @@ class MenuBar extends BaseComponent {
     this.viewMenuItem.init({hint: 'View', description: '', svgPathData: ''})
     this.toolMenuItem.init({hint: 'Tool', description: '', svgPathData: ''})
 
-    appendChildren(this,
+    this.appendChildren(
       this.fileMenuItem,
       this.editMenuItem,
       this.viewMenuItem,
@@ -40,4 +39,4 @@ class MenuBar extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(MenuBar);
+export default (MenuBar);

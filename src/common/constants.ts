@@ -11,8 +11,12 @@ export const MONTH = 2_628_002_880;
 export const YEAR = 31_536_000_000;
 export const DECADE = 315_360_000_000;
 
+export const MIN_Z_INDEX = "-99999"
+export const MAX_Z_INDEX = "99999"
+
 export const ACTIVE_ELEMENT = "selectedElement"
 export const DRAWING_CANVAS = "drawingCanvas"
+export const DRAWING_CANVAS_MOUSE_COORDINATE = "mouseCoordinate"
 export const DESIGN_ELEMENT_WRAPPER = "designElementWrapper"
 export const CONTEXT_MENU = "contextMenu"
 export const CLIPBOARD = "clipboard"

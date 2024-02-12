@@ -9,4 +9,4 @@ class ToolBar extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(ToolBar);
+export default (ToolBar);

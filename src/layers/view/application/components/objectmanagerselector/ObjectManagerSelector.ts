@@ -9,4 +9,4 @@ class ObjectManagerSelector extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(ObjectManagerSelector);
+export default (ObjectManagerSelector);

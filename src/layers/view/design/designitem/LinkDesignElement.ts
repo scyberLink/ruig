@@ -16,7 +16,6 @@ class LinkDesignElement extends DesignElement {
 
         this.extendedElement.textContent = 'Link' + rand()
     }
-
 }
 
-export default BaseComponent.register(LinkDesignElement)
+export default (LinkDesignElement)

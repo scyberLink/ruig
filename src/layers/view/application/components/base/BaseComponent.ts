@@ -11,13 +11,33 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   protected shadow: ShadowRoot
   protected shadowWrapper: HTMLElement
   protected shadowStyle: HTMLStyleElement
+  private _scale: number = 1
+  private _rotate: number = 0
+
+  public get rotate(): number {
+    return this._rotate
+  }
+
+  public set rotate(value: number) {
+    this._rotate = value
+    this.style.rotate = `${value}deg`
+  }
+
+  public get scale(): number {
+    return this._scale
+  }
+
+  public set scale(value: number) {
+    this._scale = value
+    this.style.transform = `scale(${value})`;
+  }
 
   constructor(style?: IAnyObject, mode?: ShadowMode) {
     super()
     this.shadow = this.attachShadow({ mode: mode ?? ShadowMode.CLOSE })
     this.shadowWrapper = document.createElement('div')
     this.shadowStyle = document.createElement('style')
-    this.shadowWrapper.id = `${this.tagName?.toLowerCase()}`
+    this.id = `${this.tagName?.toLowerCase()}`
     this.shadowStyle.textContent = `
     #${this.tagName?.toLowerCase()} {
         ${cssString({
@@ -26,12 +46,17 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
       border: `0.5px solid ${Color.ash}`,
       display: 'block',
       position: 'fixed',
+      'user-select': 'none',
       ...(style ?? {})
     })}
       }
     `
     this.shadow.appendChild(this.shadowWrapper)
     this.shadow.appendChild(this.shadowStyle)
+  }
+
+  removeChild<T extends Node>(child: T): T {
+    return this.shadowWrapper.removeChild(child)
   }
 
   // Delegate properties and methods to the shadowWrapper
@@ -68,6 +93,22 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     this.shadowWrapper.contentEditable = value
   }
 
+  get clientWidth(): number {
+    return this.shadowWrapper.clientWidth
+  }
+
+  set clientWidth(value: number) {
+    (this.shadowWrapper as any).clientWidth = value
+  }
+
+  get clientHeight(): number {
+    return this.shadowWrapper.clientHeight
+  }
+
+  set clientHeight(value: number) {
+    (this.shadowWrapper as any).clientHeight = value
+  }
+
   get innerText(): string {
     return this.shadowWrapper.innerText
   }
@@ -90,6 +131,12 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
 
   get dir(): string {
     return this.shadowWrapper.dir
+  }
+
+  appendChildren(...children: HTMLElement[]) {
+    for (const child of children) {
+      this.appendChild(child)
+    }
   }
 
   set dir(value: string) {
@@ -118,6 +165,14 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
 
   set id(value: string) {
     this.shadowWrapper.id = value
+  }
+
+  get textContent(): string {
+    return this.shadowWrapper.textContent as string
+  }
+
+  set textContent(value: string) {
+    this.shadowWrapper.textContent = value
   }
 
   get lang(): string {
@@ -223,6 +278,10 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     options?: boolean | AddEventListenerOptions
   ): void {
     this.shadowWrapper.addEventListener(type, listener, options)
+  }
+
+  getBoundingClientRect(): DOMRect {
+    return this.shadowWrapper.getBoundingClientRect()
   }
 
   append(...nodes: (Node | string)[]): void {
@@ -355,17 +414,54 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     throw new Error("Not implemented")
   } */
 
-  addStyle(...styles: string[]) {
-    if (!styles) {
-      throw new NullException()
+  addStyle(styles: string[]): HTMLStyleElement;
+  addStyle(style: IAnyObject): HTMLStyleElement;
+  addStyle(style: string): HTMLStyleElement;
+  addStyle(style: string[] | IAnyObject | string): HTMLStyleElement {
+    let styleString: string = ""
+    let previousStyle = this.shadowStyle.textContent ?? ""
+    if (typeof style == 'string') {
+      styleString = style
+      this.shadowStyle.textContent = previousStyle + styleString
+    } else if (!Array.isArray(style)) {
+      styleString = `${cssString(style as IAnyObject)}`
+      let startOfThisIdStyle = `#${this.id} {`
+      previousStyle = previousStyle.replace(startOfThisIdStyle, `${startOfThisIdStyle}${styleString}`)
+      this.shadowStyle.textContent = previousStyle
+    } else if (Array.isArray(style)) {
+      for (const styleI of style) {
+        styleString = styleString?.concat("\n\n", styleI)
+      }
+      this.shadowStyle.textContent = previousStyle + styleString
     }
-    let styleString: string = this.shadowStyle.textContent ?? ""
-    for (const style of styles) {
-      styleString = styleString?.concat("\n\n", style)
-    }
-    this.shadowStyle.textContent = styleString
 
     return this.shadowStyle as HTMLStyleElement
+  }
+
+  addPseudoClass(clazz: string, style: IAnyObject) {
+    if (!clazz) {
+      throw new NullException('Pseudo Class name not provided')
+    }
+
+    if (!style) {
+      throw new NullException('Pseudo Class style not provided')
+    }
+
+    if (!clazz.includes(':')) {
+      clazz = `:${clazz}`
+    }
+    clazz = `${this.id}${clazz}`
+    this.addStyle(`#${clazz}{${cssString(style)}}`)
+  }
+
+  hovered(style: IAnyObject) {
+    this.addPseudoClass('hover', style)
+  }
+
+  setCursor(name: string) {
+    this.addStyle({
+      cursor: `url('cursor/${name}.svg'), auto`
+    })
   }
 
   addInlineStyle({ name, value }: IPair) {
@@ -395,6 +491,10 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
       console.warn(error.message)
     }
     return element
+  }
+
+  setScale(scale: number) {
+    this.scale = scale
   }
 }
 

@@ -1,11 +1,10 @@
 import SharedConfig from "../../../../../../common/SharedConfig"
-import { DRAWING_CANVAS, EXTENDED_TOOLS } from "../../../../../../common/constants"
+import { ACTIVE_ELEMENT, DRAWING_CANVAS, EXTENDED_TOOLS } from "../../../../../../common/constants"
 import IAnyObject from "../../../../../../common/models/IAnyObject"
-import { appendChildren } from "../../../../../../common/utils"
+import DesignElement from "../../../../design/DesignElement"
 import LinkDesignElement from "../../../../design/designitem/LinkDesignElement"
 import ActionableIcon from "../../../common/ActionableIcon"
 import BaseComponent from "../../base/BaseComponent"
-import DrawingCanvas from "../../drawingcanvas/DrawingCanvas"
 import {DC} from "../../drawingcanvas/DrawingCanvas"
 import DrawingToolbarItem from "./DrawingToolbarItem"
 
@@ -61,36 +60,23 @@ class DrawingToolBar extends BaseComponent {
     })
 
     this.linkTool.action = () => {
-      
       let canvas: DC = SharedConfig.get(DRAWING_CANVAS);
-      
       canvas.addDesignElement(new LinkDesignElement({width: '100px', height: '10px', background: 'green'}))
-      
     }
 
-    
+    this.pickTool.action = () => {
+      let element: DesignElement = SharedConfig.get(ACTIVE_ELEMENT);
+      element?.deselect()
+    }
 
-
-    appendChildren(this,
+    this.appendChildren(
       this.pickTool,
       this.linkTool,
       this.spanTool,
       this.buttonTool,
       this.inputTool,
     )
-
-    if (SharedConfig.has(EXTENDED_TOOLS)) {
-      let tools = SharedConfig.get(EXTENDED_TOOLS)
-      if (Array.isArray(tools)) {
-        for (const tool of tools) {
-          appendChildren(this, tool)
-        }
-      } else {
-        appendChildren(this, tools)
-      }
-    }
-
   }
 }
 
-export default BaseComponent.register(DrawingToolBar)
+export default (DrawingToolBar)

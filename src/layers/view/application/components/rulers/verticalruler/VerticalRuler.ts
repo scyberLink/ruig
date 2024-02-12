@@ -9,4 +9,4 @@ class VerticalRuler extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(VerticalRuler);
+export default (VerticalRuler);

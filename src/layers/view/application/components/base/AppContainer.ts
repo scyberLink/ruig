@@ -16,11 +16,10 @@ import ConsoleCanvas from "../consolecanvas/ConsoleCanvas";
 import LeftSideBar from "../sidebars/leftsidebar/LeftSideBar";
 import TabPane from "../tabpane/TabPane";
 import ParserContainer from "../ParserContainer";
-import { appendChildren, spreadTo } from "../../../../../common/utils";
 import DesignElementSelectionWrapper from "../../../design/DesignElementSelectionWrapper";
 import ContextMenu from "../contextmenu/ContextMenu";
 import SharedConfig from "../../../../../common/SharedConfig";
-import { DESIGN_ELEMENT_WRAPPER, CONTEXT_MENU, DRAWING_CANVAS } from "../../../../../common/constants";
+import { DESIGN_ELEMENT_WRAPPER, CONTEXT_MENU, DRAWING_CANVAS, ACTIVE_ELEMENT } from "../../../../../common/constants";
 import ShadowMode from "../../common/ShadowMode";
 
 enum Dimension {
@@ -166,7 +165,7 @@ class AppContainer extends BaseComponent {
   }) as BaseComponent
 
   constructor() {
-    super({}, ShadowMode.OPEN);
+    super();
 
     /*    spreadTo(this.designElementWrapper.style, {
          display: 'flex',
@@ -177,12 +176,12 @@ class AppContainer extends BaseComponent {
          right: '0',
          border: '1px solid blue',
        }) */
-
+       
     SharedConfig.set(DESIGN_ELEMENT_WRAPPER, this.designElementWrapper)
     SharedConfig.set(CONTEXT_MENU, this.contextMenu)
     SharedConfig.set(DRAWING_CANVAS, this.drawingCanvas)
 
-    appendChildren(this,
+    this.appendChildren(
       this.menuBar,
       this.toolBar,
       this.actionBar,
@@ -201,29 +200,40 @@ class AppContainer extends BaseComponent {
       this.parserContainer,
     );
     this.menuBar.disabled = true;
-  }
+    
+    window.onwheel = (event: any) => {
+      // Check if Ctrl key is pressed
+      if (event.ctrlKey) {
+        //event.preventDefault();
+  
+        // Calculate the new scale factor based on the wheel delta
+  
+        const delta = event.deltaY;
+        const zoomFactor = 0.02; // You can adjust this value based on your zoom sensitivity
+        const currentScale = parseFloat(this.drawingCanvas.style.transform.replace('scale(', '').replace(')', '')) || 1;
+        let scale;
+        if (delta < 0) {
+          scale = currentScale + zoomFactor
+        } else {
+          scale = currentScale - zoomFactor
+        }
+  
+        // Set the new scale factor
+        this.drawingCanvas.scale = scale;
+      };
+    }
 
-  onwheel = (event: any) => {
-    // Check if Ctrl key is pressed
-    if (event.ctrlKey) {
-      event.preventDefault();
-
-      // Calculate the new scale factor based on the wheel delta
-
-      const delta = event.deltaY;
-      const zoomFactor = 0.02; // You can adjust this value based on your zoom sensitivity
-      const currentScale = parseFloat(this.drawingCanvas.style.transform.replace('scale(', '').replace(')', '')) || 1;
-      let scale;
-      if (delta < 0) {
-        scale = currentScale + zoomFactor
-      } else {
-        scale = currentScale - zoomFactor
+    window.onkeydown = (e: any) => {
+      e?.preventDefault()
+      let element = SharedConfig.get(ACTIVE_ELEMENT)
+      if (element && (e.key === 'Delete' || e.keyCode === 46) && element.isSelected) {
+        element.deselect()
+        element.remove()
       }
+    }
 
-      // Set the new scale factor
-      this.drawingCanvas.style.transform = `scale(${scale})`;
-    };
+    this.setCursor('default');
   }
 }
 
-export default BaseComponent.register(AppContainer);
+export default (AppContainer);

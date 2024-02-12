@@ -9,4 +9,4 @@ class ColorPalette extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(ColorPalette);
+export default (ColorPalette);

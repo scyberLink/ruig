@@ -9,4 +9,4 @@ class LeftSideBar extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(LeftSideBar);
+export default (LeftSideBar);

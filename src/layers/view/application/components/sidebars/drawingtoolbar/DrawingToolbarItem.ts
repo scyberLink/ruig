@@ -22,4 +22,4 @@ class DrawingToolbarItem extends ActionableIcon {
 
 }
 
-export default BaseComponent.register(DrawingToolbarItem);
+export default (DrawingToolbarItem);

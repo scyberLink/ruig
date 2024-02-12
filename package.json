@@ -2,7 +2,7 @@
   "name": "ruig",
   "version": "0.1.0",
   "description": "React UI Generator - A tool to generate React user interfaces effortlessly.",
-  "author": "Emmanuel Paul Elom",
+  "author": "Emmanuel Paul Elom <scansioquielom@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.17.0",
@@ -35,6 +35,13 @@
     ]
   },
   "dependencies": {
-    "axios": "^1.6.5"
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.6.5",
+    "html-to-image": "^1.11.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.0"
   }
 }

@@ -10,4 +10,4 @@ class ContextMenu extends BaseComponent {
     }
 }
 
-export default BaseComponent.register(ContextMenu);
+export default (ContextMenu);

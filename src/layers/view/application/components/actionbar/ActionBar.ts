@@ -9,4 +9,4 @@ class ActionBar extends BaseComponent {
   }
 }
 
-export default BaseComponent.register(ActionBar);
+export default (ActionBar);

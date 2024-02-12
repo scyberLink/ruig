@@ -10,4 +10,4 @@ class DumpElement extends BaseComponent implements IDumpElement {
     }
 }
 
-export default BaseComponent.register(DumpElement as any);
+export default (DumpElement as any);

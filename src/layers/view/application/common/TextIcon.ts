@@ -31,4 +31,4 @@ class TextIcon extends ActionableIcon {
 
 }
 
-export default BaseComponent.register(TextIcon as any)
+export default TextIcon
