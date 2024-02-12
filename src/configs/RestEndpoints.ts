@@ -175,3 +175,7 @@ export const TEAM_SALES_SUMMARY = '/team-sales/summary'
 export const REFERRAL_LEVEL = '/referral-level/'
 export const CREATE_REFERRAL_LEVEL = '/referral-level'
 export const ALL_REFERRAL_LEVEL = '/referral-level/all'
+
+
+export const BUILTIN_EXTENSION = '/builtin-extension/'
+export const EXTENSION = '/extension/'

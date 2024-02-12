@@ -160,7 +160,7 @@ const md5cycle = (x: any, k: any) => {
     return x.join("");
   };
   
-  const md5 = (s: any) => {
+  const md5 = (s: any): string => {
     return hex(md51(s));
   };
   

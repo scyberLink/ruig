@@ -1,6 +1,6 @@
 interface IExtensionId {
-    new(id: string): this;
-    hash(): void
+    id: string
+    hash(id: string): string
 }
 
 export default IExtensionId

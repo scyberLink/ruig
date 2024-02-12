@@ -24,3 +24,6 @@ export const EVENT_DESELECT = "designElementDeselection"
 export const EVENT_SELECT = "designElementSelection"
 export const EVENT_DATA = "designElementEventData"
 export const EXTENDED_TOOLS = "extendedTools"
+export const APPCONTAINER = "appContainer"
+
+export const EXTENSION_SCRIPT = "extensionScript"

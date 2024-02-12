@@ -2,15 +2,19 @@
 import SharedConfig from "./SharedConfig";
 import md5, { rand } from "./md5";
 import { API_VERSION, BASE } from "../configs/RestEndpoints";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import IAnyObject from "./models/IAnyObject";
+import IFetchData from "./models/IFetchData";
+
+enum FetcherResponseType {
+  JSON,
+  RESPONSE,
+  BLOB,
+}
 
 class Fetcher {
-  static RETURN_JSON_OBJECT = 2;
-  static RETURN_RESPONSE_OBJECT = 1;
-  static RETURN_BLOB = 3;
   static instance: Fetcher;
-  
+
   base_url: string;
   listeners: IAnyObject;
   frequency: number;
@@ -27,7 +31,7 @@ class Fetcher {
     fetchOptions: any,
     listener: (arg0: any) => void,
     frequency = this.frequency,
-    returnType = Fetcher.RETURN_JSON_OBJECT,
+    returnType = FetcherResponseType.JSON,
     failstop = this.FAIL_SAFE_THRESHOLD
   ) {
     if (!fetchOptions) throw new Error("Invalid fetch options provided");
@@ -90,7 +94,7 @@ class Fetcher {
     });
   }
 
-  async fetch(options: IAnyObject, returnType = Fetcher.RETURN_JSON_OBJECT) {
+  async fetch(options: IAnyObject | string, returnType = FetcherResponseType.JSON): Promise<IFetchData | AxiosResponse> {
     let url;
     const defaultOptions = {
       method: "POST",
@@ -120,7 +124,7 @@ class Fetcher {
       url = `${this.base_url}${url}`;
     }
     options = { url, ...options };
-    returnType == Fetcher.RETURN_BLOB &&
+    returnType == FetcherResponseType.BLOB &&
       (options = { ...options, responseType: "blob" });
     let res;
     try {
@@ -133,9 +137,9 @@ class Fetcher {
     }
     const data = res?.data;
     if (data?.connection?.statusCode == 401) {
-      SharedConfig.destroyLocalData();
+      SharedConfig.removeLocalData("auth");
     }
-    return returnType == Fetcher.RETURN_RESPONSE_OBJECT ? res : data;
+    return returnType == FetcherResponseType.RESPONSE ? res : data;
   }
 
   clear(intervalId: any) {
@@ -151,4 +155,5 @@ class Fetcher {
   }
 }
 
+export { FetcherResponseType };
 export default Fetcher;
