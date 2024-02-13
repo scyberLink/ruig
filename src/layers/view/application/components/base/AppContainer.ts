@@ -21,6 +21,7 @@ import ContextMenu from "../contextmenu/ContextMenu";
 import SharedConfig from "../../../../../common/SharedConfig";
 import { DESIGN_ELEMENT_WRAPPER, CONTEXT_MENU, DRAWING_CANVAS, ACTIVE_ELEMENT } from "../../../../../common/constants";
 import ShadowMode from "../../common/ShadowMode";
+import IAppContainer from "./model/IAppContainer";
 
 enum Dimension {
   top = '0',
@@ -71,7 +72,7 @@ enum Dimension {
 
 }
 
-class AppContainer extends BaseComponent {
+class AppContainer extends BaseComponent implements IAppContainer{
 
   private menuBar: BaseComponent = new MenuBar({
     width: Dimension.fullWidth,
@@ -233,6 +234,58 @@ class AppContainer extends BaseComponent {
     }
 
     this.setCursor('default');
+  }
+
+  getMenuBar() {
+    return this.menuBar
+  }
+  getToolBar() {
+    return this.toolBar
+  }
+  getActionBar() {
+    return this.actionBar
+  }
+  getHorizontalRuler() {
+    return this.horizontalRuler
+  }
+  getVerticalRuler() {
+    return this.verticalRuler
+  }
+  getDrawingToolBar() {
+    return this.drawingToolBar
+  }
+  getDrawingCanvas() {
+    return this.drawingCanvas
+  }
+  getColorPalette() {
+    return this.colorPalette
+  }
+  getVerticalScrollBar() {
+    return this.verticalScrollBar
+  }
+  getHorizontalScrollBar() {
+    return this.horizontalScrollBar
+  }
+  getStatusBar() {
+    return this.statusBar
+  }
+  getConsoleCanvas() {
+    return this.consolecanvas
+  }
+  getLeftSideBar() {
+    return this.leftSideBar
+  }
+  getParserContainer() {
+    return this.parserContainer
+  }
+  getTabPane() {
+    return this.tabPane
+  }
+  getDesignElementSelectionWrapper() {
+    return this.getDesignElementSelectionWrapper
+  }
+  getContextMenu() {
+    return this.contextMenu
   }
 }
 

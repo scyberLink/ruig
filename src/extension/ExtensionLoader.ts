@@ -6,7 +6,7 @@ import { BUILTIN_EXTENSION, EXTENSION } from "../configs/RestEndpoints"
 import IAppContainer from "../layers/view/application/components/base/model/IAppContainer"
 
 class ExtensionLoader {
-    appContainer: IAppContainer
+    private appContainer: IAppContainer
 
     constructor(appContainer: IAppContainer) {
         this.appContainer = appContainer

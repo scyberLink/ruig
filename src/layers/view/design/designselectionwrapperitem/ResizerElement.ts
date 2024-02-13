@@ -4,15 +4,16 @@ import IAnyObject from "../../../../common/models/IAnyObject"
 import BaseComponent from "../../application/components/base/BaseComponent"
 import DesignElement from "../DesignElement"
 import DesignSelectionWrapperItem from "./DesignSelectionWrapperItem"
-import LeftElement from "./LeftElement copy 2"
 import BottomElement from "./resizing/BottomElement"
 import BottomLeftElement from "./resizing/BottomLeftElement"
 import BottomRightElement from "./resizing/BottomRightElement"
 import CenterItem from "./resizing/CenterItem"
 import RightElement from "./resizing/RightElement"
+import LeftElement from "./resizing/LeftElement"
 import TopElement from "./resizing/TopElement"
 import TopLeftElement from "./resizing/TopLeftElement"
 import TopRightElement from "./resizing/TopRightElement"
+import IDesignElementSelectionWrapper from "../models/IDesignElementSelectionWrapper"
 
 class ResizerElement extends BaseComponent {
     private centerElement: DesignSelectionWrapperItem = new CenterItem as DesignSelectionWrapperItem
@@ -51,7 +52,6 @@ class ResizerElement extends BaseComponent {
             this.bottomLeftElement,
             this.bottomRightElement,
             this.topLeftElement,
-            
         )
     }
 
@@ -63,15 +63,15 @@ class ResizerElement extends BaseComponent {
 
         this.updateSize(element)
 
-        this.topRightElement.setWrapper(this)
-        this.bottomRightElement.setWrapper(this)
-        this.bottomLeftElement.setWrapper(this)
-        this.topLeftElement.setWrapper(this)
-        this.topElement.setWrapper(this)
-        this.leftElement.setWrapper(this)
-        this.bottomElement.setWrapper(this)
-        this.rightElement.setWrapper(this)
-        this.centerElement.setWrapper(this)
+        this.topRightElement.setWrapper(this.parentElement as IDesignElementSelectionWrapper)
+        this.bottomRightElement.setWrapper(this.parentElement as IDesignElementSelectionWrapper)
+        this.bottomLeftElement.setWrapper(this.parentElement as IDesignElementSelectionWrapper)
+        this.topLeftElement.setWrapper(this.parentElement as IDesignElementSelectionWrapper)
+        this.topElement.setWrapper(this.parentElement as IDesignElementSelectionWrapper)
+        this.leftElement.setWrapper(this.parentElement as IDesignElementSelectionWrapper)
+        this.bottomElement.setWrapper(this.parentElement as IDesignElementSelectionWrapper)
+        this.rightElement.setWrapper(this.parentElement as IDesignElementSelectionWrapper)
+        this.centerElement.setWrapper(this.parentElement as IDesignElementSelectionWrapper)
     }
 
     updateSize(element: DesignElement) {
@@ -99,7 +99,5 @@ class ResizerElement extends BaseComponent {
         this.translatorElement.style.display = 'initial'
     }
 }
-
-export { ResizerElement as DesignElementWrapper }
 
 export default (ResizerElement);

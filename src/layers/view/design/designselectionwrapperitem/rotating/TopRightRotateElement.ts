@@ -2,7 +2,7 @@ import IAnyObject from "../../../../../common/models/IAnyObject";
 import ShadowMode from "../../../application/common/ShadowMode";
 import DesignSelectionWrapperItem from "../DesignSelectionWrapperItem";
 
-class TopRightElement extends DesignSelectionWrapperItem {
+class TopRightRotateElement extends DesignSelectionWrapperItem {
   constructor(style?: IAnyObject, mode?: ShadowMode) {
     super({
       top: '0',
@@ -16,4 +16,4 @@ class TopRightElement extends DesignSelectionWrapperItem {
   }
 }
 
-export default (TopRightElement);
+export default (TopRightRotateElement);

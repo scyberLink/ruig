@@ -1,7 +1,7 @@
-import IAnyObject from "../../../../common/models/IAnyObject";
-import ShadowMode from "../../application/common/ShadowMode";
-import BaseComponent from "../../application/components/base/BaseComponent";
-import DesignSelectionWrapperItem from "./DesignSelectionWrapperItem";
+import IAnyObject from "../../../../../common/models/IAnyObject";
+import ShadowMode from "../../../application/common/ShadowMode";
+import BaseComponent from "../../../application/components/base/BaseComponent";
+import DesignSelectionWrapperItem from "../DesignSelectionWrapperItem";
 
 class TranslatorElement extends DesignSelectionWrapperItem {
     constructor(style?: IAnyObject, mode?: ShadowMode) {

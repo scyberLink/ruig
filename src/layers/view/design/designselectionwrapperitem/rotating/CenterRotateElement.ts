@@ -4,7 +4,7 @@ import IAnyObject from "../../../../../common/models/IAnyObject";
 import ShadowMode from "../../../application/common/ShadowMode";
 import DesignSelectionWrapperItem from "../DesignSelectionWrapperItem";
 
-class CenterElement extends DesignSelectionWrapperItem {
+class CenterRotateElement extends DesignSelectionWrapperItem {
 
     initialBorder!: string
     dragOffsetX!: number;
@@ -53,4 +53,4 @@ class CenterElement extends DesignSelectionWrapperItem {
     }
 }
 
-export default (CenterElement);
+export default (CenterRotateElement);

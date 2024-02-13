@@ -2,13 +2,13 @@ import IAnyObject from "../../../../../common/models/IAnyObject";
 import ShadowMode from "../../../application/common/ShadowMode";
 import DesignSelectionWrapperItem from "../DesignSelectionWrapperItem";
 
-class TopLeftElement extends DesignSelectionWrapperItem {
+class BottomLeftRotateElement extends DesignSelectionWrapperItem {
     constructor(style?: IAnyObject, mode?: ShadowMode) {
         super({
-            top: '0',
-            left: '0',
             width: '5px',
             height: '5px',
+            left: '0',
+            bottom: '0',
             ...(style ?? {}),
         }, mode)
 
@@ -17,4 +17,4 @@ class TopLeftElement extends DesignSelectionWrapperItem {
 
 }
 
-export default (TopLeftElement);
+export default (BottomLeftRotateElement);

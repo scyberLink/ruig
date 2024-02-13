@@ -3,8 +3,9 @@ import ActionableIcon from "../../common/ActionableIcon";
 import ShadowMode from "../../common/ShadowMode";
 import TextIcon from "../../common/TextIcon";
 import BaseComponent from "../base/BaseComponent";
+import IMenuBar from "../base/model/IMenuBar";
 
-class MenuBar extends BaseComponent {
+class MenuBar extends BaseComponent implements IMenuBar{
   fileMenuItem: ActionableIcon = new TextIcon({
     position: 'relative',
   }) as ActionableIcon

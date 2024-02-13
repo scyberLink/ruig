@@ -18,7 +18,7 @@ class GlobalConfig {
   private __set!: (key: any, value: any, where: any) => void
   private __remove!: (key: any, where: any) => any
   private __destroy!: (where: any) => void
-  private __removeFrom!: (fromKey: any, valueToRemove: null | undefined, where: any) => any
+  private __removeFrom!: (fromKey: any, valueToRemove?: IAnyObject, where?: any) => any
   private __has!: (key: any, where: any) => boolean
 
   constructor() {
@@ -152,7 +152,7 @@ class GlobalConfig {
         }
       }
 
-      this.__removeFrom = (fromKey, valueToRemove = null, where: StorageType = StorageType.MEMORY_STORAGE) => {
+      this.__removeFrom = (fromKey, valueToRemove?: IAnyObject, where: StorageType = StorageType.MEMORY_STORAGE) => {
         const exist = this.__get(fromKey, where)
         if (!exist) return false
         if (exist instanceof Array) {
@@ -225,19 +225,19 @@ class GlobalConfig {
     return exist
   }
 
-  removeFrom(parentKey: string, valueToRemove = null) {
+  removeFrom(parentKey: string, valueToRemove?: IAnyObject) {
     return this.__removeFrom(parentKey, valueToRemove, StorageType.MEMORY_STORAGE)
   }
 
-  removeFromFlashData(parentKey: string, valueToRemove = null) {
+  removeFromFlashData(parentKey: string, valueToRemove?: IAnyObject) {
     return this.removeFromLocalData(parentKey, valueToRemove)
   }
 
-  removeFromLocalData(parentKey: string, valueToRemove = null) {
+  removeFromLocalData(parentKey: string, valueToRemove?: IAnyObject) {
     return this.__removeFrom(parentKey, valueToRemove, StorageType.LOCAL_STORAGE)
   }
 
-  removeFromSessionData(parentKey: string, valueToRemove = null) {
+  removeFromSessionData(parentKey: string, valueToRemove?: IAnyObject) {
     return this.__removeFrom(parentKey, valueToRemove, StorageType.SESSION_STORAGE)
   }
 

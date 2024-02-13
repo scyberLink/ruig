@@ -36,7 +36,7 @@ import RotatorElement from "./layers/view/design/designselectionwrapperitem/Rota
 import TopElement from "./layers/view/design/designselectionwrapperitem/TopElement"
 import TopLeftElement from "./layers/view/design/designselectionwrapperitem/TopLeftElement"
 import TopRightElement from "./layers/view/design/designselectionwrapperitem/TopRightElement"
-import TranslatorElement from "./layers/view/design/designselectionwrapperitem/TranslatorElement"
+import TranslatorElement from "./layers/view/design/designselectionwrapperitem/rotating/TranslatorElement"
 
 export function register() {
     const CustomElements: typeof HTMLElement[] = [

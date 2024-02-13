@@ -6,8 +6,9 @@ import IPosition from "../../../../../common/models/IPosition";
 import { spreadTo } from "../../../../../common/utils";
 import DesignElement from "../../../design/DesignElement";
 import BaseComponent from "../base/BaseComponent";
+import IDrawingCanvas from "../base/model/IDrawingCanvas";
 
-class DrawingCanvas extends BaseComponent {
+class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
 
   constructor(style?: IAnyObject) {
     super({

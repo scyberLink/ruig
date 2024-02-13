@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import reportWebVitals from './common/reportWebVitals';
 import './common/globalInclude';
 import AppContainer from './layers/view/application/components/base/AppContainer';
+import ExtensionPool from './extension/ExtensionPool';
 
 function App() {
 
@@ -13,11 +14,15 @@ function App() {
     //reportWebVitals(console.log);
     const body = document.getElementById('app')
     body?.appendChild(appContainer)
+
+    new ExtensionPool(appContainer).loadExtension()
   }, [])
 
   return (
     <>
-      <div id="app" />
+      <div id="app" >
+        <span style={{background: 'red', border: '1px solid red', borderRadius: '5px', position: 'fixed', zIndex: '999999', top: 0, right: 0, width: '50px', height: '50px' }}> </span>
+      </div>
     </>
   )
 }

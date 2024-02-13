@@ -5,10 +5,11 @@ import DesignElement from "../../../../design/DesignElement"
 import LinkDesignElement from "../../../../design/designitem/LinkDesignElement"
 import ActionableIcon from "../../../common/ActionableIcon"
 import BaseComponent from "../../base/BaseComponent"
+import IDrawingToolBar from "../../base/model/IDrawingToolBar"
 import {DC} from "../../drawingcanvas/DrawingCanvas"
 import DrawingToolbarItem from "./DrawingToolbarItem"
 
-class DrawingToolBar extends BaseComponent {
+class DrawingToolBar extends BaseComponent implements IDrawingToolBar{
   pickTool: ActionableIcon
   linkTool: ActionableIcon
   spanTool: ActionableIcon

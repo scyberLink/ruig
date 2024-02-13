@@ -1,22 +1,12 @@
+import DesignElement from "../DesignElement"
 import IDesignElement from "./IDesignElement"
 
-interface IDesignElementOnSelectWrapper {
-
-    topRightElement: HTMLElement
-    bottomRightElement: HTMLElement
-    bottomLeftElement: HTMLElement
-    topLeftElement: HTMLElement
-
-    rotatorElement: HTMLElement
-    resizerElement: HTMLElement
-
-    topElement: HTMLElement
-    leftElement: HTMLElement
-    bottomElement: HTMLElement
-    rightElement: HTMLElement
-
-    wrappedElement: IDesignElement
+interface IDesignElementSelectWrapper {
+    getWrappedElement(): DesignElement
+    updateSize(element: DesignElement): void
+    hide(): void
+    show(): void
     setElementToWrap(element: IDesignElement): void
 }
 
-export default IDesignElementOnSelectWrapper
+export default IDesignElementSelectWrapper

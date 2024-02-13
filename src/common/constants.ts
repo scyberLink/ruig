@@ -27,3 +27,6 @@ export const EXTENDED_TOOLS = "extendedTools"
 export const APPCONTAINER = "appContainer"
 
 export const EXTENSION_SCRIPT = "extensionScript"
+export const INSTALLED_EXTENSION = "installedExtension"
+export const ENABLED_EXTENSION = "enabledExtension"
+export const DISABLED_EXTENSION = "disabledExtension"
