@@ -22,6 +22,7 @@ import SharedConfig from "../../../../../common/SharedConfig";
 import { DESIGN_ELEMENT_WRAPPER, CONTEXT_MENU, DRAWING_CANVAS, ACTIVE_ELEMENT } from "../../../../../common/constants";
 import ShadowMode from "../../common/ShadowMode";
 import IAppContainer from "./model/IAppContainer";
+import IDesignElementSelectWrapper from "../../../design/models/IDesignElementSelectionWrapper";
 
 enum Dimension {
   top = '0',
@@ -155,7 +156,7 @@ class AppContainer extends BaseComponent implements IAppContainer{
   private parserContainer: BaseComponent = new ParserContainer as BaseComponent
   private tabPane: BaseComponent = new TabPane as BaseComponent
 
-  private designElementWrapper: BaseComponent = new DesignElementSelectionWrapper as BaseComponent
+  private designElementWrapper: IDesignElementSelectWrapper = new DesignElementSelectionWrapper as IDesignElementSelectWrapper
 
   contextMenu: BaseComponent = new ContextMenu({
     position: 'absolute',
@@ -282,7 +283,7 @@ class AppContainer extends BaseComponent implements IAppContainer{
     return this.tabPane
   }
   getDesignElementSelectionWrapper() {
-    return this.getDesignElementSelectionWrapper
+    return this.designElementWrapper
   }
   getContextMenu() {
     return this.contextMenu

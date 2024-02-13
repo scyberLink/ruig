@@ -3,6 +3,8 @@ import reportWebVitals from './common/reportWebVitals';
 import './common/globalInclude';
 import AppContainer from './layers/view/application/components/base/AppContainer';
 import ExtensionPool from './extension/ExtensionPool';
+import { Link } from 'react-router-dom';
+import { EXTENSION } from './configs/RestEndpoints';
 
 function App() {
 
@@ -21,7 +23,12 @@ function App() {
   return (
     <>
       <div id="app" >
-        <span style={{background: 'red', border: '1px solid red', borderRadius: '5px', position: 'fixed', zIndex: '999999', top: 0, right: 0, width: '50px', height: '50px' }}> </span>
+        <Link id='extension' to={EXTENSION} style={{background: 'red', /* border: '1px solid red', borderRadius: '5px', */ position: 'fixed', zIndex: '999999', top: 0, right: 0, width: '10px', height: '10px' }}> </Link>
+        <style>{`
+          #extension:before {
+            content: '\eb51';
+          }
+          `}</style>
       </div>
     </>
   )

@@ -9,6 +9,7 @@ import { DesignElementWrapper } from "../DesignElementSelectionWrapper";
 
 class DesignSelectionWrapperItem extends BaseComponent {
     private designElementWrapper!: DesignElementWrapper
+    initialBorder: any
 
     constructor(style?: IAnyObject, mode?: ShadowMode) {
         super({
@@ -39,8 +40,16 @@ class DesignSelectionWrapperItem extends BaseComponent {
         return SharedConfig.get(DRAWING_CANVAS)
     }
 
-    ondrag = (event: DragEvent) => {
-        
+
+    hide() {
+        this.initialBorder = this.parentElement!.style.border
+        this.parentElement!.style.border = '0'
+        //this.style.display = 'none'
+    }
+
+    show() {
+        this.parentElement!.style.border = this.initialBorder
+        //this.style.display = 'initial'
     }
 }
 
