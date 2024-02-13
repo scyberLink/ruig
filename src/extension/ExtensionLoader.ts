@@ -19,7 +19,9 @@ class ExtensionLoader {
             return false
         }
 
-        let executor = new Function(APPCONTAINER, 'SharedConfig', res.data[EXTENSION_SCRIPT])
+        let executor = new Function(APPCONTAINER, 'SharedConfig', `
+        return new Extension(${APPCONTAINER}, ${res.data[EXTENSION_SCRIPT]})
+        `)
 
         return executor(this.appContainer, SharedConfig)
     }

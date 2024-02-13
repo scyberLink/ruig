@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 import fetcher from './SharedFetcher'
-import Fetcher from './Fetcher'
+import Fetcher, { FetcherResponseType } from './Fetcher'
 import IAnyObject from './models/IAnyObject'
 
 export const isActivePath = (routeName: string) => {
@@ -78,7 +78,7 @@ export async function getDataUrlFromUrl (url: string) {
           url,
           method: 'GET'
         }
-        const idata = await fetcher.fetch(imo, Fetcher.RETURN_BLOB)
+        const idata: Blob = await fetcher.fetch(imo, FetcherResponseType.BLOB) as Blob
         const uri = await getDataUrl(idata)
         resolve(uri)
       } catch (err) {

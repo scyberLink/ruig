@@ -12,18 +12,16 @@ class DesignElementSelectionWrapper extends BaseComponent implements IDesignElem
     private resizerElement = new ResizerElement
 
     private wrappedElement!: DesignElement;
-    initialBorder: any
 
     constructor(style?: IAnyObject) {
         super({
             background: 'transparent',
-            border: '0.5px solid red',
+            border: '0',
             position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
             ...(style ?? {}),
-            'z-index': MAX_Z_INDEX,
         });
         this.appendChildren(
             this.rotatorElement,
@@ -39,8 +37,8 @@ class DesignElementSelectionWrapper extends BaseComponent implements IDesignElem
 
         this.updateSize(element)
 
-        this.rotatorElement.setWrapper(this)
-        this.resizerElement.setWrapper(this)
+        this.rotatorElement.setElementToWrapAndWrapper(element, this)
+        this.resizerElement.setElementToWrapAndWrapper(element, this)
     }
 
     updateSize(element: DesignElement) {
@@ -53,17 +51,6 @@ class DesignElementSelectionWrapper extends BaseComponent implements IDesignElem
 
     getWrappedElement() {
         return this.wrappedElement
-    }
-
-    hide() {
-        this.initialBorder = this.style.border
-        this.style.border = '0'
-        this.resizerElement.style.display = 'none'
-    }
-
-    show() {
-        this.style.border = this.initialBorder
-        this.resizerElement.style.display = 'initial'
     }
 }
 

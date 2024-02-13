@@ -1,8 +1,8 @@
 import IAnyObject from "../../../../../common/models/IAnyObject";
 import ShadowMode from "../../../application/common/ShadowMode";
-import DesignSelectionWrapperItem from "../DesignSelectionWrapperItem";
+import RotatingItem from "./RotatingItem";
 
-class BottomLeftRotateElement extends DesignSelectionWrapperItem {
+class BottomLeftRotateElement extends RotatingItem {
     constructor(style?: IAnyObject, mode?: ShadowMode) {
         super({
             width: '5px',
@@ -10,9 +10,8 @@ class BottomLeftRotateElement extends DesignSelectionWrapperItem {
             left: '0',
             bottom: '0',
             ...(style ?? {}),
-        }, mode)
-
-        this.setCursor('rotate')
+        }, mode)    
+    this.setSvg('sw-rotate')
     }
 
 }

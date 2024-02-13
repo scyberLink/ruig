@@ -42,12 +42,13 @@ class CenterElement extends DesignSelectionWrapperItem {
         event.dataTransfer?.setDragImage(new Image(), 0, 0)
         this.dragOffsetX = event.offsetX
         this.dragOffsetY = event.offsetY
-        this.getWrapper().hide();
+        this.hide();
     }
 
     ondragend = (event: DragEvent) => {
-        this.getWrapper().show()
+        this.show()
     }
+    
 }
 
 export default (CenterElement);

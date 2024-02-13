@@ -25,62 +25,74 @@ import DumpElement from "./layers/view/common/DumpElement"
 import DesignElement from "./layers/view/design/DesignElement"
 import DesignElementSelectionWrapper from "./layers/view/design/DesignElementSelectionWrapper"
 import LinkDesignElement from "./layers/view/design/designitem/LinkDesignElement"
-import BottomElement from "./layers/view/design/designselectionwrapperitem/BottomElement"
-import BottomLeftElement from "./layers/view/design/designselectionwrapperitem/BottomLeftElement"
-import BottomRightElement from "./layers/view/design/designselectionwrapperitem/BottomRightElement"
-import CenterElement from "./layers/view/design/designselectionwrapperitem/CenterItem"
 import DesignSelectionWrapperItem from "./layers/view/design/designselectionwrapperitem/DesignSelectionWrapperItem"
-import LeftElement from "./layers/view/design/designselectionwrapperitem/LeftElement"
-import RightElement from "./layers/view/design/designselectionwrapperitem/RightElement"
+import ResizerElement from "./layers/view/design/designselectionwrapperitem/ResizerElement"
 import RotatorElement from "./layers/view/design/designselectionwrapperitem/RotatorElement"
-import TopElement from "./layers/view/design/designselectionwrapperitem/TopElement"
-import TopLeftElement from "./layers/view/design/designselectionwrapperitem/TopLeftElement"
-import TopRightElement from "./layers/view/design/designselectionwrapperitem/TopRightElement"
+import BottomElement from "./layers/view/design/designselectionwrapperitem/resizing/BottomElement"
+import BottomLeftElement from "./layers/view/design/designselectionwrapperitem/resizing/BottomLeftElement"
+import BottomRightElement from "./layers/view/design/designselectionwrapperitem/resizing/BottomRightElement"
+import CenterElement from "./layers/view/design/designselectionwrapperitem/resizing/CenterItem"
+import LeftElement from "./layers/view/design/designselectionwrapperitem/resizing/LeftElement"
+import RightElement from "./layers/view/design/designselectionwrapperitem/resizing/RightElement"
+import TopElement from "./layers/view/design/designselectionwrapperitem/resizing/TopElement"
+import TopLeftElement from "./layers/view/design/designselectionwrapperitem/resizing/TopLeftElement"
+import TopRightElement from "./layers/view/design/designselectionwrapperitem/resizing/TopRightElement"
+import BottomLeftRotateElement from "./layers/view/design/designselectionwrapperitem/rotating/BottomLeftRotateElement"
+import BottomRightRotateElement from "./layers/view/design/designselectionwrapperitem/rotating/BottomRightRotateElement"
+import CenterRotateElement from "./layers/view/design/designselectionwrapperitem/rotating/CenterRotateElement"
+import TopLeftRotateElement from "./layers/view/design/designselectionwrapperitem/rotating/TopLeftRotateElement"
+import TopRightRotateElement from "./layers/view/design/designselectionwrapperitem/rotating/TopRightRotateElement"
 import TranslatorElement from "./layers/view/design/designselectionwrapperitem/rotating/TranslatorElement"
 
 export function register() {
-    const CustomElements: typeof HTMLElement[] = [
-        TextIcon,
-        AppContainer,
-        ActionBar,
-        ParserContainer,
-        BaseComponent,
-        ColorPalette,
-        ConsoleCanvas,
-        ContextMenu,
-        DrawingCanvas,
-        MenuBar,
-        ObjectManagerSelector,
-        HorizontalRuler,
-        VerticalRuler,
-        HorizontalScrollBar,
-        VerticalScrollBar,
-        DrawingToolBar,
-        DrawingToolbarItem,
-        LeftSideBar,
-        StatusBar,
-        TabPane,
-        ToolBar,
-        DumpElement,
-        DesignElement,
-        DesignElementSelectionWrapper,
-        //BaseDesignComponent,
-        LinkDesignElement,
-        BottomElement,
-        BottomLeftElement,
-        BottomRightElement,
-        CenterElement,
-        DesignSelectionWrapperItem,
-        LeftElement,
-        RightElement,
-        RotatorElement,
-        TopElement,
-        TopLeftElement,
-        TopRightElement,
-        TranslatorElement,
-    ]
+    const CustomElements = {
+        TextIcon: TextIcon,
+        AppContainer: AppContainer,
+        ActionBar: ActionBar,
+        ParserContainer: ParserContainer,
+        BaseComponent: BaseComponent,
+        ColorPalette: ColorPalette,
+        ConsoleCanvas: ConsoleCanvas,
+        ContextMenu: ContextMenu,
+        DrawingCanvas: DrawingCanvas,
+        MenuBar: MenuBar,
+        ObjectManagerSelector: ObjectManagerSelector,
+        HorizontalRuler: HorizontalRuler,
+        VerticalRuler: VerticalRuler,
+        HorizontalScrollBar: HorizontalScrollBar,
+        VerticalScrollBar: VerticalScrollBar,
+        DrawingToolBar: DrawingToolBar,
+        DrawingToolbarItem: DrawingToolbarItem,
+        LeftSideBar: LeftSideBar,
+        StatusBar: StatusBar,
+        TabPane: TabPane,
+        ToolBar: ToolBar,
+        DumpElement: DumpElement,
+        DesignElement: DesignElement,
+        DesignElementSelectionWrapper: DesignElementSelectionWrapper,
+        //BaseDesignComponent: BaseDesignComponent,
+        LinkDesignElement: LinkDesignElement,
+        BottomElement: BottomElement,
+        BottomLeftElement: BottomLeftElement,
+        BottomRightElement: BottomRightElement,
+        BottomLeftRotateElement: BottomLeftRotateElement,
+        BottomRighRotatetElement: BottomRightRotateElement,
+        CenterElement: CenterElement,
+        CenterRotateElement: CenterRotateElement,
+        DesignSelectionWrapperItem: DesignSelectionWrapperItem,
+        LeftElement: LeftElement,
+        RightElement: RightElement,
+        RotatorElement: RotatorElement,
+        ResizerElement: ResizerElement,
+        TopElement: TopElement,
+        TopLeftElement: TopLeftElement,
+        TopRightElement: TopRightElement,
+        TopLeftRotateElement: TopLeftRotateElement,
+        TopRightRotateElement: TopRightRotateElement,
+        TranslatorElement: TranslatorElement,
+}
     
-    for(const customElement of CustomElements) {
+    for(const customElement of Object.values(CustomElements)) {
         registerElement(customElement)
     
     }

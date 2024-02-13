@@ -94,7 +94,7 @@ class Fetcher {
     });
   }
 
-  async fetch(options: IAnyObject | string, returnType = FetcherResponseType.JSON): Promise<IFetchData | AxiosResponse> {
+  async fetch(options: IAnyObject | string, returnType = FetcherResponseType.JSON): Promise<IFetchData | AxiosResponse | Blob> {
     let url;
     const defaultOptions = {
       method: "POST",
