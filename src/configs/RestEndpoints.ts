@@ -1,8 +1,7 @@
-export const BASE = process.env.ENVIRONMENT !== 'production'
-  ? `${
-  window.location.protocol.includes('s:') ? 'https' : 'http'
-}://${window.location.hostname}:5000`
-  : process.env.REACT_APP_API_URL
+export const BASE =
+  process.env.ENVIRONMENT !== 'production'
+    ? `${window.location.protocol.includes('s:') ? 'https' : 'http'}://${window.location.hostname}:5000`
+    : process.env.REACT_APP_API_URL
 
 export const API_VERSION = 'v1'
 
@@ -154,10 +153,8 @@ export const AUTO_TRADE_PLAN_RENEWAL = '/auto-trade-plan/renew'
 export const ALL_AUTO_TRADE_PLAN = '/auto-trade-plan/all'
 
 export const AUTO_TRADE_PLAN_TRANSACTION = '/auto-trade-plan-transaction/'
-export const CREATE_AUTO_TRADE_PLAN_TRANSACTION =
-  '/auto-trade-plan-transaction'
-export const ALL_AUTO_TRADE_PLAN_TRANSACTION =
-  '/auto-trade-plan-transaction/all'
+export const CREATE_AUTO_TRADE_PLAN_TRANSACTION = '/auto-trade-plan-transaction'
+export const ALL_AUTO_TRADE_PLAN_TRANSACTION = '/auto-trade-plan-transaction/all'
 
 export const AUTO_TRADE_SETTING = '/auto-trade-setting/'
 export const CREATE_AUTO_TRADE_SETTING = '/auto-trade-setting'
@@ -175,7 +172,6 @@ export const TEAM_SALES_SUMMARY = '/team-sales/summary'
 export const REFERRAL_LEVEL = '/referral-level/'
 export const CREATE_REFERRAL_LEVEL = '/referral-level'
 export const ALL_REFERRAL_LEVEL = '/referral-level/all'
-
 
 export const BUILTIN_EXTENSION = '/builtin-extension/'
 export const EXTENSION = '/extension/'

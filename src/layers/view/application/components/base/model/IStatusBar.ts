@@ -1,5 +1,3 @@
-interface IStatusBar {
-    
-}
+interface IStatusBar {}
 
 export default IStatusBar

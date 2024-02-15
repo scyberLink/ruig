@@ -1,5 +1,3 @@
-interface IParserContainer {
-    
-}
+interface IParserContainer {}
 
 export default IParserContainer

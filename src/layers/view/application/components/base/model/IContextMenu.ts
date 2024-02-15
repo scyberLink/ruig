@@ -1,5 +1,3 @@
-interface IContextMenu {
-    
-}
+interface IContextMenu {}
 
 export default IContextMenu

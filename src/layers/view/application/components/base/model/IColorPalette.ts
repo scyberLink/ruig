@@ -1,7 +1,3 @@
-
-
-interface IColorPalette {
-    
-}
+interface IColorPalette {}
 
 export default IColorPalette

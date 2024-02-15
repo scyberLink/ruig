@@ -1,4 +1,3 @@
-interface IDumpElement {
-}
+interface IDumpElement {}
 
 export default IDumpElement

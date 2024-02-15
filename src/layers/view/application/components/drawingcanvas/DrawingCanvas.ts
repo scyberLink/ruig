@@ -1,21 +1,19 @@
-import SharedConfig from "../../../../../common/SharedConfig";
-import { ACTIVE_ELEMENT, DRAWING_CANVAS, DRAWING_CANVAS_MOUSE_COORDINATE, MIN_Z_INDEX } from "../../../../../common/constants";
-import NullException from "../../../../../common/exceptions/NullException";
-import IAnyObject from "../../../../../common/models/IAnyObject";
-import IPosition from "../../../../../common/models/IPosition";
-import { spreadTo } from "../../../../../common/utils";
-import DesignElement from "../../../design/DesignElement";
-import BaseComponent from "../base/BaseComponent";
-import IDrawingCanvas from "../base/model/IDrawingCanvas";
+import SharedConfig from '../../../../../common/SharedConfig'
+import { ACTIVE_ELEMENT, MIN_Z_INDEX } from '../../../../../common/constants'
+import NullException from '../../../../../common/exceptions/NullException'
+import IAnyObject from '../../../../../common/models/IAnyObject'
+import IPosition from '../../../../../common/models/IPosition'
+import { spreadTo } from '../../../../../common/utils'
+import DesignElement from '../../../design/DesignElement'
+import BaseComponent from '../base/BaseComponent'
+import IDrawingCanvas from '../base/model/IDrawingCanvas'
 
 class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
-
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),
       'z-index': MIN_Z_INDEX,
-    });
-
+    })
   }
 
   /* connectedCallback() {
@@ -26,7 +24,7 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
       throw NullException
     }
 
-    let { x, y } = position || { x: 10, y: 10, metric: 'px' }
+    const { x, y } = position || { x: 10, y: 10, metric: 'px' }
 
     spreadTo(element.style, {
       position: 'absolute',
@@ -39,16 +37,9 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
     return element
   }
 
-  /* onmouseover = (event: any) => {
-    this.focus()
-  }; */
-  ondragover = (event: DragEvent) => {
-    event.preventDefault(); // Allow drop
-  }
-
   onclick = (event: MouseEvent) => {
     event.preventDefault()
-    let element: DesignElement = SharedConfig.get(ACTIVE_ELEMENT);
+    const element: DesignElement = SharedConfig.get(ACTIVE_ELEMENT) as DesignElement
     element?.deselect()
   }
 
@@ -69,4 +60,4 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
 
 export { DrawingCanvas as DC }
 
-export default (DrawingCanvas);
+export default DrawingCanvas

@@ -1,5 +1,3 @@
-interface IConsoleCanvas {
-    
-}
+interface IConsoleCanvas {}
 
 export default IConsoleCanvas

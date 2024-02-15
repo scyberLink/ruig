@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-import IAnyObject from "./models/IAnyObject"
+import IAnyObject from './models/IAnyObject'
 
 export const enum StorageType {
   MEMORY_STORAGE,
@@ -9,17 +9,20 @@ export const enum StorageType {
   DESTROY_ALL,
 }
 
-
 class GlobalConfig {
   protected static _instance: GlobalConfig
 
   private dynamicConfig!: IAnyObject
-  private __get!: (key: any, where: any) => any
-  private __set!: (key: any, value: any, where: any) => void
-  private __remove!: (key: any, where: any) => any
-  private __destroy!: (where: any) => void
-  private __removeFrom!: (fromKey: any, valueToRemove?: IAnyObject, where?: any) => any
-  private __has!: (key: any, where: any) => boolean
+  private __get!: (key: string, where: StorageType) => IAnyObject | string | null
+  private __set!: (key: string | IAnyObject, value: string | IAnyObject, where: StorageType) => void
+  private __remove!: (key: string, where: StorageType) => IAnyObject | string | null
+  private __destroy!: (where: StorageType) => void
+  private __removeFrom!: (
+    fromKey: string,
+    valueToRemove?: IAnyObject | string,
+    where?: StorageType,
+  ) => IAnyObject | string | null
+  private __has!: (key: string, where: StorageType) => boolean
 
   constructor() {
     if (!GlobalConfig._instance) {
@@ -31,9 +34,11 @@ class GlobalConfig {
       this.__get = (key, where: StorageType) => {
         try {
           key = btoa(key)
-        } catch (_err) { }
+        } catch (_err) {
+          /* empty */
+        }
 
-        let value
+        let value: string | null
 
         switch (where) {
           case StorageType.LOCAL_STORAGE:
@@ -54,20 +59,22 @@ class GlobalConfig {
         return value
       }
 
-      const switchSet = (key: string, value: any, where: StorageType) => {
+      const switchSet = (key: string, value: string | IAnyObject, where: StorageType) => {
         try {
           key = btoa(key)
-        } catch (_err) { }
+        } catch (_err) {
+          /* empty */
+        }
 
         switch (where) {
           case StorageType.LOCAL_STORAGE:
             value = GlobalConfig.stringify(value)
-            localStorage.setItem(key, value)
+            localStorage.setItem(key, value as string)
             break
 
           case StorageType.SESSION_STORAGE:
             value = GlobalConfig.stringify(value)
-            sessionStorage.setItem(key, value)
+            sessionStorage.setItem(key, value as string)
             break
 
           default:
@@ -76,7 +83,7 @@ class GlobalConfig {
         }
       }
 
-      this.__set = (key: any, value: any, where: StorageType) => {
+      this.__set = (key: string | IAnyObject, value: string | IAnyObject, where: StorageType) => {
         if (key instanceof Object) {
           let configKey
           let configObj
@@ -106,7 +113,9 @@ class GlobalConfig {
 
         try {
           copiedKey = btoa(copiedKey)
-        } catch (_err) { }
+        } catch (_err) {
+          /* empty */
+        }
 
         let value
 
@@ -152,7 +161,11 @@ class GlobalConfig {
         }
       }
 
-      this.__removeFrom = (fromKey, valueToRemove?: IAnyObject, where: StorageType = StorageType.MEMORY_STORAGE) => {
+      this.__removeFrom = (
+        fromKey,
+        valueToRemove?: IAnyObject | string,
+        where: StorageType = StorageType.MEMORY_STORAGE,
+      ) => {
         const exist = this.__get(fromKey, where)
         if (!exist) return false
         if (exist instanceof Array) {
@@ -160,7 +173,7 @@ class GlobalConfig {
           if (!valueToRemove) {
             deleted = exist.pop()
           } else {
-            let [deleted_temp] = [...exist[exist.indexOf(valueToRemove)]]
+            const [deleted_temp] = [...exist[exist.indexOf(valueToRemove)]]
             delete exist[exist.indexOf(valueToRemove)]
             deleted = deleted_temp
           }
@@ -184,11 +197,11 @@ class GlobalConfig {
     return this.__get(key, StorageType.MEMORY_STORAGE)
   }
 
-  set(key: string, value: any) {
+  set(key: string, value: string | IAnyObject) {
     this.__set(key, value, StorageType.MEMORY_STORAGE)
   }
 
-  addTo(parentKey: string, valueToAdd: any) {
+  addTo(parentKey: string, valueToAdd: string | IAnyObject) {
     if (!Object.hasOwnProperty.call(this.dynamicConfig, parentKey)) {
       this.dynamicConfig[parentKey] = []
     }
@@ -199,11 +212,11 @@ class GlobalConfig {
     return this.dynamicConfig[parentKey]
   }
 
-  addToFlashData(parentKey: string, valueToAdd: any) {
+  addToFlashData(parentKey: string, valueToAdd: string | IAnyObject) {
     return this.addToLocalData(parentKey, valueToAdd)
   }
 
-  addToLocalData(parentKey: string, valueToAdd: any) {
+  addToLocalData(parentKey: string, valueToAdd: string | IAnyObject) {
     let exist = this.__get(parentKey, StorageType.LOCAL_STORAGE)
     if (!exist) exist = []
     if (!(exist instanceof Array)) {
@@ -214,7 +227,7 @@ class GlobalConfig {
     return exist
   }
 
-  addToSessionData(parentKey: string, valueToAdd: any) {
+  addToSessionData(parentKey: string, valueToAdd: string | IAnyObject) {
     let exist = this.__get(parentKey, StorageType.SESSION_STORAGE)
     if (!exist) exist = []
     if (!(exist instanceof Array)) {
@@ -225,19 +238,19 @@ class GlobalConfig {
     return exist
   }
 
-  removeFrom(parentKey: string, valueToRemove?: IAnyObject) {
+  removeFrom(parentKey: string, valueToRemove?: IAnyObject | string) {
     return this.__removeFrom(parentKey, valueToRemove, StorageType.MEMORY_STORAGE)
   }
 
-  removeFromFlashData(parentKey: string, valueToRemove?: IAnyObject) {
+  removeFromFlashData(parentKey: string, valueToRemove?: IAnyObject | string) {
     return this.removeFromLocalData(parentKey, valueToRemove)
   }
 
-  removeFromLocalData(parentKey: string, valueToRemove?: IAnyObject) {
+  removeFromLocalData(parentKey: string, valueToRemove?: IAnyObject | string) {
     return this.__removeFrom(parentKey, valueToRemove, StorageType.LOCAL_STORAGE)
   }
 
-  removeFromSessionData(parentKey: string, valueToRemove?: IAnyObject) {
+  removeFromSessionData(parentKey: string, valueToRemove?: IAnyObject | string) {
     return this.__removeFrom(parentKey, valueToRemove, StorageType.SESSION_STORAGE)
   }
 
@@ -245,7 +258,7 @@ class GlobalConfig {
     return this.__remove(key, StorageType.LOCAL_STORAGE)
   }
 
-  setFlashData(key: string, value: any) {
+  setFlashData(key: string, value: string | IAnyObject) {
     this.setLocalData(key, value)
   }
 
@@ -253,7 +266,7 @@ class GlobalConfig {
     return this.__get(key, StorageType.LOCAL_STORAGE)
   }
 
-  setLocalData(key: string, value: any) {
+  setLocalData(key: string, value: string | IAnyObject) {
     this.__set(key, value, StorageType.LOCAL_STORAGE)
   }
 
@@ -261,7 +274,7 @@ class GlobalConfig {
     return this.__get(key, StorageType.SESSION_STORAGE)
   }
 
-  setSessionData(key: string, value: any) {
+  setSessionData(key: string, value: string | IAnyObject) {
     this.__set(key, value, StorageType.SESSION_STORAGE)
   }
 
@@ -338,36 +351,42 @@ class GlobalConfig {
     } else {
       if (throwIfNotfound) throw new Error('Key not found')
     }
-    return (this.dynamicConfig[key] = -1);
+    return (this.dynamicConfig[key] = -1)
   }
 
-
-  static parse = (value: any) => {
+  static parse = (value: string | null) => {
     if (value) {
       try {
         value = atob(value)
-      } catch (_err) { }
+      } catch (_err) {
+        /* empty */
+      }
       try {
         value = JSON.parse(value)
-      } catch (error) { }
+      } catch (error) {
+        /* empty */
+      }
     }
     return value
   }
 
-  static stringify = (value: any) => {
+  static stringify = (value: string | IAnyObject) => {
     try {
       if (value instanceof Object) {
         value = JSON.stringify(value)
       }
-    } catch (_err) { }
+    } catch (_err) {
+      /* empty */
+    }
 
     try {
-      value = btoa(value)
-    } catch (_err) { }
+      value = btoa(value as string)
+    } catch (_err) {
+      /* empty */
+    }
 
     return value
   }
-
 }
 
 const SharedConfig = new GlobalConfig()

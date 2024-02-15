@@ -1,5 +1,3 @@
-interface IVerticalScrollBar {
-    
-}
+interface IVerticalScrollBar {}
 
 export default IVerticalScrollBar

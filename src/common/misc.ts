@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 import fetcher from './SharedFetcher'
-import Fetcher, { FetcherResponseType } from './Fetcher'
+import { FetcherResponseType } from './Fetcher'
 import IAnyObject from './models/IAnyObject'
 
 export const isActivePath = (routeName: string) => {
@@ -16,20 +16,14 @@ export const isActivePath = (routeName: string) => {
   return null
 }
 
-
-export function objectEquals (obj1: IAnyObject, obj2: IAnyObject) {
+export function objectEquals(obj1: IAnyObject, obj2: IAnyObject) {
   // Check if both object are strictly equal
   if (obj1 === obj2) {
     return true
   }
 
   // Check if either object is null or not
-  if (
-    typeof obj1 !== 'object' ||
-    obj1 == null ||
-    typeof obj2 !== 'object' ||
-    obj2 == null
-  ) {
+  if (typeof obj1 !== 'object' || obj1 == null || typeof obj2 !== 'object' || obj2 == null) {
     return false
   }
 
@@ -51,11 +45,11 @@ export function objectEquals (obj1: IAnyObject, obj2: IAnyObject) {
   return true
 }
 
-export function encodeQuery (object = {}) {
+export function encodeQuery(object = {}) {
   return btoa(JSON.stringify(object))
 }
 
-export async function getDataUrl (data: Blob) {
+export async function getDataUrl(data: Blob) {
   return await new Promise((resolve, reject) => {
     try {
       const reader = new FileReader()
@@ -70,15 +64,15 @@ export async function getDataUrl (data: Blob) {
   })
 }
 
-export async function getDataUrlFromUrl (url: string) {
+export async function getDataUrlFromUrl(url: string) {
   return await new Promise((resolve, reject) => {
-    async function runner () {
+    async function runner() {
       try {
         const imo = {
           url,
-          method: 'GET'
+          method: 'GET',
         }
-        const idata: Blob = await fetcher.fetch(imo, FetcherResponseType.BLOB) as Blob
+        const idata: Blob = (await fetcher.fetch(imo, FetcherResponseType.BLOB)) as Blob
         const uri = await getDataUrl(idata)
         resolve(uri)
       } catch (err) {

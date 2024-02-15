@@ -1,5 +1,3 @@
-interface IHorizontalScrollBar {
-    
-}
+interface IHorizontalScrollBar {}
 
 export default IHorizontalScrollBar

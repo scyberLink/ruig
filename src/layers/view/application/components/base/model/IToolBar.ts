@@ -1,5 +1,3 @@
-interface IToolBar {
-    
-}
+interface IToolBar {}
 
 export default IToolBar

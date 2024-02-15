@@ -1,5 +1,3 @@
-interface IDrawingToolBar {
-    
-}
+interface IDrawingToolBar {}
 
 export default IDrawingToolBar

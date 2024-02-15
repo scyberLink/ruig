@@ -1,26 +1,26 @@
-import md5 from "../common/md5";
-import IExtensionId from "./IExtensionId";
+import md5 from '../common/md5'
+import IExtensionId from './IExtensionId'
 
 class ExtensionId implements IExtensionId {
-    private _id!: string;
+  private _id!: string
 
-    public get id(): string {
-        return this._id;
-    }
+  public get id(): string {
+    return this._id
+  }
 
-    public set id(value: string) {
-        this._id = this.hash(value);
-    }
+  public set id(value: string) {
+    this._id = this.hash(value)
+  }
 
-    constructor(id: string) {
-        this.id = id
-    }
+  constructor(id: string) {
+    this.id = id
+  }
 
-    hash(id: string): string {
-        let hash = md5(id)
+  hash(id: string): string {
+    const hash = md5(id)
 
-        return hash
-    }
+    return hash
+  }
 }
 
 export default ExtensionId

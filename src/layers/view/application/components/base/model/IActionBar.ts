@@ -1,7 +1,3 @@
-
-
-interface IActionBar {
-    
-}
+interface IActionBar {}
 
 export default IActionBar

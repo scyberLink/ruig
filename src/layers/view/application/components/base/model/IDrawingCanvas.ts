@@ -1,5 +1,3 @@
-interface IDrawingCanvas {
-    
-}
+interface IDrawingCanvas {}
 
 export default IDrawingCanvas

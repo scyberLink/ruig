@@ -1,5 +1,3 @@
-interface ITabPane {
-    
-}
+interface ITabPane {}
 
 export default ITabPane

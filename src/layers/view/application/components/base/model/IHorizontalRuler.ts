@@ -1,5 +1,3 @@
-interface IHorizontalRuler {
-    
-}
+interface IHorizontalRuler {}
 
 export default IHorizontalRuler

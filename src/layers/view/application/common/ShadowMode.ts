@@ -1,6 +1,6 @@
 enum ShadowMode {
-    OPEN = 'open',
-    CLOSE = 'closed'
+  OPEN = 'open',
+  CLOSE = 'closed',
 }
 
 export default ShadowMode

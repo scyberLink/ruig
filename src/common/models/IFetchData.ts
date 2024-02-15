@@ -1,19 +1,20 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IData {
-    status: boolean;
-    message: string;
-    [key: string | number]: any;
+  status: boolean
+  message: string
+  [key: string | number]: any
 }
 
 export interface IConnectInfo {
-    endpoint: string;
-    statusCode: number | string;
-    authToken: string;
-    errorCode?: number | string;
-    uid: number;
+  endpoint: string
+  statusCode: number | string
+  authToken: string
+  errorCode?: number | string
+  uid: number
 }
 
 export default interface IFetchData {
-    connection: IConnectInfo;
-    data: IData | null;
-    [key: string | number]: any;
+  connection: IConnectInfo
+  data: IData | null
+  [key: string | number]: any
 }

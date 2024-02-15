@@ -1,21 +1,19 @@
-import { rand } from "../../../../common/md5";
-import IAnyObject from "../../../../common/models/IAnyObject";
-import BaseComponent from "../../application/components/base/BaseComponent";
-import DesignElementTypes from "../../common/DesignElementTypes";
-import DesignElement from "../DesignElement";
+import { rand } from '../../../../common/md5'
+import IAnyObject from '../../../../common/models/IAnyObject'
+import DesignElementTypes from '../../common/DesignElementTypes'
+import DesignElement from '../DesignElement'
 
 class LinkDesignElement extends DesignElement {
-    
-    type: DesignElementTypes = DesignElementTypes.LINK;
-    
-    constructor(style?: IAnyObject) {
-        super({
-            ...(style ?? {}),
-            display: 'inline',
-        })
+  type: DesignElementTypes = DesignElementTypes.LINK
 
-        this.extendedElement.textContent = 'Link' + rand()
-    }
+  constructor(style?: IAnyObject) {
+    super({
+      ...(style ?? {}),
+      display: 'inline',
+    })
+
+    this.extendedElement.textContent = 'Link' + rand()
+  }
 }
 
-export default (LinkDesignElement)
+export default LinkDesignElement

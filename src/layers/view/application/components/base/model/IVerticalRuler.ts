@@ -1,5 +1,3 @@
-interface IVerticalRuler {
-    
-}
+interface IVerticalRuler {}
 
 export default IVerticalRuler

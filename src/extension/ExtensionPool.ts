@@ -1,195 +1,226 @@
-import SharedConfig from "../common/SharedConfig"
-import { INSTALLED_EXTENSION, ENABLED_EXTENSION, DISABLED_EXTENSION } from "../common/constants"
-import IAppContainer from "../layers/view/application/components/base/model/IAppContainer"
-import ExtensionId from "./ExtensionId"
-import ExtensionLoader from "./ExtensionLoader"
-import IExtensionId from "./IExtensionId"
+import SharedConfig from '../common/SharedConfig'
+import { INSTALLED_EXTENSION, ENABLED_EXTENSION, DISABLED_EXTENSION, BUILTIN_EXTENSION } from '../common/constants'
+import ExtensionLoadingException from '../common/exceptions/ExtensionLoadingException'
+import IAppContainer from '../layers/view/application/components/base/model/IAppContainer'
+import ExtensionId from './ExtensionId'
+import ExtensionLoader from './ExtensionLoader'
+import builtinExtensions from '../builtinextensions.json'
 
 enum ExtensionState {
-    ENABLE = 'enable',
-    DISABLE = 'disable',
-    INSTALL = 'install',
+  BUILTIN = 'builtin',
+  ENABLE = 'enable',
+  DISABLE = 'disable',
+  INSTALL = 'install',
 }
 
 class ExtensionPool {
-    private appContainer: IAppContainer
-    private loader: ExtensionLoader
+  private appContainer: IAppContainer
+  private loader: ExtensionLoader
 
-    private installed: IExtensionId[] = []
-    private enabled: IExtensionId[] = []
-    private disabled: IExtensionId[] = []
+  private builtin: string[] = []
+  private installed: string[] = []
+  private enabled: string[] = []
+  private disabled: string[] = []
 
-    constructor(appContainer: IAppContainer) {
-        this.appContainer = appContainer
-        this.loader = new ExtensionLoader(this.appContainer)
-        this.init()
+  constructor(appContainer: IAppContainer) {
+    this.appContainer = appContainer
+    this.loader = new ExtensionLoader(this.appContainer)
+    this.init()
+  }
+
+  private async init() {
+    const builtin = SharedConfig.getLocalData(BUILTIN_EXTENSION)
+    const installed = SharedConfig.getLocalData(INSTALLED_EXTENSION)
+    const enabled = SharedConfig.getLocalData(ENABLED_EXTENSION)
+    const disabled = SharedConfig.getLocalData(DISABLED_EXTENSION)
+
+    if (builtin && Array.isArray(builtin)) {
+      this.builtin = builtin
     }
 
-    private init() {
-        let installed = SharedConfig.getLocalData(INSTALLED_EXTENSION)
-        let enabled = SharedConfig.getLocalData(ENABLED_EXTENSION)
-        let disabled = SharedConfig.getLocalData(DISABLED_EXTENSION)
+    if (installed && Array.isArray(installed)) {
+      this.installed = installed
+    }
 
-        if (installed) {
-            this.installed = installed
+    if (enabled && Array.isArray(enabled)) {
+      this.enabled = enabled
+    }
+
+    if (disabled && Array.isArray(disabled)) {
+      this.disabled = disabled
+    }
+
+    if (!this.builtin || this.builtin.length <= 0) {
+      try {
+        for (const id of builtinExtensions) {
+          this.add(id, ExtensionState.BUILTIN, ExtensionState.ENABLE)
         }
+      } catch (error) {
+        throw new ExtensionLoadingException('Error loading builtin exetensions')
+      }
+    }
+  }
 
-        if (enabled) {
-            this.enabled = enabled
+  loadExtension() {
+    for (const enabledExtension of this.enabled) {
+      this.loader.load(enabledExtension)
+    }
+  }
+
+  install(id: string) {
+    const extId = new ExtensionId(id)
+    this.remove(extId.id)
+    this.add(extId.id, ExtensionState.INSTALL, ExtensionState.ENABLE)
+    return true
+  }
+
+  uninstall(id: string) {
+    const extId = new ExtensionId(id)
+    this.remove(extId.id)
+    return true
+  }
+
+  private remove(id: string, ...states: ExtensionState[]) {
+    if (!states || states.length < 1) {
+      this.delete(id, ExtensionState.DISABLE)
+      this.delete(id, ExtensionState.ENABLE)
+      this.delete(id, ExtensionState.INSTALL)
+
+      SharedConfig.removeFromLocalData(INSTALLED_EXTENSION, id)
+      SharedConfig.removeFromLocalData(ENABLED_EXTENSION, id)
+      SharedConfig.removeFromLocalData(DISABLED_EXTENSION, id)
+      return
+    }
+
+    for (const state of states) {
+      switch (state) {
+        case ExtensionState.DISABLE:
+          this.delete(id, ExtensionState.DISABLE)
+          SharedConfig.removeFromLocalData(DISABLED_EXTENSION, id)
+          break
+
+        case ExtensionState.ENABLE:
+          this.delete(id, ExtensionState.ENABLE)
+          SharedConfig.removeFromLocalData(ENABLED_EXTENSION, id)
+          break
+
+        case ExtensionState.INSTALL:
+          this.delete(id, ExtensionState.INSTALL)
+          SharedConfig.removeFromLocalData(INSTALLED_EXTENSION, id)
+          break
+      }
+    }
+  }
+
+  private delete(id: string, state: ExtensionState) {
+    const index = this.getIndex(id, state)
+
+    switch (state) {
+      case ExtensionState.DISABLE:
+        if (index >= 0) {
+          delete this.disabled[index]
         }
-        
-        if (disabled) {
-            this.disabled = disabled
+        break
+
+      case ExtensionState.ENABLE:
+        if (index >= 0) {
+          delete this.enabled[index]
         }
-    }
+        break
 
-    loadExtension() {
-        for (const enabledExtension of this.enabled) {
-            this.loader.load(enabledExtension.id)
+      case ExtensionState.INSTALL:
+        if (index >= 0) {
+          delete this.installed[index]
         }
+        break
+    }
+  }
+
+  private add(id: string, ...states: ExtensionState[]) {
+    for (const state of states) {
+      switch (state) {
+        case ExtensionState.DISABLE:
+          SharedConfig.addToLocalData(DISABLED_EXTENSION, id)
+          this.disabled.push(id)
+          break
+
+        case ExtensionState.ENABLE:
+          SharedConfig.addToLocalData(ENABLED_EXTENSION, id)
+          this.enabled.push(id)
+          break
+
+        case ExtensionState.INSTALL:
+          SharedConfig.addToLocalData(INSTALLED_EXTENSION, id)
+          this.installed.push(id)
+          break
+
+        case ExtensionState.BUILTIN:
+          SharedConfig.addToLocalData(BUILTIN_EXTENSION, id)
+          this.installed.push(id)
+          break
+      }
+    }
+  }
+
+  enable(id: string) {
+    const extId = new ExtensionId(id)
+    this.remove(extId.id, ExtensionState.DISABLE)
+    this.add(extId.id, ExtensionState.ENABLE)
+  }
+
+  disable(id: string) {
+    const extId = new ExtensionId(id)
+    this.remove(extId.id, ExtensionState.ENABLE)
+    this.add(extId.id, ExtensionState.DISABLE)
+  }
+
+  isEnabled(id: string) {
+    const extId = new ExtensionId(id)
+    const index = this.getIndex(extId.id, ExtensionState.ENABLE)
+    return index >= 0
+  }
+
+  isDisabled(id: string) {
+    const extId = new ExtensionId(id)
+    const index = this.getIndex(extId.id, ExtensionState.DISABLE)
+    return index >= 0
+  }
+
+  isInstalled(id: string) {
+    const extId = new ExtensionId(id)
+    const index = this.getIndex(extId.id, ExtensionState.INSTALL)
+    return index >= 0
+  }
+
+  isBuiltin(id: string) {
+    const extId = new ExtensionId(id)
+    const index = this.getIndex(extId.id, ExtensionState.BUILTIN)
+    return index >= 0
+  }
+
+  private getIndex(id: string, state: ExtensionState) {
+    let index = -1
+
+    switch (state) {
+      case ExtensionState.DISABLE:
+        index = this.disabled.findIndex((extensionId) => extensionId === id)
+        break
+
+      case ExtensionState.ENABLE:
+        index = this.enabled.findIndex((extensionId) => extensionId === id)
+        break
+
+      case ExtensionState.INSTALL:
+        index = this.installed.findIndex((extensionId) => extensionId === id)
+        break
+
+      case ExtensionState.BUILTIN:
+        index = this.builtin.findIndex((extensionId) => extensionId === id)
+        break
     }
 
-
-    install(id: string) {
-        this.remove(id)
-        this.add(id, ExtensionState.INSTALL, ExtensionState.ENABLE)
-        return true
-    }
-
-    uninstall(id: string) {
-        this.remove(id)
-        return true
-    }
-
-    private remove(id: string, ...states: ExtensionState[]) {
-        let extId = new ExtensionId(id)
-
-        if (!states || states.length < 1) {
-            let indexEnabledAll = this.enabled.findIndex(extensionId => extensionId.id === extId.id)
-            let indexDisabledAll = this.disabled.findIndex(extensionId => extensionId.id === extId.id)
-            let indexInstalledAll = this.installed.findIndex(extensionId => extensionId.id === extId.id)
-
-            if (indexEnabledAll >= 0) {
-                delete this.enabled[indexEnabledAll]
-            }
-
-            if (indexDisabledAll >= 0) {
-                delete this.disabled[indexDisabledAll]
-            }
-
-            if (indexInstalledAll >= 0) {
-                delete this.installed[indexInstalledAll]
-            }
-
-            SharedConfig.removeFromLocalData(INSTALLED_EXTENSION, extId)
-            SharedConfig.removeFromLocalData(ENABLED_EXTENSION, extId)
-            SharedConfig.removeFromLocalData(DISABLED_EXTENSION, extId)
-        }
-
-        for (const state of states) {
-            switch (state) {
-                case ExtensionState.DISABLE:
-                    let indexDisabled = this.disabled.findIndex(extensionId => extensionId.id === extId.id)
-
-                    if (indexDisabled >= 0) {
-                        delete this.disabled[indexDisabled]
-                    }
-                    SharedConfig.removeFromLocalData(DISABLED_EXTENSION, extId)
-                    break;
-
-                case ExtensionState.ENABLE:
-                    let indexEnabled = this.enabled.findIndex(extensionId => extensionId.id === extId.id)
-
-                    if (indexEnabled >= 0) {
-                        delete this.enabled[indexEnabled]
-                    }
-                    SharedConfig.removeFromLocalData(ENABLED_EXTENSION, extId)
-                    break;
-
-                case ExtensionState.INSTALL:
-                    let indexInstalled = this.installed.findIndex(extensionId => extensionId.id === extId.id)
-
-                    if (indexInstalled >= 0) {
-                        delete this.installed[indexInstalled]
-                    }
-                    SharedConfig.removeFromLocalData(INSTALLED_EXTENSION, extId)
-                    break;
-            }
-        }
-    }
-
-    private add(id: string, ...states: ExtensionState[]) {
-        let extId = new ExtensionId(id)
-
-        for (const state of states) {
-            switch (state) {
-
-                case ExtensionState.DISABLE:
-                    SharedConfig.addToLocalData(DISABLED_EXTENSION, extId)
-                    this.disabled.push(extId)
-                    break;
-
-                case ExtensionState.ENABLE:
-                    SharedConfig.addToLocalData(ENABLED_EXTENSION, extId)
-                    this.enabled.push(extId)
-                    break;
-
-                case ExtensionState.INSTALL:
-                    SharedConfig.addToLocalData(INSTALLED_EXTENSION, extId)
-                    this.installed.push(extId)
-                    break;
-            }
-        }
-    }
-
-    enable(id: string) {
-        this.remove(id, ExtensionState.DISABLE)
-        this.add(id, ExtensionState.ENABLE)
-
-    }
-
-    disable(id: string) {
-        this.remove(id, ExtensionState.ENABLE)
-        this.add(id, ExtensionState.DISABLE)
-    }
-
-    isEnabled(id: string) {
-        let index = this.getIndex(id, ExtensionState.ENABLE)
-        return index >= 0
-    }
-
-    isDisabled(id: string) {
-        let index = this.getIndex(id, ExtensionState.DISABLE)
-        return index >= 0
-    }
-
-    isInstalled(id: string) {
-        let index = this.getIndex(id, ExtensionState.INSTALL)
-        return index >= 0
-    }
-
-    getIndex(id: string, state: ExtensionState) {
-        let extId = new ExtensionId(id)
-
-        let index = -1
-
-        switch (state) {
-
-            case ExtensionState.DISABLE:
-                index = this.disabled.findIndex(extensionId => extensionId.id === extId.id)
-                break;
-
-            case ExtensionState.ENABLE:
-                index = this.enabled.findIndex(extensionId => extensionId.id === extId.id)
-                break;
-
-            case ExtensionState.INSTALL:
-                index = this.installed.findIndex(extensionId => extensionId.id === extId.id)
-                break;
-        }
-
-        return index
-    }
+    return index
+  }
 }
 
 export default ExtensionPool

@@ -1,5 +1,3 @@
-interface IObjectManagerSelector {
-    
-}
+interface IObjectManagerSelector {}
 
 export default IObjectManagerSelector

@@ -1,5 +1,3 @@
-interface IMenuBar {
-    
-}
+interface IMenuBar {}
 
 export default IMenuBar

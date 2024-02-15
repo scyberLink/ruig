@@ -1,11 +1,12 @@
-import NullException from "../../../../../common/exceptions/NullException"
-import IAnyObject from "../../../../../common/models/IAnyObject"
-import IPair from "../../../../../common/models/IPair"
-import { cssString, snakeCase } from "../../../../../common/utils"
-import Color from "../../common/Color"
-import ShadowMode from "../../common/ShadowMode"
-import InvalidTagNameException from "../exceptions/InvalidTagNameException"
-import IDelegateModel from "./IDelegateModel"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import NullException from '../../../../../common/exceptions/NullException'
+import type IAnyObject from '../../../../../common/models/IAnyObject'
+import type IPair from '../../../../../common/models/IPair'
+import { cssString, snakeCase } from '../../../../../common/utils'
+import Color from '../../common/Color'
+import ShadowMode from '../../common/ShadowMode'
+import InvalidTagNameException from '../exceptions/InvalidTagNameException'
+import type IDelegateModel from './IDelegateModel'
 
 class BaseComponent extends HTMLElement implements IDelegateModel {
   protected shadow: ShadowRoot
@@ -29,7 +30,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
 
   public set scale(value: number) {
     this._scale = value
-    this.style.transform = `scale(${value})`;
+    this.style.transform = `scale(${value})`
   }
 
   constructor(style?: IAnyObject, mode?: ShadowMode) {
@@ -41,14 +42,14 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     this.shadowStyle.textContent = `
     #${this.tagName?.toLowerCase()} {
         ${cssString({
-      background: Color.lightAsh,
-      color: Color.black,
-      border: `0.5px solid ${Color.ash}`,
-      display: 'block',
-      position: 'fixed',
-      'user-select': 'none',
-      ...(style ?? {})
-    })}
+          background: Color.lightAsh,
+          color: Color.black,
+          border: `0.5px solid ${Color.ash}`,
+          display: 'block',
+          position: 'fixed',
+          'user-select': 'none',
+          ...(style ?? {}),
+        })}
       }
     `
     this.shadow.appendChild(this.shadowWrapper)
@@ -98,7 +99,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   }
 
   set clientWidth(value: number) {
-    (this.shadowWrapper as any).clientWidth = value
+    ;(this.shadowWrapper as any).clientWidth = value
   }
 
   get clientHeight(): number {
@@ -106,7 +107,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   }
 
   set clientHeight(value: number) {
-    (this.shadowWrapper as any).clientHeight = value
+    ;(this.shadowWrapper as any).clientHeight = value
   }
 
   get innerText(): string {
@@ -168,7 +169,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   }
 
   get textContent(): string {
-    return this.shadowWrapper.textContent as string
+    return this.shadowWrapper.textContent!
   }
 
   set textContent(value: string) {
@@ -247,8 +248,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     this.shadowWrapper.title = value
   }
 
-  set onselect(value: any) {
-  }
+  set onselect(value: any) {}
 
   oncopy = (ev: any) => {
     ev?.preventDefault()
@@ -270,12 +270,20 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     ev?.preventDefault()
   }
 
+  ondragover = (event: DragEvent) => {
+    event.preventDefault()
+  }
+
+  ondrop = (event: DragEvent) => {
+    event.preventDefault()
+  }
+
   // ... (other delegated methods)
 
   addEventListener(
     type: string,
     listener: EventListenerOrEventListenerObject,
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
   ): void {
     this.shadowWrapper.addEventListener(type, listener, options)
   }
@@ -284,7 +292,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     return this.shadowWrapper.getBoundingClientRect()
   }
 
-  append(...nodes: (Node | string)[]): void {
+  append(...nodes: Array<Node | string>): void {
     this.shadowWrapper.append(...nodes)
   }
 
@@ -316,10 +324,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     return this.shadowWrapper.getAttribute(name)
   }
 
-  getAttributeNS(
-    namespaceURI: string | null,
-    localName: string
-  ): string | null {
+  getAttributeNS(namespaceURI: string | null, localName: string): string | null {
     return this.shadowWrapper.getAttributeNS(namespaceURI, localName)
   }
 
@@ -327,10 +332,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     return this.shadowWrapper.getAttributeNode(name)
   }
 
-  getAttributeNodeNS(
-    namespaceURI: string | null,
-    localName: string
-  ): Attr | null {
+  getAttributeNodeNS(namespaceURI: string | null, localName: string): Attr | null {
     return this.shadowWrapper.getAttributeNodeNS(namespaceURI, localName)
   }
 
@@ -346,10 +348,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     return this.shadowWrapper.hasAttributes()
   }
 
-  insertAdjacentElement(
-    position: InsertPosition,
-    insertedElement: Element
-  ): Element | null {
+  insertAdjacentElement(position: InsertPosition, insertedElement: Element): Element | null {
     return this.shadowWrapper.insertAdjacentElement(position, insertedElement)
   }
 
@@ -376,7 +375,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   removeEventListener(
     type: string,
     listener: EventListenerOrEventListenerObject,
-    options?: boolean | EventListenerOptions
+    options?: boolean | EventListenerOptions,
   ): void {
     this.shadowWrapper.removeEventListener(type, listener, options)
   }
@@ -385,11 +384,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     this.shadowWrapper.setAttribute(name, value)
   }
 
-  setAttributeNS(
-    namespaceURI: string | null,
-    qualifiedName: string,
-    value: string
-  ): void {
+  setAttributeNS(namespaceURI: string | null, qualifiedName: string, value: string): void {
     this.shadowWrapper.setAttributeNS(namespaceURI, qualifiedName, value)
   }
 
@@ -414,28 +409,28 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     throw new Error("Not implemented")
   } */
 
-  addStyle(styles: string[]): HTMLStyleElement;
-  addStyle(style: IAnyObject): HTMLStyleElement;
-  addStyle(style: string): HTMLStyleElement;
+  addStyle(styles: string[]): HTMLStyleElement
+  addStyle(style: IAnyObject): HTMLStyleElement
+  addStyle(style: string): HTMLStyleElement
   addStyle(style: string[] | IAnyObject | string): HTMLStyleElement {
-    let styleString: string = ""
-    let previousStyle = this.shadowStyle.textContent ?? ""
-    if (typeof style == 'string') {
+    let styleString: string = ''
+    let previousStyle = this.shadowStyle.textContent ?? ''
+    if (typeof style === 'string') {
       styleString = style
       this.shadowStyle.textContent = previousStyle + styleString
     } else if (!Array.isArray(style)) {
-      styleString = `${cssString(style as IAnyObject)}`
-      let startOfThisIdStyle = `#${this.id} {`
+      styleString = `${cssString(style)}`
+      const startOfThisIdStyle = `#${this.id} {`
       previousStyle = previousStyle.replace(startOfThisIdStyle, `${startOfThisIdStyle}${styleString}`)
       this.shadowStyle.textContent = previousStyle
     } else if (Array.isArray(style)) {
       for (const styleI of style) {
-        styleString = styleString?.concat("\n\n", styleI)
+        styleString = styleString?.concat('\n\n', styleI)
       }
       this.shadowStyle.textContent = previousStyle + styleString
     }
 
-    return this.shadowStyle as HTMLStyleElement
+    return this.shadowStyle
   }
 
   addPseudoClass(clazz: string, style: IAnyObject) {
@@ -459,9 +454,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   }
 
   setCursor(name: string) {
-    this.addStyle({
-      cursor: `url('cursor/${name}.svg'), auto`
-    })
+    this.style.cursor = `url('cursor/${name}.svg'), auto`
   }
 
   addInlineStyle({ name, value }: IPair) {
@@ -480,11 +473,13 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     return this.shadowWrapper.classList.replace(oldClassName, newClassName)
   }
 
-  public static register(element: typeof BaseComponent | typeof HTMLElement): typeof BaseComponent | typeof HTMLElement {
+  public static register(
+    element: typeof BaseComponent | typeof HTMLElement,
+  ): typeof BaseComponent | typeof HTMLElement {
     if (!element) {
       throw new InvalidTagNameException()
     }
-    let tagName = snakeCase(element.name)
+    const tagName = snakeCase(element.name)
     try {
       customElements.define(tagName, element)
     } catch (error: any) {

@@ -1,5 +1,3 @@
-interface ILeftSideBar {
-    
-}
+interface ILeftSideBar {}
 
 export default ILeftSideBar

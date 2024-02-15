@@ -1,28 +1,27 @@
-import { Console } from "console";
-import ActionBar from "../actionbar/ActionBar";
-import BaseComponent from "./BaseComponent";
-import ColorPalette from "../colorpalette/ColorPalette";
-import DrawingCanvas from "../drawingcanvas/DrawingCanvas";
-import DrawingToolBar from "../sidebars/drawingtoolbar/DrawingToolBar";
-import HorizontalRuler from "../rulers/horizontalruler/HorizontalRuler";
-import HorizontalScrollBar from "../scrollbars/horizontalscrollbar/HorizontalScrollBar";
-import MenuBar from "../menubar/MenuBar";
-import ObjectManagerSelector from "../objectmanagerselector/ObjectManagerSelector";
-import StatusBar from "../statusbar/StatusBar";
-import ToolBar from "../toolbar/ToolBar";
-import VerticalRuler from "../rulers/verticalruler/VerticalRuler";
-import VerticalScrollBar from "../scrollbars/verticalscrollbar/VerticalScrollBar";
-import ConsoleCanvas from "../consolecanvas/ConsoleCanvas";
-import LeftSideBar from "../sidebars/leftsidebar/LeftSideBar";
-import TabPane from "../tabpane/TabPane";
-import ParserContainer from "../ParserContainer";
-import DesignElementSelectionWrapper from "../../../design/DesignElementSelectionWrapper";
-import ContextMenu from "../contextmenu/ContextMenu";
-import SharedConfig from "../../../../../common/SharedConfig";
-import { DESIGN_ELEMENT_WRAPPER, CONTEXT_MENU, DRAWING_CANVAS, ACTIVE_ELEMENT } from "../../../../../common/constants";
-import ShadowMode from "../../common/ShadowMode";
-import IAppContainer from "./model/IAppContainer";
-import IDesignElementSelectWrapper from "../../../design/models/IDesignElementSelectionWrapper";
+/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
+import ActionBar from '../actionbar/ActionBar'
+import BaseComponent from './BaseComponent'
+import ColorPalette from '../colorpalette/ColorPalette'
+import DrawingCanvas from '../drawingcanvas/DrawingCanvas'
+import DrawingToolBar from '../sidebars/drawingtoolbar/DrawingToolBar'
+import HorizontalRuler from '../rulers/horizontalruler/HorizontalRuler'
+import HorizontalScrollBar from '../scrollbars/horizontalscrollbar/HorizontalScrollBar'
+import MenuBar from '../menubar/MenuBar'
+//import ObjectManagerSelector from '../objectmanagerselector/ObjectManagerSelector'
+import StatusBar from '../statusbar/StatusBar'
+import ToolBar from '../toolbar/ToolBar'
+import VerticalRuler from '../rulers/verticalruler/VerticalRuler'
+import VerticalScrollBar from '../scrollbars/verticalscrollbar/VerticalScrollBar'
+import ConsoleCanvas from '../consolecanvas/ConsoleCanvas'
+import LeftSideBar from '../sidebars/leftsidebar/LeftSideBar'
+import TabPane from '../tabpane/TabPane'
+import ParserContainer from '../ParserContainer'
+import ContextMenu from '../contextmenu/ContextMenu'
+import SharedConfig from '../../../../../common/SharedConfig'
+import { CONTEXT_MENU, DRAWING_CANVAS, ACTIVE_ELEMENT } from '../../../../../common/constants'
+import ShadowMode from '../../common/ShadowMode'
+import IAppContainer from './model/IAppContainer'
+import IAnyObject from '../../../../../common/models/IAnyObject'
 
 enum Dimension {
   top = '0',
@@ -70,27 +69,28 @@ enum Dimension {
   statusBarWidth = '100%',
   statusBarHeight = '20px',
   statusBarBottom = '0',
-
 }
 
-class AppContainer extends BaseComponent implements IAppContainer{
-
-  private menuBar: BaseComponent = new MenuBar({
-    width: Dimension.fullWidth,
-    height: Dimension.menubarHeight,
-    top: Dimension.top
-  }, ShadowMode.OPEN) as BaseComponent
+class AppContainer extends BaseComponent implements IAppContainer {
+  private menuBar: BaseComponent = new MenuBar(
+    {
+      width: Dimension.fullWidth,
+      height: Dimension.menubarHeight,
+      top: Dimension.top,
+    },
+    ShadowMode.OPEN,
+  ) as BaseComponent
 
   private toolBar: BaseComponent = new ToolBar({
     width: Dimension.fullWidth,
     height: Dimension.toolBarHeight,
-    top: Dimension.menubarHeight
+    top: Dimension.menubarHeight,
   }) as BaseComponent
 
   private actionBar: BaseComponent = new ActionBar({
     width: Dimension.fullWidth,
     height: Dimension.actionBarHeight,
-    top: Dimension.actionBarTop
+    top: Dimension.actionBarTop,
   }) as BaseComponent
 
   private horizontalRuler: BaseComponent = new HorizontalRuler({
@@ -136,8 +136,8 @@ class AppContainer extends BaseComponent implements IAppContainer{
      bottom: Dimension.objectManagerSelectorBottom,
    })  as BaseComponent*/
 
-  private verticalScrollBar: BaseComponent = new VerticalScrollBar as BaseComponent
-  private horizontalScrollBar: BaseComponent = new HorizontalScrollBar as BaseComponent
+  private verticalScrollBar: BaseComponent = new VerticalScrollBar() as BaseComponent
+  private horizontalScrollBar: BaseComponent = new HorizontalScrollBar() as BaseComponent
 
   private statusBar: BaseComponent = new StatusBar({
     width: Dimension.statusBarWidth,
@@ -149,15 +149,16 @@ class AppContainer extends BaseComponent implements IAppContainer{
     width: '100%',
     height: '200px',
     bottom: 0,
-    display: 'none'
+    display: 'none',
   }) as BaseComponent
 
-  private leftSideBar: BaseComponent = new LeftSideBar as BaseComponent
-  private parserContainer: BaseComponent = new ParserContainer as BaseComponent
-  private tabPane: BaseComponent = new TabPane as BaseComponent
+  private leftSideBar: BaseComponent = new LeftSideBar() as BaseComponent
+  private parserContainer: BaseComponent = new ParserContainer() as BaseComponent
+  private tabPane: BaseComponent = new TabPane() as BaseComponent
 
-  private designElementWrapper: IDesignElementSelectWrapper = new DesignElementSelectionWrapper as IDesignElementSelectWrapper
-
+  /* private designElementWrapper: IDesignElementSelectWrapper =
+    new DesignElementSelectionWrapper() as IDesignElementSelectWrapper
+ */
   contextMenu: BaseComponent = new ContextMenu({
     position: 'absolute',
     bottom: '0',
@@ -167,7 +168,7 @@ class AppContainer extends BaseComponent implements IAppContainer{
   }) as BaseComponent
 
   constructor() {
-    super();
+    super()
 
     /*    spreadTo(this.designElementWrapper.style, {
          display: 'flex',
@@ -178,8 +179,8 @@ class AppContainer extends BaseComponent implements IAppContainer{
          right: '0',
          border: '1px solid blue',
        }) */
-       
-    SharedConfig.set(DESIGN_ELEMENT_WRAPPER, this.designElementWrapper)
+
+    //SharedConfig.set(DESIGN_ELEMENT_WRAPPER, this.designElementWrapper)
     SharedConfig.set(CONTEXT_MENU, this.contextMenu)
     SharedConfig.set(DRAWING_CANVAS, this.drawingCanvas)
 
@@ -200,41 +201,42 @@ class AppContainer extends BaseComponent implements IAppContainer{
       this.consolecanvas,
       this.leftSideBar,
       this.parserContainer,
-    );
-    this.menuBar.disabled = true;
-    
-    window.onwheel = (event: any) => {
+    )
+    this.menuBar.disabled = true
+
+    window.onwheel = (event: WheelEvent) => {
       // Check if Ctrl key is pressed
       if (event.ctrlKey) {
         //event.preventDefault();
-  
+
         // Calculate the new scale factor based on the wheel delta
-  
-        const delta = event.deltaY;
-        const zoomFactor = 0.02; // You can adjust this value based on your zoom sensitivity
-        const currentScale = parseFloat(this.drawingCanvas.style.transform.replace('scale(', '').replace(')', '')) || 1;
-        let scale;
+
+        const delta = event.deltaY
+        const zoomFactor = 0.02 // You can adjust this value based on your zoom sensitivity
+        const currentScale = parseFloat(this.drawingCanvas.style.transform.replace('scale(', '').replace(')', '')) || 1
+        let scale
         if (delta < 0) {
           scale = currentScale + zoomFactor
         } else {
           scale = currentScale - zoomFactor
         }
-  
+
         // Set the new scale factor
-        this.drawingCanvas.scale = scale;
-      };
+        this.drawingCanvas.scale = scale
+      }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     window.onkeydown = (e: any) => {
       e?.preventDefault()
-      let element = SharedConfig.get(ACTIVE_ELEMENT)
+      const element: IAnyObject = SharedConfig.get(ACTIVE_ELEMENT) as IAnyObject
       if (element && (e.key === 'Delete' || e.keyCode === 46) && element.isSelected) {
         element.deselect()
         element.remove()
       }
     }
 
-    this.setCursor('default');
+    this.setCursor('default')
   }
 
   getMenuBar() {
@@ -282,12 +284,12 @@ class AppContainer extends BaseComponent implements IAppContainer{
   getTabPane() {
     return this.tabPane
   }
-  getDesignElementSelectionWrapper() {
+  /* getDesignElementSelectionWrapper() {
     return this.designElementWrapper
-  }
+  } */
   getContextMenu() {
     return this.contextMenu
   }
 }
 
-export default (AppContainer);
+export default AppContainer

@@ -1,17 +1,11 @@
-import React from "react"
-import { useEffect } from "react"
+import React, { useEffect } from 'react'
 
 function ExtensionManager() {
-
-  useEffect(() => {
-    
-  }, [])
+  useEffect(() => {}, [])
 
   return (
     <>
-      <div id="extensionManager" >
-        Here you can manager your extensions.
-      </div>
+      <div id="extensionManager">Here you can manager your extensions.</div>
     </>
   )
 }

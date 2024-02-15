@@ -1,13 +1,13 @@
-import IAnyObject from "../../../common/models/IAnyObject";
-import BaseComponent from "../application/components/base/BaseComponent";
-import IDumpElement from "./models/IDumpElement";
+import IAnyObject from '../../../common/models/IAnyObject'
+import BaseComponent from '../application/components/base/BaseComponent'
+import IDumpElement from './models/IDumpElement'
 
 class DumpElement extends BaseComponent implements IDumpElement {
-    constructor(style?: IAnyObject) {
-        super({
-          ...(style ?? {}),
-        });
-    }
+  constructor(style?: IAnyObject) {
+    super({
+      ...(style ?? {}),
+    })
+  }
 }
 
-export default (DumpElement as any);
+export default DumpElement

@@ -1,34 +1,32 @@
-import IAnyObject from "../../../../common/models/IAnyObject";
-import DesignElementTypes from "../../common/DesignElementTypes";
-import DesignElement from "../../design/DesignElement";
-import BaseComponent from "../components/base/BaseComponent";
-import ActionableIcon from "./ActionableIcon";
-import { IActionInit } from "./IAction";
-import ShadowMode from "./ShadowMode";
+import IAnyObject from '../../../../common/models/IAnyObject'
+import DesignElementTypes from '../../common/DesignElementTypes'
+import DesignElement from '../../design/DesignElement'
+import ActionableIcon from './ActionableIcon'
+import { IActionInit } from './IAction'
+import ShadowMode from './ShadowMode'
 
 class TextIcon extends ActionableIcon {
-    constructor(style?: IAnyObject, mode?: ShadowMode) {
-        super({
-            ...(style ?? {}),
-            width: 'unset',
-        }, mode)
-    }
-    
-    supportedDesignElements: DesignElementTypes[] = []
+  constructor(style?: IAnyObject, mode?: ShadowMode) {
+    super(
+      {
+        ...(style ?? {}),
+        width: 'unset',
+      },
+      mode,
+    )
+  }
 
-    action = (designElement: DesignElement) => {
+  supportedDesignElements: DesignElementTypes[] = []
 
-    }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  action = (_designElement: DesignElement) => {}
 
-    subscribe() {
-        
-    }
+  subscribe() {}
 
-    init(init: IActionInit): void {
-        super.init(init)
-        this.innerText = this.hint
-    }
-
+  init(init: IActionInit): void {
+    super.init(init)
+    this.innerText = this.hint
+  }
 }
 
 export default TextIcon

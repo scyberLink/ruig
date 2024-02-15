@@ -24,3 +24,4 @@ RUIG provides a command-line interface (CLI) for generating React components. Ru
 
 ```bash
 npm run generate-component MyComponent
+```

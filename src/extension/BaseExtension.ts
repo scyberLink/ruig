@@ -1,46 +1,30 @@
-import IAppContainer from "../layers/view/application/components/base/model/IAppContainer"
-import ExtensionPool from "./ExtensionPool"
+import IAppContainer from '../layers/view/application/components/base/model/IAppContainer'
+import ExtensionPool from './ExtensionPool'
 
 abstract class BaseExtension {
-    appContainer: IAppContainer
-    pool: ExtensionPool
+  appContainer: IAppContainer
+  pool: ExtensionPool
 
-    constructor(appContainer: IAppContainer) {
-        this.appContainer = appContainer
-        this.pool = new ExtensionPool(this.appContainer)
+  constructor(appContainer: IAppContainer) {
+    this.appContainer = appContainer
+    this.pool = new ExtensionPool(this.appContainer)
+  }
 
-    }
+  abstract init(): void
 
-    abstract init(): void;
+  start() {}
 
-    start() {
+  install() {}
 
-    }
+  enable() {}
 
-    install() {
+  disable() {}
 
-    }
+  upgrade() {}
 
-    enable() {
+  enableAutoUpgrade() {}
 
-    }
-
-    disable() {
-
-    }
-
-    upgrade() {
-
-    }
-
-    enableAutoUpgrade() {
-
-    }
-
-    disableAutoUpgrade() {
-
-    }
-
+  disableAutoUpgrade() {}
 }
 
 export default BaseExtension
