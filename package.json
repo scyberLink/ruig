@@ -26,6 +26,7 @@
     "prettier": "^3.2.5",
     "react-scripts": "5.0.1",
     "rimraf": "^5.0.5",
+    "terser": "^5.27.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -37,7 +38,7 @@
     "lint:autofix": "eslint . --fix",
     "prettier": "prettier .",
     "prettier:fix": "prettier --write .",
-    "build:dts": "tsc -p tsconfigtype.json",
+    "build:dts": "tsc -p tsconfigtype.json && find ruig-type -type f -name '*.js' -exec terser {} -o {} --compress --mangle toplevel \\;",
     "setupdev": "npm install -f",
     "previewBuild": "serve -s build",
     "test": "react-scripts test",
