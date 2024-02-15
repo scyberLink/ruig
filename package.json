@@ -39,6 +39,7 @@
     "prettier:fix": "prettier --write .",
     "build:dts": "tsc -p tsconfigtype.json",
     "setupdev": "npm install -f",
+    "previewBuild": "serve -s build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

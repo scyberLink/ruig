@@ -16,12 +16,9 @@
     "noEmit": false,
     "declaration": true,
     "jsx": "react-jsx",
-    "outDir": "type"
+    "outDir": "ruig-type"
   },
   "include": [
     "src"
-  ],
-  "exclude": [
-    //"src/**/*.tsx"
   ]
 }

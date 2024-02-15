@@ -92,9 +92,9 @@ export function register() {
     TopRightRotateElement: TopRightRotateElement,
     TranslatorElement: TranslatorElement,
   }
-
-  for (const customElement of Object.values(CustomElements)) {
-    registerElement(customElement as any)
+  for (const [name, customElement] of Object.entries<typeof HTMLElement>(CustomElements)) {
+    (customElement.prototype as any).name = name
+    registerElement(customElement)
   }
 }
 
