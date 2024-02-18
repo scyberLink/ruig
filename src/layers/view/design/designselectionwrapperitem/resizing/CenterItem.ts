@@ -9,6 +9,9 @@ class CenterElement extends DesignSelectionWrapperItem {
   initialBorder!: string
   dragOffsetX!: number
   dragOffsetY!: number
+  lastClientX = 0
+  lastClientY = 0
+
   constructor(style?: IAnyObject, mode?: ShadowMode) {
     super(
       {
@@ -29,8 +32,17 @@ class CenterElement extends DesignSelectionWrapperItem {
   ondrag = (event: DragEvent) => {
     event.preventDefault()
     const drawingCanvas = SharedConfig.get(DRAWING_CANVAS) as DrawingCanvas
-    const x2 = Math.abs(event.clientX)
-    const y2 = Math.abs(event.clientY)
+    let x2 = event.clientX
+    let y2 = event.clientY
+
+    if (x2 <= 0 || y2 <= 0) {
+      x2 = this.lastClientX
+      y2 = this.lastClientY
+    } else {
+      this.lastClientX = x2
+      this.lastClientY = y2
+    }
+
     const canvasRect = drawingCanvas.getBoundingClientRect()
     const x1 = canvasRect.left
     const y1 = canvasRect.top
@@ -38,16 +50,8 @@ class CenterElement extends DesignSelectionWrapperItem {
     const x = (x2 - x1) * (1 / drawingCanvas.scale)
     const y = (y2 - y1) * (1 / drawingCanvas.scale)
 
-    // Calculate the boundaries of the canvas
-    const canvasWidth = drawingCanvas.offsetWidth
-    const canvasHeight = drawingCanvas.offsetHeight
-
-    const childWidth = this.getWrapped().offsetWidth
-    const childHeight = this.getWrapped().offsetHeight
-
-    // Ensure the child element does not go outside the canvas
-    const newX = Math.min(Math.max(x - this.dragOffsetX, 0), canvasWidth - childWidth)
-    const newY = Math.min(Math.max(y - this.dragOffsetY, 0), canvasHeight - childHeight)
+    const newX = x - this.dragOffsetX
+    const newY = y - this.dragOffsetY
 
     this.getWrapped().style.left = `${newX}px`
     this.getWrapped().style.top = `${newY}px`

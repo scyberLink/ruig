@@ -37,30 +37,39 @@ class DesignElementSelectionWrapper extends BaseComponent implements IDesignElem
     window.onkeydown = (event: KeyboardEvent) => {
       event.preventDefault()
       const activeElement = SharedConfig.get(ACTIVE_ELEMENT) as DesignElement
+
+      if (!activeElement) {
+        return
+      }
+
+      if (event.key === 'Delete' || event.keyCode === 46) {
+        activeElement.deselect()
+        activeElement.remove()
+        return
+      }
+
       let moveFactor = 1
 
       if (event.ctrlKey) {
         moveFactor = 5
       }
 
-      if (activeElement) {
-        const currentTop = activeElement.offsetTop
-        const currentLeft = activeElement.offsetLeft
+      const currentTop = activeElement.offsetTop
+      const currentLeft = activeElement.offsetLeft
 
-        switch (event.key) {
-          case 'ArrowUp':
-            activeElement.style.top = currentTop - moveFactor + 'px'
-            break
-          case 'ArrowDown':
-            activeElement.style.top = currentTop + moveFactor + 'px'
-            break
-          case 'ArrowLeft':
-            activeElement.style.left = currentLeft - moveFactor + 'px'
-            break
-          case 'ArrowRight':
-            activeElement.style.left = currentLeft + moveFactor + 'px'
-            break
-        }
+      switch (event.key) {
+        case 'ArrowUp':
+          activeElement.style.top = currentTop - moveFactor + 'px'
+          break
+        case 'ArrowDown':
+          activeElement.style.top = currentTop + moveFactor + 'px'
+          break
+        case 'ArrowLeft':
+          activeElement.style.left = currentLeft - moveFactor + 'px'
+          break
+        case 'ArrowRight':
+          activeElement.style.left = currentLeft + moveFactor + 'px'
+          break
       }
     }
   }

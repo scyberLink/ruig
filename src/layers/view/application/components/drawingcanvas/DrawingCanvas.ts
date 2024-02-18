@@ -12,6 +12,7 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),
+      background: 'transparent',
       'z-index': MIN_Z_INDEX,
     })
   }

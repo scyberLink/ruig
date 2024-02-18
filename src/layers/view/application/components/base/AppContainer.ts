@@ -18,10 +18,9 @@ import TabPane from '../tabpane/TabPane'
 import ParserContainer from '../ParserContainer'
 import ContextMenu from '../contextmenu/ContextMenu'
 import SharedConfig from '../../../../../common/SharedConfig'
-import { CONTEXT_MENU, DRAWING_CANVAS, ACTIVE_ELEMENT } from '../../../../../common/constants'
+import { CONTEXT_MENU, DRAWING_CANVAS } from '../../../../../common/constants'
 import ShadowMode from '../../common/ShadowMode'
 import IAppContainer from './model/IAppContainer'
-import IAnyObject from '../../../../../common/models/IAnyObject'
 
 enum Dimension {
   top = '0',
@@ -223,16 +222,6 @@ class AppContainer extends BaseComponent implements IAppContainer {
 
         // Set the new scale factor
         this.drawingCanvas.scale = scale
-      }
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    window.onkeydown = (e: any) => {
-      e?.preventDefault()
-      const element: IAnyObject = SharedConfig.get(ACTIVE_ELEMENT) as IAnyObject
-      if (element && (e.key === 'Delete' || e.keyCode === 46) && element.isSelected) {
-        element.deselect()
-        element.remove()
       }
     }
 

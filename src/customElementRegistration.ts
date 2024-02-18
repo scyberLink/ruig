@@ -93,16 +93,15 @@ export function register() {
     TranslatorElement: TranslatorElement,
   }
   for (const [name, customElement] of Object.entries<typeof HTMLElement>(CustomElements)) {
-    (customElement.prototype as any).name = name
-    registerElement(customElement)
+    registerElement(name, customElement)
   }
 }
 
-export function registerElement(element: typeof HTMLElement): typeof BaseComponent | typeof HTMLElement {
+export function registerElement(name: string, element: typeof HTMLElement): typeof BaseComponent | typeof HTMLElement {
   if (!element) {
     throw new InvalidTagNameException()
   }
-  const tagName = snakeCase(element.name)
+  const tagName = snakeCase(name)
   try {
     customElements.define(tagName, element)
   } catch (error: any) {

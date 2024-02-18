@@ -32,7 +32,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build && find build -type f -name '*.js' -exec terser {} -o {} --compress --mangle toplevel \\;",
     "format": "prettier --write .",
     "lint": "eslint .",
     "lint:autofix": "eslint . --fix",
@@ -40,7 +40,8 @@
     "prettier:fix": "prettier --write .",
     "build:dts": "tsc -p tsconfigtype.json && find ruig-type -type f -name '*.js' -exec terser {} -o {} --compress --mangle toplevel \\;",
     "setupdev": "npm install -f",
-    "previewBuild": "serve -s build",
+    "preview": "serve -s build",
+    "buildAndPreview": "npm run build && npm run preview",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

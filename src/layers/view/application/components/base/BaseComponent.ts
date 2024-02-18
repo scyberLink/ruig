@@ -277,7 +277,6 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   ondrop = (event: DragEvent) => {
     event.preventDefault()
   }
-
   // ... (other delegated methods)
 
   addEventListener(
