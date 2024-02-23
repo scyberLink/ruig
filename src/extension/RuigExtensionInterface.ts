@@ -1,3 +1,4 @@
+import RuigRouting from '../RuigRouting'
 import SharedConfig from '../common/SharedConfig'
 import { registerElement, register } from '../customElementRegistration'
 import ParserContainer from '../layers/view/application/components/ParserContainer'
@@ -45,4 +46,5 @@ export {
   SharedConfig,
   register,
   registerElement,
+  RuigRouting,
 }
