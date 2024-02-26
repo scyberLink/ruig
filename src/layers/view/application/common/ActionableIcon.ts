@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import SharedConfig from '../../../../common/SharedConfig'
-import { ACTIVE_ELEMENT, EVENT_DATA, EVENT_DESELECT, EVENT_SELECT } from '../../../../common/constants'
+import { ACTIVE_ELEMENT, DESIGN_ELEMENT_EVENT_DATA, EVENT_DESELECT, EVENT_SELECT } from '../../../../common/constants'
 import IAnyObject from '../../../../common/models/IAnyObject'
 import DesignElementTypes from '../../common/DesignElementTypes'
 import { createSVGElement } from '../../common/utils'
@@ -79,7 +79,7 @@ abstract class ActionableIcon extends BaseComponent implements IAction {
 
   enableCheck(ev: any) {
     ev?.preventDefault()
-    const { [EVENT_DATA]: designElement } = ev?.detail as DESIGN_ELEMENT_EVENT_DATA_TYPE
+    const { [DESIGN_ELEMENT_EVENT_DATA]: designElement } = ev?.detail as DESIGN_ELEMENT_EVENT_DATA_TYPE
 
     if (designElement) {
       const designType = designElement.type

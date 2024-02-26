@@ -453,7 +453,13 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   }
 
   setCursor(name: string) {
-    this.style.cursor = `url('cursor/${name}.svg'), auto`
+    import(`../../../../../assets/raws/cursor/${name}.svg`)
+      .then(({ default: cursor }) => {
+        this.style.cursor = `url(${cursor}), auto`
+      })
+      .catch((error) => {
+        console.error('Failed to load cursor:', error)
+      })
   }
 
   addInlineStyle({ name, value }: IPair) {

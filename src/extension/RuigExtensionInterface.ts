@@ -21,9 +21,11 @@ import TabPane from '../layers/view/application/components/tabpane/TabPane'
 import ToolBar from '../layers/view/application/components/toolbar/ToolBar'
 import BaseComponent from '../layers/view/design/base/BaseDesignComponent'
 import BaseExtension from './BaseExtension'
+import ExtensionDevelopment from './ExtensionDevelopment'
 
 export {
   BaseExtension,
+  ExtensionDevelopment,
   AppContainer,
   ActionBar,
   BaseComponent,

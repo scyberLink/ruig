@@ -278,7 +278,18 @@ export async function elementToBlob(element: HTMLElement): Promise<Blob> {
   return (await createImageBitmap(svgBlob)) as any as Blob
 }
 
-/* export function getDesignWrapper() {
-  const wrapper = SharedConfig.get(DESIGN_ELEMENT_WRAPPER)
-  return wrapper
-} */
+export const getDefaultExportFromString = (code: string): string | null => {
+  try {
+    const defaultExportRegex = /export\s+default\s+(.*?);/s
+    const match = defaultExportRegex.exec(code)
+
+    if (match && match[1]) {
+      return match[1].trim()
+    } else {
+      return null
+    }
+  } catch (error) {
+    console.error('Error getting default export from code string:', error)
+    return null
+  }
+}

@@ -18,9 +18,10 @@ import TabPane from '../tabpane/TabPane'
 import ParserContainer from '../ParserContainer'
 import ContextMenu from '../contextmenu/ContextMenu'
 import SharedConfig from '../../../../../common/SharedConfig'
-import { CONTEXT_MENU, DRAWING_CANVAS } from '../../../../../common/constants'
+import { CONTEXT_MENU, DRAWING_CANVAS, EXTENSION_POOL } from '../../../../../common/constants'
 import ShadowMode from '../../common/ShadowMode'
 import IAppContainer from './model/IAppContainer'
+import ExtensionPool from '../../../../../extension/ExtensionPool'
 
 enum Dimension {
   top = '0',
@@ -226,6 +227,8 @@ class AppContainer extends BaseComponent implements IAppContainer {
     }
 
     this.setCursor('default')
+    const extensionPool = new ExtensionPool(this)
+    SharedConfig.set(EXTENSION_POOL, extensionPool)
   }
 
   getMenuBar() {

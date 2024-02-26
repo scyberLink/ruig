@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 // import reportWebVitals from './common/reportWebVitals'
 import AppContainer from './layers/view/application/components/base/AppContainer'
-import ExtensionPool from './extension/ExtensionPool'
 import { Link } from 'react-router-dom'
 import { EXTENSION } from './configs/RestEndpoints'
 
@@ -14,8 +13,6 @@ function App() {
     // reportWebVitals(console.log);
     const body = document.getElementById('app')
     body?.appendChild(appContainer)
-
-    new ExtensionPool(appContainer).loadExtension()
   }, [])
 
   return (

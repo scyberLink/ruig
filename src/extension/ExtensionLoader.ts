@@ -3,30 +3,37 @@ import IFetchData from '../common/models/IFetchData'
 import { APPCONTAINER, EXTENSION_SCRIPT } from '../common/constants'
 import { BUILTIN_EXTENSION, EXTENSION } from '../configs/RestEndpoints'
 import IAppContainer from '../layers/view/application/components/base/model/IAppContainer'
+import { getDefaultExportFromString } from '../common/utils'
+import ExtensionId from './ExtensionId'
+import BaseExtension from './BaseExtension'
+import IExtension from './IExtension'
 
 class ExtensionLoader {
-  private appContainer: IAppContainer
-
-  constructor(appContainer: IAppContainer) {
-    this.appContainer = appContainer
+  load(code: string, appContainer: IAppContainer): BaseExtension {
+    return this.executor(code, appContainer)
   }
 
-  async load(id: string, builtin = false): Promise<boolean> {
-    const res: IFetchData = (await fetcher.fetch(`${builtin ? BUILTIN_EXTENSION : EXTENSION}${id}`)) as IFetchData
+  async getExtension(id: string, builtin = false): Promise<IExtension | null> {
+    const extId = new ExtensionId(id)
+    const res: IFetchData = (await fetcher.fetch(`${builtin ? BUILTIN_EXTENSION : EXTENSION}${extId.id}`)) as IFetchData
 
     if (!res || !res.data || !res.data.status) {
-      return false
+      return null
     }
 
-    const executor = new Function(
+    return res.data[EXTENSION_SCRIPT]
+  }
+
+  private executor(code: string, appContainer: IAppContainer): BaseExtension {
+    const fn = new Function(
       APPCONTAINER,
       `
-        ${res.data[EXTENSION_SCRIPT]}
-        return new Extension(${APPCONTAINER})
+        ${code}
+
+        return new ${getDefaultExportFromString(code)}(${APPCONTAINER})
       `,
     )
-
-    return executor(this.appContainer)
+    return fn(appContainer)
   }
 }
 

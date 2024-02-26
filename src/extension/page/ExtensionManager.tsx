@@ -1,7 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 function ExtensionManager() {
-  useEffect(() => {}, [])
+  /*  const extensionPool = SharedConfig.get(EXTENSION_POOL)
+ 
+   useEffect(() => {
+ 
+   }, []) */
 
   return (
     <>

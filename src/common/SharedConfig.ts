@@ -1,5 +1,6 @@
 /* eslint-disable require-jsdoc */
 
+import { SHAREDCONFIG_ADDTOOBJECT_INITIAL_INDEX } from './constants'
 import IAnyObject from './models/IAnyObject'
 
 export const enum StorageType {
@@ -23,6 +24,8 @@ class GlobalConfig {
     where?: StorageType,
   ) => IAnyObject | string | null
   private __has!: (key: string, where: StorageType) => boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private __removeFromObject!: (fromKey: string, keyToRemove: string, where?: StorageType) => any
 
   constructor() {
     if (!GlobalConfig._instance) {
@@ -185,6 +188,27 @@ class GlobalConfig {
         return false
       }
 
+      this.__removeFromObject = (
+        fromKey: string,
+        keyToRemove: string,
+        where: StorageType = StorageType.MEMORY_STORAGE,
+      ) => {
+        const exist: IAnyObject = this.__get(fromKey, where) as IAnyObject
+        if (!exist) return false
+        if (!(exist instanceof Array)) {
+          const tempName = `${keyToRemove}_temp`
+          const { [tempName]: temp } = { [tempName]: exist[keyToRemove] }
+          delete exist[keyToRemove]
+          const deleted = temp
+
+          if (deleted) {
+            this.__set(fromKey, exist, where)
+          }
+          return deleted
+        }
+        return false
+      }
+
       this.__has = (key, where: StorageType) => {
         const exist = this.__get(key, where)
         return !!exist
@@ -252,6 +276,63 @@ class GlobalConfig {
 
   removeFromSessionData(parentKey: string, valueToRemove?: IAnyObject | string) {
     return this.__removeFrom(parentKey, valueToRemove, StorageType.SESSION_STORAGE)
+  }
+
+  addToObject(parentKey: string, key: string, value: string | IAnyObject) {
+    if (!Object.hasOwnProperty.call(this.dynamicConfig, parentKey)) {
+      this.dynamicConfig[parentKey] = {}
+    }
+    if (
+      typeof this.dynamicConfig[parentKey] == 'string' ||
+      typeof this.dynamicConfig[parentKey] == 'number' ||
+      typeof this.dynamicConfig[parentKey] == 'boolean'
+    ) {
+      this.dynamicConfig[parentKey] = { [SHAREDCONFIG_ADDTOOBJECT_INITIAL_INDEX]: this.dynamicConfig[parentKey] }
+    }
+    this.dynamicConfig[parentKey][key] = value
+    return this.dynamicConfig[parentKey]
+  }
+
+  addToObjectFlashData(parentKey: string, key: string, value: string | IAnyObject) {
+    return this.addToObjectLocalData(parentKey, key, value)
+  }
+
+  addToObjectLocalData(parentKey: string, key: string, value: string | IAnyObject) {
+    let exist: IAnyObject = this.__get(parentKey, StorageType.LOCAL_STORAGE) as IAnyObject
+    if (!exist) exist = {}
+    if (typeof exist == 'string' || typeof exist == 'number' || typeof exist == 'boolean') {
+      exist = { [SHAREDCONFIG_ADDTOOBJECT_INITIAL_INDEX]: exist }
+    }
+    exist[key] = value
+    this.__set(parentKey, exist, StorageType.LOCAL_STORAGE)
+    return exist
+  }
+
+  addToObjectSessionData(parentKey: string, key: string, value: string | IAnyObject) {
+    let exist: IAnyObject = this.__get(parentKey, StorageType.SESSION_STORAGE) as IAnyObject
+    if (!exist) exist = {}
+    if (typeof exist == 'string' || typeof exist == 'number' || typeof exist == 'boolean') {
+      exist = { [SHAREDCONFIG_ADDTOOBJECT_INITIAL_INDEX]: exist }
+    }
+    exist[key] = value
+    this.__set(parentKey, exist, StorageType.SESSION_STORAGE)
+    return exist
+  }
+
+  removeFromObject(parentKey: string, keyToRemove: string) {
+    return this.__removeFromObject(parentKey, keyToRemove, StorageType.MEMORY_STORAGE)
+  }
+
+  removeFromObjectFlashData(parentKey: string, keyToRemove: string) {
+    return this.removeFromObjectLocalData(parentKey, keyToRemove)
+  }
+
+  removeFromObjectLocalData(parentKey: string, keyToRemove: string) {
+    return this.__removeFromObject(parentKey, keyToRemove, StorageType.LOCAL_STORAGE)
+  }
+
+  removeFromObjectSessionData(parentKey: string, keyToRemove: string) {
+    return this.__removeFromObject(parentKey, keyToRemove, StorageType.SESSION_STORAGE)
   }
 
   getFlashData(key: string) {

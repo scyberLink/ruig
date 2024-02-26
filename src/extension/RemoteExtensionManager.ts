@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import ExtensionLoader from './ExtensionLoader'
-import RemoteExtension from './RemoteExtension'
+import IExtension from './IExtension'
 
 export interface SearchOption {
   searchBy: string
@@ -10,11 +10,11 @@ export interface SearchOption {
 }
 
 class RemoteExtensionManager {
-  search(regex: string, option: SearchOption): RemoteExtension[] {
+  search(regex: string, option: SearchOption): IExtension[] {
     return []
   }
 
-  getExtension(id: string): RemoteExtension {
+  getExtension(id: string): IExtension {
     return null as any
   }
 

@@ -1,10 +1,12 @@
-interface RemoteExtension {
+interface IExtension {
   name: string
   id: string
   author: string
   rating: number
   downloads: number
   version: string
+  code: string
+  builtin: boolean
 }
 
-export default RemoteExtension
+export default IExtension

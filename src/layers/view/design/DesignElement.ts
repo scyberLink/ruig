@@ -3,7 +3,7 @@ import {
   ACTIVE_ELEMENT,
   CLIPBOARD,
   CONTEXT_MENU,
-  EVENT_DATA,
+  DESIGN_ELEMENT_EVENT_DATA,
   EVENT_DESELECT,
   EVENT_SELECT,
   MAX_Z_INDEX,
@@ -18,7 +18,7 @@ import IPosition from '../../../common/models/IPosition'
 import DesignElementSelectionWrapper from './DesignElementSelectionWrapper'
 
 export interface DESIGN_ELEMENT_EVENT_DATA_TYPE {
-  [EVENT_DATA]: IDesignElement
+  [DESIGN_ELEMENT_EVENT_DATA]: IDesignElement
 }
 
 abstract class DesignElement extends BaseComponent implements IDesignElement {
@@ -39,10 +39,10 @@ abstract class DesignElement extends BaseComponent implements IDesignElement {
       ...(style ?? {}),
     })
     this._deselectEvent = new CustomEvent<DESIGN_ELEMENT_EVENT_DATA_TYPE>(EVENT_DESELECT, {
-      detail: { [EVENT_DATA]: this },
+      detail: { [DESIGN_ELEMENT_EVENT_DATA]: this },
     })
     this._selectEvent = new CustomEvent<DESIGN_ELEMENT_EVENT_DATA_TYPE>(EVENT_SELECT, {
-      detail: { [EVENT_DATA]: this },
+      detail: { [DESIGN_ELEMENT_EVENT_DATA]: this },
     })
     this.initExtendedElement()
     this.focusWrapper = document.createElement('div')

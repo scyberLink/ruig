@@ -21,7 +21,13 @@ class RotatingItem extends DesignSelectionWrapperItem {
 
   setSvg(svg: string) {
     const img = new Image(20, 20)
-    img.src = `cursor/${svg}.svg`
+    import(`../../../../../assets/raws/cursor/${svg}.svg`)
+      .then(({ default: cursor }) => {
+        img.src = cursor
+      })
+      .catch((error) => {
+        console.error('Failed to load svg:', error)
+      })
     this.appendChild(img)
   }
 
