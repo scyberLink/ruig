@@ -7,7 +7,7 @@ import Color from '../../application/common/Color'
 import IDelegateModel from '../../application/components/base/IDelegateModel'
 import InvalidTagNameException from '../../application/components/exceptions/InvalidTagNameException'
 
-class BaseComponent extends HTMLElement implements IDelegateModel {
+class BaseDesignComponent extends HTMLElement implements IDelegateModel {
   protected shadowStyle: HTMLStyleElement
   private _scale: number = 1
   private _rotate: number = 0
@@ -460,8 +460,8 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   }
 
   public static register(
-    element: typeof BaseComponent | typeof HTMLElement,
-  ): typeof BaseComponent | typeof HTMLElement {
+    element: typeof BaseDesignComponent | typeof HTMLElement,
+  ): typeof BaseDesignComponent | typeof HTMLElement {
     if (!element) {
       throw new InvalidTagNameException()
     }
@@ -477,6 +477,18 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   setScale(scale: number) {
     this.scale = scale
   }
+
+  ondragover = (event: DragEvent) => {
+    event.preventDefault()
+  }
+
+  ondrop = (event: DragEvent) => {
+    event.preventDefault()
+  }
+
+  removeLastChild() {
+    this.removeChild(this.lastChild as HTMLElement)
+  }
 }
 
-export default BaseComponent
+export default BaseDesignComponent

@@ -3,12 +3,12 @@ import { DRAWING_CANVAS } from '../../../../common/constants'
 import IAnyObject from '../../../../common/models/IAnyObject'
 import ShadowMode from '../../application/common/ShadowMode'
 import BaseComponent from '../../application/components/base/BaseComponent'
-import { DC } from '../../application/components/drawingcanvas/DrawingCanvas'
+import DrawingCanvas from '../../application/components/drawingcanvas/DrawingCanvas'
 import DesignElement from '../DesignElement'
-import { DesignElementWrapper } from '../DesignElementSelectionWrapper'
+import DesignElementSelectionWrapper from '../DesignElementSelectionWrapper'
 
 class DesignSelectionWrapperItem extends BaseComponent {
-  private designElementWrapper!: DesignElementWrapper
+  private designElementWrapper!: DesignElementSelectionWrapper
   initialBorder!: string
 
   constructor(style?: IAnyObject, mode?: ShadowMode) {
@@ -23,7 +23,7 @@ class DesignSelectionWrapperItem extends BaseComponent {
     )
   }
 
-  setWrapper(designElementWrapper: DesignElementWrapper) {
+  setWrapper(designElementWrapper: DesignElementSelectionWrapper) {
     this.designElementWrapper = designElementWrapper
   }
 
@@ -39,8 +39,8 @@ class DesignSelectionWrapperItem extends BaseComponent {
     return this.getWrapped().parentElement as HTMLElement
   }
 
-  getDrawingCanvas(): DC {
-    return SharedConfig.get(DRAWING_CANVAS) as DC
+  getDrawingCanvas(): DrawingCanvas {
+    return SharedConfig.get(DRAWING_CANVAS) as DrawingCanvas
   }
 
   hide() {

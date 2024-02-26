@@ -15,6 +15,7 @@ import VerticalRuler from '../layers/view/application/components/rulers/vertical
 import HorizontalScrollBar from '../layers/view/application/components/scrollbars/horizontalscrollbar/HorizontalScrollBar'
 import VerticalScrollBar from '../layers/view/application/components/scrollbars/verticalscrollbar/VerticalScrollBar'
 import DrawingToolBar from '../layers/view/application/components/sidebars/drawingtoolbar/DrawingToolBar'
+import DrawingToolbarItem from '../layers/view/application/components/sidebars/drawingtoolbar/DrawingToolbarItem'
 import LeftSideBar from '../layers/view/application/components/sidebars/leftsidebar/LeftSideBar'
 import StatusBar from '../layers/view/application/components/statusbar/StatusBar'
 import TabPane from '../layers/view/application/components/tabpane/TabPane'
@@ -32,6 +33,7 @@ export {
   ColorPalette,
   DrawingCanvas,
   DrawingToolBar,
+  DrawingToolbarItem,
   HorizontalRuler,
   HorizontalScrollBar,
   MenuBar,

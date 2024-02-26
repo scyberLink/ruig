@@ -12,7 +12,7 @@ RUIG (React UI Generator) is a tool designed to make the process of generating R
 
 To get started with RUIG, follow these steps:
 
-1. Clone this repository: `git clone https://github.com/scansioquielom/ruig.git`
+1. Clone this repository: `git clone https://github.com/scyberLink/ruig.git`
 2. Install dependencies: `npm install`
 3. Run the development server: `npm start`
 

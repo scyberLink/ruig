@@ -14,6 +14,7 @@ abstract class ActionableIcon extends BaseComponent implements IAction {
   constructor(style?: IAnyObject, mode?: ShadowMode) {
     super(
       {
+        position: 'relative',
         width: '18px',
         height: '18px',
         border: '0',

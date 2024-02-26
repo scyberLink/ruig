@@ -26,24 +26,6 @@ import DumpElement from './layers/view/common/DumpElement'
 import DesignElement from './layers/view/design/DesignElement'
 import DesignElementSelectionWrapper from './layers/view/design/DesignElementSelectionWrapper'
 import LinkDesignElement from './layers/view/design/designitem/LinkDesignElement'
-import DesignSelectionWrapperItem from './layers/view/design/designselectionwrapperitem/DesignSelectionWrapperItem'
-import ResizerElement from './layers/view/design/designselectionwrapperitem/ResizerElement'
-import RotatorElement from './layers/view/design/designselectionwrapperitem/RotatorElement'
-import BottomElement from './layers/view/design/designselectionwrapperitem/resizing/BottomElement'
-import BottomLeftElement from './layers/view/design/designselectionwrapperitem/resizing/BottomLeftElement'
-import BottomRightElement from './layers/view/design/designselectionwrapperitem/resizing/BottomRightElement'
-import CenterElement from './layers/view/design/designselectionwrapperitem/resizing/CenterItem'
-import LeftElement from './layers/view/design/designselectionwrapperitem/resizing/LeftElement'
-import RightElement from './layers/view/design/designselectionwrapperitem/resizing/RightElement'
-import TopElement from './layers/view/design/designselectionwrapperitem/resizing/TopElement'
-import TopLeftElement from './layers/view/design/designselectionwrapperitem/resizing/TopLeftElement'
-import TopRightElement from './layers/view/design/designselectionwrapperitem/resizing/TopRightElement'
-import BottomLeftRotateElement from './layers/view/design/designselectionwrapperitem/rotating/BottomLeftRotateElement'
-import BottomRightRotateElement from './layers/view/design/designselectionwrapperitem/rotating/BottomRightRotateElement'
-import CenterRotateElement from './layers/view/design/designselectionwrapperitem/rotating/CenterRotateElement'
-import TopLeftRotateElement from './layers/view/design/designselectionwrapperitem/rotating/TopLeftRotateElement'
-import TopRightRotateElement from './layers/view/design/designselectionwrapperitem/rotating/TopRightRotateElement'
-import TranslatorElement from './layers/view/design/designselectionwrapperitem/rotating/TranslatorElement'
 
 export function register() {
   const CustomElements: any = {
@@ -73,24 +55,6 @@ export function register() {
     DesignElementSelectionWrapper: DesignElementSelectionWrapper,
     //BaseDesignComponent: BaseDesignComponent,
     LinkDesignElement: LinkDesignElement,
-    BottomElement: BottomElement,
-    BottomLeftElement: BottomLeftElement,
-    BottomRightElement: BottomRightElement,
-    BottomLeftRotateElement: BottomLeftRotateElement,
-    BottomRighRotatetElement: BottomRightRotateElement,
-    CenterElement: CenterElement,
-    CenterRotateElement: CenterRotateElement,
-    DesignSelectionWrapperItem: DesignSelectionWrapperItem,
-    LeftElement: LeftElement,
-    RightElement: RightElement,
-    RotatorElement: RotatorElement,
-    ResizerElement: ResizerElement,
-    TopElement: TopElement,
-    TopLeftElement: TopLeftElement,
-    TopRightElement: TopRightElement,
-    TopLeftRotateElement: TopLeftRotateElement,
-    TopRightRotateElement: TopRightRotateElement,
-    TranslatorElement: TranslatorElement,
   }
   for (const [name, customElement] of Object.entries<typeof HTMLElement>(CustomElements)) {
     registerElement(name, customElement)

@@ -1,10 +1,8 @@
-import SharedConfig from '../../../../../common/SharedConfig'
-import { ACTIVE_ELEMENT, MIN_Z_INDEX } from '../../../../../common/constants'
+import { MIN_Z_INDEX } from '../../../../../common/constants'
 import NullException from '../../../../../common/exceptions/NullException'
 import IAnyObject from '../../../../../common/models/IAnyObject'
 import IPosition from '../../../../../common/models/IPosition'
 import { spreadTo } from '../../../../../common/utils'
-import DesignElement from '../../../design/DesignElement'
 import BaseComponent from '../base/BaseComponent'
 import IDrawingCanvas from '../base/model/IDrawingCanvas'
 
@@ -38,12 +36,6 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
     return element
   }
 
-  onclick = (event: MouseEvent) => {
-    event.preventDefault()
-    const element: DesignElement = SharedConfig.get(ACTIVE_ELEMENT) as DesignElement
-    element?.deselect()
-  }
-
   /* ondrop = (event: DragEvent) => {
     event.preventDefault();
     let element =  SharedConfig.get(ACTIVE_ELEMENT) as HTMLElement
@@ -58,7 +50,5 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
   }
  */
 }
-
-export { DrawingCanvas as DC }
 
 export default DrawingCanvas

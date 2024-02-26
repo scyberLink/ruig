@@ -72,14 +72,14 @@ enum Dimension {
 }
 
 class AppContainer extends BaseComponent implements IAppContainer {
-  private menuBar: BaseComponent = new MenuBar(
+  private menuBar: MenuBar = new MenuBar(
     {
       width: Dimension.fullWidth,
       height: Dimension.menubarHeight,
       top: Dimension.top,
     },
     ShadowMode.OPEN,
-  ) as BaseComponent
+  )
 
   private toolBar: BaseComponent = new ToolBar({
     width: Dimension.fullWidth,
@@ -227,7 +227,7 @@ class AppContainer extends BaseComponent implements IAppContainer {
     }
 
     this.setCursor('default')
-    const extensionPool = new ExtensionPool(this)
+    const extensionPool = new ExtensionPool(this as unknown as IAppContainer)
     SharedConfig.set(EXTENSION_POOL, extensionPool)
   }
 
