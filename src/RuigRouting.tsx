@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App'
 import NotFound from './common/NotFound'
 import ExtensionManager from './extension/page/ExtensionManager'
+import { register } from './customElementRegistration'
+
+register()
 
 function RuigRouting() {
   return (
