@@ -40,6 +40,7 @@
     "prettier": "prettier .",
     "prettier:fix": "prettier --write .",
     "build:dts": "tsc -p tsconfigtype.json && find ruig-type -type f -name '*.js' -exec terser {} -o {} --compress --mangle toplevel \\; && cpy \"src/assets/**/*\" \"ruig-type/assets\"",
+    "build:dts:debug": "tsc -p tsconfigtypedebug.json && cpy \"src/assets/**/*\" \"ruig-type/assets\"",
     "setupdev": "npm install -f",
     "preview": "serve -s build",
     "buildAndPreview": "npm run build && npm run preview",
