@@ -17,9 +17,9 @@
     "declaration": true,
     "jsx": "react-jsx",
     "outDir": "ruig-type",
-    "sourceMap": true
-    //"inlineSources": true,
-    //"inlineSourceMap": true
+    //"sourceMap": true
+    "inlineSources": true,
+    "inlineSourceMap": true
   },
   "include": ["src"]
 }
