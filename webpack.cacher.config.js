@@ -6,6 +6,7 @@ const path = require('path')
 module.exports = {
   mode: 'production', // or 'development' if you want unminified output
   entry: './src/workers/cacher.ts',
+  devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'public'), // Output directory
     filename: 'cacher.js', // Output filename

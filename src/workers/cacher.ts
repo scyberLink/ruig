@@ -1,43 +1,65 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-undef */
 const CACHER_CACHE_NAME = 'cacher-cache-v1'
 
 const urlsToCache = [
-  '/', // Cache the root URL
-  '/index.html', // Cache the index.html file
-  '/manifest.json', // Cache the manifest file
-  '/favicon.ico', // Cache the favicon file
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/favicon.ico',
   // Add other assets to cache here
 ]
 
 self.addEventListener('install', (event: any) => {
-  event.waitUntil(caches.open(CACHER_CACHE_NAME).then((cache) => cache.addAll(urlsToCache)))
+  event.waitUntil(
+    caches
+      .open(CACHER_CACHE_NAME)
+      .then((cache) => cache.addAll(urlsToCache))
+      .catch((error) => console.error('Cache installation failed:', error)),
+  )
 })
 
 self.addEventListener('fetch', (event: any) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
-      // Check if the request is already cached
       if (response) {
-        return response // Return the cached response
+        return response
       }
 
-      // If not cached, fetch the request from the network
       return fetch(event.request)
-        .then((response) => {
-          // Clone the response as it can only be consumed once
-          const clonedResponse = response.clone()
+        .then((fetchResponse) => {
+          if (!fetchResponse || fetchResponse.status !== 200 || fetchResponse.type !== 'basic') {
+            return fetchResponse
+          }
 
-          // Dynamically add the URL to cache
-          caches.open(CACHER_CACHE_NAME).then((cache) => {
-            cache.put(event.request, clonedResponse)
-          })
+          const clonedResponse = fetchResponse.clone()
 
-          return response // Return the fetched response
+          caches
+            .open(CACHER_CACHE_NAME)
+            .then((cache) => cache.put(event.request, clonedResponse))
+            .catch((error) => console.error('Error caching response:', error))
+
+          return fetchResponse
         })
         .catch((error) => {
-          console.error('Error fetching and caching:', error)
+          console.error('Fetch failed:', error)
+          // Optionally, return a fallback response here
         })
+    }),
+  )
+})
+
+self.addEventListener('activate', (event: any) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((cacheName) => {
+            return cacheName.startsWith('cacher-cache-') && cacheName !== CACHER_CACHE_NAME
+          })
+          .map((cacheName) => {
+            return caches.delete(cacheName)
+          }),
+      )
     }),
   )
 })

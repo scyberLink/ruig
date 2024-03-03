@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { openDB } from 'idb'
 import JSZip from 'jszip'
+import FileManagement from '../../../common/FileManagement'
 
 type DataType = 'string' | 'blob'
 
 const FileReadWrite: React.FC = () => {
   const [fileContent, setFileContent] = useState<string>('')
+  const fileManager = new FileManagement()
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
@@ -17,16 +18,21 @@ const FileReadWrite: React.FC = () => {
           const dataType: DataType = getDataType(zipEntry.name)
           const content = await zip.file(zipEntry.name)?.async(dataType)
           if (content) {
-            saveFileToIndexedDB(zipEntry.name, content)
-            dataType == 'string' && setFileContent(content as string)
+            const name = prepareName(zipEntry.name)
+            fileManager.saveFile(name, content, getExtension(zipEntry.name))
           }
         }
       })
+      setFileContent('Installed')
     }
   }
 
+  const getExtension = (name: string) => {
+    return name.split('.').pop()?.toLowerCase() || ''
+  }
+
   const getDataType = (name: string) => {
-    const fileExtension = name.split('.').pop()?.toLowerCase()
+    const fileExtension = getExtension(name)
     let dataType: string
 
     // Determine data type based on file extension
@@ -56,32 +62,14 @@ const FileReadWrite: React.FC = () => {
     return dataType as DataType
   }
 
-  const saveFileToIndexedDB = async (fileName: string, fileContent: string | Blob) => {
-    try {
-      const db = await openDB('ExtensionStore', 1, {
-        upgrade(db) {
-          if (!db.objectStoreNames.contains('files')) {
-            db.createObjectStore('files', { keyPath: 'fileName' })
-          }
-        },
-      })
-      const tx = db.transaction('files', 'readwrite')
-      const store = tx.objectStore('files')
-      if (typeof fileContent === 'string') {
-        await store.put({ fileName, fileContent })
-      } else if (fileContent instanceof Blob) {
-        // Convert blob to ArrayBuffer
-        const arrayBuffer = await fileContent.arrayBuffer()
-        // Store ArrayBuffer in IndexedDB
-        await store.put({ fileName, fileContent: arrayBuffer })
-      } else {
-        throw new Error('Unsupported file content type')
-      }
-      await tx.done
-      console.log('File saved to IndexedDB')
-    } catch (error) {
-      console.error('Error saving file to IndexedDB:', error)
+  const prepareName = (name: string) => {
+    const extension = getExtension(name)
+    if (!extension || extension !== 'js') {
+      return name
     }
+    const splitted = name.split(`.${extension}`)
+    splitted?.pop()
+    return splitted?.pop() || name
   }
 
   return (

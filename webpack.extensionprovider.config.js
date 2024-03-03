@@ -6,6 +6,7 @@ const path = require('path')
 module.exports = {
   mode: 'production', // or 'development' if you want unminified output
   entry: './src/workers/extensionprovider.ts',
+  devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'public'), // Output directory
     filename: 'extension-store/extensionprovider.js', // Output filename

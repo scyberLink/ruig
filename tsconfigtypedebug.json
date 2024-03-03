@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -16,8 +16,7 @@
     "noEmit": false,
     "declaration": true,
     "jsx": "react-jsx",
-    "outDir": "ruig-type",
-    //"sourceMap": true
+    "outDir": "ruiged",
     "inlineSources": true,
     "inlineSourceMap": true
   },
