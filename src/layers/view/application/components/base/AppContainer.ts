@@ -227,7 +227,7 @@ class AppContainer extends BaseComponent implements IAppContainer {
     }
 
     this.setCursor('default')
-    const extensionPool = new ExtensionPool(this as unknown as IAppContainer)
+    const extensionPool = new ExtensionPool(this as unknown as IAppContainer, true)
     SharedConfig.set(EXTENSION_POOL, extensionPool)
   }
 

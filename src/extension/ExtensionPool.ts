@@ -44,11 +44,11 @@ class ExtensionPool {
   private disabled: ExtensionStore = {}
   private manualInstalled: ExtensionStore = {}
 
-  constructor(appContainer?: IAppContainer) {
+  constructor(appContainer?: IAppContainer, load?: boolean) {
     this.appContainer = appContainer
     this.loader = new ExtensionLoader()
 
-    this.init()
+    this.init(load)
   }
 
   getEvent(id: string, eventType: string) {
@@ -61,7 +61,7 @@ class ExtensionPool {
     dispatchEvent(this.getEvent(id, eventType))
   }
 
-  private async init() {
+  private async init(load?: boolean) {
     const installed: ExtensionStore = SharedConfig.getLocalData(INSTALLED_EXTENSION) as IAnyObject
     const enabled: ExtensionStore = SharedConfig.getLocalData(ENABLED_EXTENSION) as IAnyObject
     const disabled: ExtensionStore = SharedConfig.getLocalData(DISABLED_EXTENSION) as IAnyObject
@@ -91,15 +91,17 @@ class ExtensionPool {
       }
     }
 
-    this.loadExtension()
+    this.loadExtension(load)
   }
 
-  loadExtension() {
-    if (!this.appContainer) {
+  loadExtension(load?: boolean) {
+    if (load && !this.appContainer) {
       throw new NullException('Cannot load extensions. App Container Object is null')
     }
-    for (const enabledExtension of Object.values(this.enabled)) {
-      this.loader.load(enabledExtension.code, this.appContainer)
+    if (load) {
+      for (const enabledExtension of Object.values(this.enabled)) {
+        this.loader.load(enabledExtension.code, this.appContainer as IAppContainer)
+      }
     }
   }
 

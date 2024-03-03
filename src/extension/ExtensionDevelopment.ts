@@ -10,13 +10,13 @@ class ExtensionDevelopment {
 
   install(extension: typeof BaseExtension) {
     this.extensionPool.manualInstall({
-      id: extension.id,
+      id: extension.getId(extension),
+      name: `${extension.extensionAuthor}::Dev. mode`,
       author: extension.extensionAuthor,
       code: extension.toString(),
       rating: 0,
       downloads: 0,
       builtin: false,
-      name: 'Development mode',
       version: '0',
     })
   }

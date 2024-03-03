@@ -1,0 +1,1 @@
+(()=>{"use strict";self.addEventListener("fetch",(e=>e.response))})();

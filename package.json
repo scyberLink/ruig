@@ -27,22 +27,27 @@
     "prettier": "^3.2.5",
     "react-scripts": "5.0.1",
     "rimraf": "^5.0.5",
+    "serve": "^14.2.1",
     "terser": "^5.27.1",
+    "ts-loader": "^9.5.1",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "GENERATE_SOURCEMAP=false react-scripts build && find build -type f -name '*.js' -exec terser {} -o {} --compress --mangle toplevel \\;",
+    "start": "npm run build:workers && react-scripts start",
+    "build": "npm run build:workers && GENERATE_SOURCEMAP=false react-scripts build && find build -type f -name '*.js' -exec terser {} -o {} --compress --mangle toplevel \\;",
     "format": "prettier --write .",
     "lint": "eslint .",
+    "build:workers": "npx webpack --config webpack.cacher.config.js && npx webpack --config webpack.extensionprovider.config.js",
     "lint:autofix": "eslint . --fix",
     "prettier": "prettier .",
     "prettier:fix": "prettier --write .",
-    "build:dts": "tsc -p tsconfigtype.json && find ruig-type -type f -name '*.js' -exec terser {} -o {} --compress --mangle toplevel \\; && cpy \"src/assets/**/*\" \"ruig-type/assets\"",
-    "build:dts:debug": "tsc -p tsconfigtypedebug.json && cpy \"src/assets/**/*\" \"ruig-type/assets\"",
+    "build:dts": "npm run build:workers && tsc -p tsconfigtype.json && find ruig-type -type f -name '*.js' -exec terser {} -o {} --compress --mangle toplevel \\; && cpy \"src/assets/**/*\" \"ruig-type/assets\"",
+    "build:dts:debug": "npm run build:workers && tsc -p tsconfigtypedebug.json && cpy \"src/assets/**/*\" \"ruig-type/assets\"",
     "setupdev": "npm install -f",
-    "preview": "serve -s build",
+    "preview": "npm run build && serve -s build",
     "buildAndPreview": "npm run build && npm run preview",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -65,8 +70,12 @@
   "dependencies": {
     "axios": "^1.6.5",
     "html-to-image": "^1.11.11",
+    "idb": "^8.0.0",
+    "jszip": "^3.10.1",
+    "raw-loader": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.0"
+    "react-router-dom": "^6.22.0",
+    "ruig-type": "^0.1.17"
   }
 }

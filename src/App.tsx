@@ -3,8 +3,9 @@ import React, { useEffect } from 'react'
 import AppContainer from './layers/view/application/components/base/AppContainer'
 import { Link } from 'react-router-dom'
 import { EXTENSION } from './configs/RestEndpoints'
+import IAnyObject from './common/models/IAnyObject'
 
-function App() {
+function App({ extensions = [] }: IAnyObject) {
   useEffect(() => {
     const appContainer = new AppContainer()
 
@@ -13,6 +14,21 @@ function App() {
     // reportWebVitals(console.log);
     const body = document.getElementById('app')
     body?.appendChild(appContainer)
+
+    for (const extension of extensions) {
+      new extension(appContainer)
+    }
+  }, [])
+
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register(`cacher.js`).catch((error) => {
+        console.error('Cacher Worker registration failed: ', error)
+      })
+      navigator.serviceWorker.register(`extension-store/extensionprovider.js`).catch((error) => {
+        console.error('Extension Provider Worker registration failed: ', error)
+      })
+    }
   }, [])
 
   return (
