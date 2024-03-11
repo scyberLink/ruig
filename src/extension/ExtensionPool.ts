@@ -100,7 +100,9 @@ class ExtensionPool {
     }
     if (load) {
       for (const enabledExtension of Object.values(this.enabled)) {
-        this.loader.load(enabledExtension.code, this.appContainer as IAppContainer)
+        this.loader.load(enabledExtension, this.appContainer as IAppContainer).then((_val) => {
+          console.log(_val)
+        })
       }
     }
   }

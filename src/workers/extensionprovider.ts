@@ -19,8 +19,9 @@ self.addEventListener('fetch', (event: any) => {
         return response
       }
 
-      const path = event.request.url.split(`${urlsToCache[0]}/`).pop()
+      const path = urlsToCache[0] + event.request.url.split(urlsToCache[0]).pop()
       const filemanager = new FileManagement()
+      await filemanager.open()
       const file = await filemanager.getFile(path)
       const mime = file?.mime || 'text/html'
       const content = file?.fileContent || notfound

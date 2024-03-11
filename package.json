@@ -44,8 +44,8 @@
     "lint:autofix": "eslint . --fix",
     "prettier": "prettier .",
     "prettier:fix": "prettier --write .",
-    "build:dts": "npm run build:workers && tsc -p tsconfigtype.json && find ruiged -type f -name '*.js' -exec terser {} -o {} --compress --mangle toplevel \\; && cpy \"src/assets/**/*\" \"ruiged/assets\"",
-    "build:dts:debug": "npm run build:workers && tsc -p tsconfigtypedebug.json && cpy \"src/assets/**/*\" \"ruiged/assets\"",
+    "build:dts": "npm run build:workers && tsc -p tsconfig-ruiged-production.json && find ruiged -type f -name '*.js' -exec terser {} -o {} --compress --mangle toplevel \\; && cpy \"src/assets/**/*\" \"ruiged/assets\"",
+    "build:dts:debug": "npm run build:workers && tsc -p tsconfig-ruiged-development.json && cpy \"src/assets/**/*\" \"ruiged/assets\"",
     "setupdev": "npm install -f",
     "preview": "npm run build && serve -s build",
     "buildAndPreview": "npm run build && npm run preview",
@@ -75,7 +75,9 @@
     "raw-loader": "^4.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-markdown": "^9.0.1",
     "react-router-dom": "^6.22.0",
+    "remark-gfm": "^4.0.0",
     "ruiged": "^0.1.21"
   }
 }

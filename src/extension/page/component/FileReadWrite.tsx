@@ -1,30 +1,112 @@
-import React, { useState } from 'react'
-import JSZip from 'jszip'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useRef, useState } from 'react'
+import JSZip, { JSZipObject } from 'jszip'
 import FileManagement from '../../../common/FileManagement'
+import remarkGfm from 'remark-gfm'
+import ReactMarkdown from 'react-markdown'
+import ExtensionPool from '../../ExtensionPool'
 
 type DataType = 'string' | 'blob'
 
+interface IManifest {
+  name: string
+  version: string
+  description: string
+  publisher: string
+  classname: string
+  doc: string
+}
+
+interface IFile {
+  name: string
+  content: any
+  extension: string
+}
+
 const FileReadWrite: React.FC = () => {
-  const [fileContent, setFileContent] = useState<string>('')
+  const [readyToInstall, setReadyToInstall] = useState(false)
+  const [installed, setInstalled] = useState(false)
+  const [manifest, setManifest] = useState<IManifest>(null as any)
+  const [doc, setDoc] = useState('')
+  const extensionPool = new ExtensionPool()
+  const assets = useRef<IFile[]>([])
+  const metas = useRef<IFile[]>([])
+  const extensionId = useRef('')
   const fileManager = new FileManagement()
+  fileManager.open()
+  const zip = new JSZip()
+
+  useEffect(() => {
+    return fileManager.close()
+  }, [])
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
     if (file) {
-      const zip = new JSZip()
+      reset()
       await zip.loadAsync(file)
       zip.forEach(async (relativePath, zipEntry) => {
         if (!zipEntry.dir) {
-          const dataType: DataType = getDataType(zipEntry.name)
-          const content = await zip.file(zipEntry.name)?.async(dataType)
-          if (content) {
-            const name = prepareName(zipEntry.name)
-            fileManager.saveFile(name, content, getExtension(zipEntry.name))
+          const name = zipEntry.name
+          const content = await readContent(zipEntry)
+          const extension = getExtension(name)
+
+          if (name == 'manifest.json') {
+            const manifest = JSON.parse(content as string)
+            setManifest(manifest)
+            extensionId.current = `${manifest.publisher}.${manifest.name}`
+          }
+
+          if (name == 'README.md') {
+            setDoc(content as string)
+          }
+
+          if (name.includes('extension-store')) {
+            assets.current.push({ name, content, extension })
+          } else {
+            metas.current.push({ name, content, extension })
           }
         }
       })
-      setFileContent('Installed')
+      setReadyToInstall(true)
     }
+  }
+
+  const saveFiles = () => {
+    for (const file of assets.current) {
+      if (file.content) {
+        fileManager.saveFile(file.name, file.content, file.extension)
+      }
+    }
+
+    for (const file of metas.current) {
+      if (file.content) {
+        fileManager.saveFile(`${extensionId.current}/${file.name}`, file.content, file.extension, 'metas')
+      }
+    }
+
+    extensionPool.manualInstall({
+      id: extensionId.current,
+      rating: 0,
+      downloads: 0,
+      builtin: false,
+    })
+
+    setInstalled(true)
+  }
+
+  async function readContent(zipEntry: JSZipObject) {
+    const dataType: DataType = getDataType(zipEntry.name)
+    return await zip.file(zipEntry.name)?.async(dataType)
+  }
+
+  function reset() {
+    setInstalled(false)
+    setReadyToInstall(false)
+    setManifest(null as any)
+    setDoc('')
+    assets.current = []
+    metas.current = []
   }
 
   const getExtension = (name: string) => {
@@ -62,22 +144,37 @@ const FileReadWrite: React.FC = () => {
     return dataType as DataType
   }
 
-  const prepareName = (name: string) => {
-    const extension = getExtension(name)
-    if (!extension || extension !== 'js') {
-      return name
-    }
-    const splitted = name.split(`.${extension}`)
-    splitted?.pop()
-    return splitted?.pop() || name
-  }
-
   return (
     <div>
       <input type="file" onChange={handleFileChange} />
       <div>
-        <h2>File Content</h2>
-        <pre>{fileContent}</pre>
+        <h2>Information</h2>
+        {readyToInstall && !manifest ? (
+          <h2 style={{ color: 'red' }}>Invalid extension package</h2>
+        ) : (
+          <>
+            {readyToInstall && (
+              <button onClick={saveFiles} disabled={installed}>
+                {installed ? 'Installed' : 'Install'}
+              </button>
+            )}
+            {readyToInstall && (
+              <div>
+                <h1>{manifest.name}</h1>
+                <div>
+                  Version: <span style={{ color: 'blue' }}>{manifest.version}</span>
+                </div>
+                <div>
+                  Publisher: <span style={{ color: 'blue' }}>{manifest.publisher}</span>
+                </div>
+                <h3>{manifest.description}</h3>
+                <div>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{doc}</ReactMarkdown>
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
     </div>
   )
