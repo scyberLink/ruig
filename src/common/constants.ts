@@ -34,6 +34,8 @@ export const ENABLED_EXTENSION = 'enabledExtension'
 export const DISABLED_EXTENSION = 'disabledExtension'
 
 export const EXTENSION_POOL = 'extensionPool'
+export const RUIGEM = 'extension.min.ruigem'
+export const RUIG_EXTENSION_INTERFACE = 'REI'
 
 export const EXTENSION_EVENT_DATA = 'extensionEventData'
 export const EVENT_EXTENSION_INSTALL = 'eventExtensionInstall'

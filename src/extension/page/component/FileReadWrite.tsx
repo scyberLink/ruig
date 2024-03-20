@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from 'react'
 import JSZip, { JSZipObject } from 'jszip'
-import FileManagement from '../../../common/FileManagement'
+import FileManagement, { Table } from '../../../common/FileManagement'
 import remarkGfm from 'remark-gfm'
 import ReactMarkdown from 'react-markdown'
 import ExtensionPool from '../../ExtensionPool'
@@ -81,7 +81,7 @@ const FileReadWrite: React.FC = () => {
 
     for (const file of metas.current) {
       if (file.content) {
-        fileManager.saveFile(`${extensionId.current}/${file.name}`, file.content, file.extension, 'metas')
+        fileManager.saveFile(`${extensionId.current}/${file.name}`, file.content, file.extension, Table.METAS)
       }
     }
 

@@ -25,37 +25,39 @@ import ToolBar from './layers/view/application/components/toolbar/ToolBar'
 import DumpElement from './layers/view/common/DumpElement'
 import DesignElement from './layers/view/design/DesignElement'
 import DesignElementSelectionWrapper from './layers/view/design/DesignElementSelectionWrapper'
+import BaseDesignComponent from './layers/view/design/base/BaseDesignComponent'
 import LinkDesignElement from './layers/view/design/designitem/LinkDesignElement'
 
 export function register() {
   const CustomElements: any = {
-    TextIcon: TextIcon,
-    AppContainer: AppContainer,
-    ActionBar: ActionBar,
-    ParserContainer: ParserContainer,
-    BaseComponent: BaseComponent,
-    ColorPalette: ColorPalette,
-    ConsoleCanvas: ConsoleCanvas,
-    ContextMenu: ContextMenu,
-    DrawingCanvas: DrawingCanvas,
-    MenuBar: MenuBar,
-    ObjectManagerSelector: ObjectManagerSelector,
-    HorizontalRuler: HorizontalRuler,
-    VerticalRuler: VerticalRuler,
-    HorizontalScrollBar: HorizontalScrollBar,
-    VerticalScrollBar: VerticalScrollBar,
-    DrawingToolBar: DrawingToolBar,
-    DrawingToolbarItem: DrawingToolbarItem,
-    LeftSideBar: LeftSideBar,
-    StatusBar: StatusBar,
-    TabPane: TabPane,
-    ToolBar: ToolBar,
-    DumpElement: DumpElement,
-    DesignElement: DesignElement,
-    DesignElementSelectionWrapper: DesignElementSelectionWrapper,
-    //BaseDesignComponent: BaseDesignComponent,
-    LinkDesignElement: LinkDesignElement,
+    TextIcon,
+    AppContainer,
+    ActionBar,
+    ParserContainer,
+    BaseComponent,
+    ColorPalette,
+    ConsoleCanvas,
+    ContextMenu,
+    DrawingCanvas,
+    MenuBar,
+    ObjectManagerSelector,
+    HorizontalRuler,
+    VerticalRuler,
+    HorizontalScrollBar,
+    VerticalScrollBar,
+    DrawingToolBar,
+    DrawingToolbarItem,
+    LeftSideBar,
+    StatusBar,
+    TabPane,
+    ToolBar,
+    DumpElement,
+    DesignElement,
+    DesignElementSelectionWrapper,
+    BaseDesignComponent,
+    LinkDesignElement,
   }
+
   for (const [name, customElement] of Object.entries<typeof HTMLElement>(CustomElements)) {
     registerElement(name, customElement)
   }
@@ -65,11 +67,16 @@ export function registerElement(name: string, element: typeof HTMLElement): type
   if (!element) {
     throw new InvalidTagNameException()
   }
+
   const tagName = snakeCase(name)
-  try {
-    customElements.define(tagName, element)
-  } catch (error: any) {
-    console.warn(error.message)
+
+  if (!customElements.get(tagName)) {
+    try {
+      customElements.define(tagName, element)
+    } catch (error: any) {
+      console.warn(error.message)
+    }
   }
+
   return element
 }

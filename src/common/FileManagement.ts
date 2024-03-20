@@ -6,7 +6,10 @@ enum FileManagementMode {
   READWRITE = 'readwrite',
 }
 
-type TABLE = 'metas' | 'assets'
+export enum Table {
+  METAS = 'metas',
+  ASSETS = 'assets',
+}
 
 class FileManagement {
   db: IDBPDatabase<unknown> = null as any
@@ -14,13 +17,13 @@ class FileManagement {
   async open() {
     this.db = await openDB(this.DATABASE, this.DATABASE_VERSION, {
       upgrade: (db) => {
-        db.createObjectStore(this.ASSET_TABLE, { keyPath: this.KEYPATH })
-        db.createObjectStore(this.METAS_TABLE, { keyPath: this.KEYPATH })
+        db.createObjectStore(Table.ASSETS, { keyPath: this.KEYPATH })
+        db.createObjectStore(Table.METAS, { keyPath: this.KEYPATH })
       },
     })
   }
 
-  async saveFile(fileName: string, fileContent: string | Blob, type: string, table: TABLE = this.ASSET_TABLE) {
+  async saveFile(fileName: string, fileContent: string | Blob, type: string, table: Table = Table.ASSETS) {
     try {
       const tx = this.db.transaction(table, FileManagementMode.READWRITE)
       const store = tx.objectStore(table)
@@ -60,7 +63,7 @@ class FileManagement {
     }
   }
 
-  async getFile(fileName: string, table: TABLE = this.ASSET_TABLE) {
+  async getFile(fileName: string, table: Table = Table.ASSETS) {
     try {
       const tx = this.db.transaction(table, FileManagementMode.READONLY)
       const store = tx.objectStore(table)
@@ -80,8 +83,6 @@ class FileManagement {
   private KEYPATH = 'fileName'
   private DATABASE = 'ExtensionStore'
   private DATABASE_VERSION = 1
-  private ASSET_TABLE: TABLE = 'assets'
-  private METAS_TABLE: TABLE = 'metas'
 }
 
 export default FileManagement

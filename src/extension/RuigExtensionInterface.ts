@@ -1,5 +1,4 @@
 import RuigRouting from '../RuigRouting'
-import SharedConfig from '../common/SharedConfig'
 import { registerElement, register } from '../customElementRegistration'
 import ParserContainer from '../layers/view/application/components/ParserContainer'
 import ActionBar from '../layers/view/application/components/actionbar/ActionBar'
@@ -23,8 +22,8 @@ import ToolBar from '../layers/view/application/components/toolbar/ToolBar'
 import BaseComponent from '../layers/view/design/base/BaseDesignComponent'
 import BaseExtension from './BaseExtension'
 import ExtensionDevelopment from './ExtensionDevelopment'
-/* 
-export {
+
+const REI = {
   BaseExtension,
   ExtensionDevelopment,
   AppContainer,
@@ -47,11 +46,9 @@ export {
   TabPane,
   ParserContainer,
   ContextMenu,
-  SharedConfig,
   register,
   registerElement,
   RuigRouting,
 }
- */
 
-export {}
+export default REI
