@@ -18,10 +18,17 @@ import TabPane from '../tabpane/TabPane'
 import ParserContainer from '../ParserContainer'
 import ContextMenu from '../contextmenu/ContextMenu'
 import SharedConfig from '../../../../../common/SharedConfig'
-import { CONTEXT_MENU, DRAWING_CANVAS, EXTENSION_POOL } from '../../../../../common/constants'
+import { CONTEXT_MENU, DRAWING_CANVAS, EXTENSION_POOL, RUIG_EXTENSION_INTERFACE } from '../../../../../common/constants'
 import ShadowMode from '../../common/ShadowMode'
 import IAppContainer from './model/IAppContainer'
 import ExtensionPool from '../../../../../extension/ExtensionPool'
+import BaseExtension from '../../../../../extension/BaseExtension'
+import ExtensionDevelopment from '../../../../../extension/ExtensionDevelopment'
+import DrawingToolbarItem from '../sidebars/drawingtoolbar/DrawingToolbarItem'
+import { register, registerElement } from '../../../../../customElementRegistration'
+import ObjectManagerSelector from '../objectmanagerselector/ObjectManagerSelector'
+import DesignElement from '../../../design/DesignElement'
+import DesignElementTypes from '../../../common/DesignElementTypes'
 
 enum Dimension {
   top = '0',
@@ -167,6 +174,34 @@ class AppContainer extends BaseComponent implements IAppContainer {
     border: '0.5px solid gray',
   }) as BaseComponent
 
+  REI = {
+    BaseExtension,
+    ExtensionDevelopment,
+    ActionBar,
+    BaseComponent,
+    ColorPalette,
+    DrawingCanvas,
+    DrawingToolBar,
+    DrawingToolbarItem,
+    HorizontalRuler,
+    HorizontalScrollBar,
+    MenuBar,
+    ObjectManagerSelector,
+    StatusBar,
+    ToolBar,
+    VerticalRuler,
+    VerticalScrollBar,
+    ConsoleCanvas,
+    LeftSideBar,
+    TabPane,
+    ParserContainer,
+    ContextMenu,
+    register,
+    registerElement,
+    AppContainer,
+    DesignElement,
+    DesignElementTypes,
+  }
   constructor() {
     super()
 
@@ -227,6 +262,7 @@ class AppContainer extends BaseComponent implements IAppContainer {
     }
 
     this.setCursor('default')
+    SharedConfig.set(RUIG_EXTENSION_INTERFACE, this.REI)
     const extensionPool = new ExtensionPool(this as unknown as IAppContainer, true)
     SharedConfig.set(EXTENSION_POOL, extensionPool)
   }

@@ -1,26 +1,18 @@
 import React, { useEffect } from 'react'
 // import reportWebVitals from './common/reportWebVitals'
-import AppContainer from './layers/view/application/components/base/AppContainer'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { EXTENSION } from './configs/RestEndpoints'
 import IAnyObject from './common/models/IAnyObject'
 
-function App({ extensions = [] }: IAnyObject) {
+function App({ extensions = [], appContainer, body }: IAnyObject) {
+  const loc = useLocation()
+
   useEffect(() => {
-    const appContainer = new AppContainer()
-
-    appContainer.style.minWidth = process.env.REACT_APP_MIN_WIDTH! ?? '100vw'
-    appContainer.style.minHeight = process.env.REACT_APP_MIN_HEIGHT! ?? '100vh'
-    // reportWebVitals(console.log);
-    const body = document.getElementById('app')
     body?.appendChild(appContainer)
-
     for (const extension of extensions) {
       new extension(appContainer)
     }
-  }, [])
 
-  useEffect(() => {
     if ('serviceWorker' in navigator) {
       if (!navigator.serviceWorker.controller) {
         navigator.serviceWorker.register('cacher.js').catch((error) => {
@@ -50,11 +42,15 @@ function App({ extensions = [] }: IAnyObject) {
         })
       }
     }
+
+    return () => {
+      body?.removeChild(appContainer)
+    }
   }, [])
 
   return (
     <>
-      <div id="app">
+      <div>
         <Link
           id="extension"
           to={EXTENSION}

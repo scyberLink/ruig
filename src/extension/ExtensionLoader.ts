@@ -7,7 +7,8 @@ import ExtensionId from './ExtensionId'
 import BaseExtension from './BaseExtension'
 import IExtension from './IExtension'
 import FileManagement, { Table } from '../common/FileManagement'
-import REI from './RuigExtensionInterface'
+import SharedConfig from '../common/SharedConfig'
+import IAnyObject from '../common/models/IAnyObject'
 
 class ExtensionLoader {
   private extensionFileManager = new FileManagement()
@@ -38,7 +39,8 @@ class ExtensionLoader {
   }
 
   private executor(code: string, appContainer: IAppContainer): BaseExtension {
-    const expose = { ...REI, appContainer }
+    const rei = SharedConfig.get(RUIG_EXTENSION_INTERFACE) as IAnyObject
+    const expose = { ...rei, appContainer }
     const fn = new Function(RUIG_EXTENSION_INTERFACE, code)
     return fn(expose)
   }

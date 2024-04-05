@@ -1,4 +1,3 @@
-import RuigRouting from '../RuigRouting'
 import { registerElement, register } from '../customElementRegistration'
 import ParserContainer from '../layers/view/application/components/ParserContainer'
 import ActionBar from '../layers/view/application/components/actionbar/ActionBar'
@@ -19,6 +18,8 @@ import LeftSideBar from '../layers/view/application/components/sidebars/leftside
 import StatusBar from '../layers/view/application/components/statusbar/StatusBar'
 import TabPane from '../layers/view/application/components/tabpane/TabPane'
 import ToolBar from '../layers/view/application/components/toolbar/ToolBar'
+import DesignElementTypes from '../layers/view/common/DesignElementTypes'
+import DesignElement from '../layers/view/design/DesignElement'
 import BaseComponent from '../layers/view/design/base/BaseDesignComponent'
 import BaseExtension from './BaseExtension'
 import ExtensionDevelopment from './ExtensionDevelopment'
@@ -26,7 +27,6 @@ import ExtensionDevelopment from './ExtensionDevelopment'
 const REI = {
   BaseExtension,
   ExtensionDevelopment,
-  AppContainer,
   ActionBar,
   BaseComponent,
   ColorPalette,
@@ -48,7 +48,9 @@ const REI = {
   ContextMenu,
   register,
   registerElement,
-  RuigRouting,
+  AppContainer,
+  DesignElement,
+  DesignElementTypes,
 }
 
 export default REI
