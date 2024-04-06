@@ -119,10 +119,11 @@ class ExtensionPool {
     this.remove(id)
 
     const extension: IExtension = (await this.loader.getExtension(id)) as IExtension
-    extension!.builtin = this.builtin.some((extensionId) => id == extensionId)
-    if (extension) {
+    if (!extension) {
       return false
     }
+
+    extension.builtin = this.builtin.some((extensionId) => id == extensionId)
 
     this.add(extension, ExtensionState.INSTALL, ExtensionState.ENABLE)
     this.dispatchEvent(id, EVENT_EXTENSION_INSTALL)
@@ -214,6 +215,7 @@ class ExtensionPool {
   }
 
   private add(extension: IExtension, ...states: ExtensionState[]) {
+    let activate = false
     for (const state of states) {
       switch (state) {
         case ExtensionState.DISABLE:
@@ -224,19 +226,23 @@ class ExtensionPool {
         case ExtensionState.ENABLE:
           SharedConfig.addToObjectLocalData(ENABLED_EXTENSION, extension.id, extension)
           this.enabled[extension.id] = extension
+          !activate && (activate = true)
           break
 
         case ExtensionState.INSTALL:
           SharedConfig.addToObjectLocalData(INSTALLED_EXTENSION, extension.id, extension)
           this.installed[extension.id] = extension
+          !activate && (activate = true)
           break
 
         case ExtensionState.MANUAL_INSTALL:
           SharedConfig.addToObjectLocalData(MANUAL_INSTALLED_EXTENSION, extension.id, extension)
           this.installed[extension.id] = extension
+          !activate && (activate = true)
           break
       }
     }
+    activate && this.loader.load(extension, this.appContainer as IAppContainer)
   }
 
   enable(id: string) {

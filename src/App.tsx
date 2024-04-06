@@ -1,46 +1,17 @@
-import React, { useEffect } from 'react'
-// import reportWebVitals from './common/reportWebVitals'
-import { Link, useLocation } from 'react-router-dom'
-import { EXTENSION } from './configs/RestEndpoints'
-import IAnyObject from './common/models/IAnyObject'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from 'react'
+import AppContainer from './layers/view/application/components/base/AppContainer'
+import BaseExtension from './extension/BaseExtension'
+import ExtensionManager from './extension/page/ExtensionManager'
 
-function App({ extensions = [], appContainer, body }: IAnyObject) {
-  const loc = useLocation()
+function App({ extensions = [], appContainer }: { extensions?: BaseExtension[]; appContainer: AppContainer }) {
+  const [showingExtension, setShowingExtension] = useState(false)
 
   useEffect(() => {
+    const body = document.getElementById('app')
     body?.appendChild(appContainer)
     for (const extension of extensions) {
-      new extension(appContainer)
-    }
-
-    if ('serviceWorker' in navigator) {
-      if (!navigator.serviceWorker.controller) {
-        navigator.serviceWorker.register('cacher.js').catch((error) => {
-          console.error('Cacher Worker registration failed:', error)
-
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then((registrations) => {
-              registrations.forEach((registration) => {
-                registration.unregister()
-                console.log('Service worker unregistered successfully:', registration)
-              })
-            })
-          }
-        })
-
-        navigator.serviceWorker.register('extension-store/extensionprovider.js').catch((error) => {
-          console.error('Extension Provider Worker registration failed:', error)
-
-          if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then((registrations) => {
-              registrations.forEach((registration) => {
-                registration.unregister()
-                console.log('Service worker unregistered successfully:', registration)
-              })
-            })
-          }
-        })
-      }
+      new (extension as any)(appContainer)
     }
 
     return () => {
@@ -48,29 +19,46 @@ function App({ extensions = [], appContainer, body }: IAnyObject) {
     }
   }, [])
 
+  const openExtensionDialog = (e: any) => {
+    e.preventDefault()
+    appContainer.toggleDisplay()
+    setShowingExtension(!showingExtension)
+  }
+
   return (
     <>
-      <div>
-        <Link
-          id="extension"
-          to={EXTENSION}
+      <div id="app">
+        <div
           style={{
-            background: 'red',
-            /* border: '1px solid red', borderRadius: '5px', */ position: 'fixed',
+            position: 'fixed',
             zIndex: '999999',
             top: 0,
             right: 0,
-            width: '10px',
-            height: '10px',
+            width: '20px',
+            height: '40px',
+            border: 0,
+            borderRadius: '5px',
           }}
         >
-          {' '}
-        </Link>
-        <style>{`
-          #extension:before {
-            content: '\\eb51';
-          }
-          `}</style>
+          <button
+            onClick={openExtensionDialog}
+            style={{
+              background: showingExtension ? 'blue' : 'red',
+              height: '20px',
+            }}
+          />
+
+          <a
+            href="/"
+            style={{
+              background: 'pink',
+              height: '20px',
+            }}
+          >
+            R
+          </a>
+        </div>
+        {showingExtension ? <ExtensionManager /> : <></>}
       </div>
     </>
   )

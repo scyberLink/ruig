@@ -5,6 +5,8 @@ import FileManagement, { Table } from '../../../common/FileManagement'
 import remarkGfm from 'remark-gfm'
 import ReactMarkdown from 'react-markdown'
 import ExtensionPool from '../../ExtensionPool'
+import SharedConfig from '../../../common/SharedConfig'
+import { EXTENSION_POOL } from '../../../common/constants'
 
 type DataType = 'string' | 'blob'
 
@@ -28,7 +30,7 @@ const FileReadWrite: React.FC = () => {
   const [installed, setInstalled] = useState(false)
   const [manifest, setManifest] = useState<IManifest>(null as any)
   const [doc, setDoc] = useState('')
-  const extensionPool = new ExtensionPool()
+  const extensionPool = SharedConfig.get(EXTENSION_POOL)
   const assets = useRef<IFile[]>([])
   const metas = useRef<IFile[]>([])
   const extensionId = useRef('')
@@ -85,7 +87,7 @@ const FileReadWrite: React.FC = () => {
       }
     }
 
-    extensionPool.manualInstall({
+    ;(extensionPool as ExtensionPool)?.manualInstall({
       id: extensionId.current,
       rating: 0,
       downloads: 0,

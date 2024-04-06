@@ -14,6 +14,8 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   protected shadowStyle: HTMLStyleElement
   private _scale: number = 1
   private _rotate: number = 0
+  private initialDisplay: string = 'initial'
+  private showing: boolean = true
 
   public get rotate(): number {
     return this._rotate
@@ -174,6 +176,16 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
 
   set textContent(value: string) {
     this.shadowWrapper.textContent = value
+  }
+
+  toggleDisplay() {
+    if (this.showing) {
+      this.initialDisplay = this.shadowWrapper.style.display || this.initialDisplay
+      this.shadowWrapper.style.display = 'none'
+    } else {
+      this.shadowWrapper.style.display = this.initialDisplay
+    }
+    this.showing = !this.showing
   }
 
   get lang(): string {
