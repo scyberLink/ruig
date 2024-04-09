@@ -2,10 +2,9 @@
 import NullException from '../../../../common/exceptions/NullException'
 import IAnyObject from '../../../../common/models/IAnyObject'
 import IPair from '../../../../common/models/IPair'
-import { cssString, snakeCase } from '../../../../common/utils'
+import { cssString } from '../../../../common/utils'
 import Color from '../../application/common/Color'
 import IDelegateModel from '../../application/components/base/IDelegateModel'
-import InvalidTagNameException from '../../application/components/exceptions/InvalidTagNameException'
 
 class BaseDesignComponent extends HTMLElement implements IDelegateModel {
   protected shadowStyle: HTMLStyleElement
@@ -459,19 +458,13 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
     return this.classList.replace(oldClassName, newClassName)
   }
 
-  public static register(
-    element: typeof BaseDesignComponent | typeof HTMLElement,
-  ): typeof BaseDesignComponent | typeof HTMLElement {
+  public static new(element: BaseDesignComponent | HTMLElement): BaseDesignComponent {
     if (!element) {
-      throw new InvalidTagNameException()
+      throw new NullException()
     }
-    const tagName = snakeCase(element.name)
-    try {
-      customElements.define(tagName, element)
-    } catch (error: any) {
-      console.warn(error.message)
-    }
-    return element
+    const wrapper = new BaseDesignComponent()
+    wrapper.appendChildren(element)
+    return wrapper
   }
 
   setScale(scale: number) {

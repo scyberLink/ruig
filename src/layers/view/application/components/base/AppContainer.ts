@@ -29,6 +29,7 @@ import { register, registerElement } from '../../../../../customElementRegistrat
 import ObjectManagerSelector from '../objectmanagerselector/ObjectManagerSelector'
 import DesignElement from '../../../design/DesignElement'
 import DesignElementTypes from '../../../common/DesignElementTypes'
+import IDrawingCanvas from './model/IDrawingCanvas'
 
 enum Dimension {
   top = '0',
@@ -121,13 +122,13 @@ class AppContainer extends BaseComponent implements IAppContainer {
     left: Dimension.drawingToolBarLeft,
   }) as BaseComponent
 
-  private drawingCanvas: BaseComponent = new DrawingCanvas({
+  private drawingCanvas: IDrawingCanvas = new DrawingCanvas({
     left: Dimension.drawingCanvasLeft,
     top: Dimension.drawingCanvasTop,
     bottom: Dimension.drawingCanvasBottom,
     right: Dimension.drawingCanvasRight,
     overflow: 'auto',
-  }) as BaseComponent
+  }) as IDrawingCanvas
 
   private colorPalette: BaseComponent = new ColorPalette({
     width: Dimension.colorPaletteWidth,
@@ -238,28 +239,6 @@ class AppContainer extends BaseComponent implements IAppContainer {
       this.parserContainer,
     )
     this.menuBar.disabled = true
-
-    window.onwheel = (event: WheelEvent) => {
-      // Check if Ctrl key is pressed
-      if (event.ctrlKey) {
-        //event.preventDefault();
-
-        // Calculate the new scale factor based on the wheel delta
-
-        const delta = event.deltaY
-        const zoomFactor = 0.02 // You can adjust this value based on your zoom sensitivity
-        const currentScale = parseFloat(this.drawingCanvas.style.transform.replace('scale(', '').replace(')', '')) || 1
-        let scale
-        if (delta < 0) {
-          scale = currentScale + zoomFactor
-        } else {
-          scale = currentScale - zoomFactor
-        }
-
-        // Set the new scale factor
-        this.drawingCanvas.scale = scale
-      }
-    }
 
     this.setCursor('default')
     SharedConfig.set(RUIG_EXTENSION_INTERFACE, this.REI)

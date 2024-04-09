@@ -111,7 +111,7 @@ class ExtensionPool {
     }
   }
 
-  async install(id: string) {
+  async install(id: string, activate = true) {
     if (this.installed[id]) {
       return false
     }
@@ -125,14 +125,14 @@ class ExtensionPool {
 
     extension.builtin = this.builtin.some((extensionId) => id == extensionId)
 
-    this.add(extension, ExtensionState.INSTALL, ExtensionState.ENABLE)
+    this.add(extension, activate, ExtensionState.INSTALL, ExtensionState.ENABLE)
     this.dispatchEvent(id, EVENT_EXTENSION_INSTALL)
     return true
   }
 
-  manualInstall(extension: IExtension) {
+  manualInstall(extension: IExtension, activate = true) {
     this.remove(extension.id)
-    this.add(extension, ExtensionState.MANUAL_INSTALL, ExtensionState.INSTALL, ExtensionState.ENABLE)
+    this.add(extension, activate, ExtensionState.MANUAL_INSTALL, ExtensionState.INSTALL, ExtensionState.ENABLE)
     this.dispatchEvent(extension.id, EVENT_EXTENSION_MANUAL_INSTALL)
     return true
   }
@@ -214,8 +214,7 @@ class ExtensionPool {
     return deleted
   }
 
-  private add(extension: IExtension, ...states: ExtensionState[]) {
-    let activate = false
+  private add(extension: IExtension, activate: boolean, ...states: ExtensionState[]) {
     for (const state of states) {
       switch (state) {
         case ExtensionState.DISABLE:
@@ -226,19 +225,16 @@ class ExtensionPool {
         case ExtensionState.ENABLE:
           SharedConfig.addToObjectLocalData(ENABLED_EXTENSION, extension.id, extension)
           this.enabled[extension.id] = extension
-          !activate && (activate = true)
           break
 
         case ExtensionState.INSTALL:
           SharedConfig.addToObjectLocalData(INSTALLED_EXTENSION, extension.id, extension)
           this.installed[extension.id] = extension
-          !activate && (activate = true)
           break
 
         case ExtensionState.MANUAL_INSTALL:
           SharedConfig.addToObjectLocalData(MANUAL_INSTALLED_EXTENSION, extension.id, extension)
           this.installed[extension.id] = extension
-          !activate && (activate = true)
           break
       }
     }
@@ -251,7 +247,7 @@ class ExtensionPool {
       return false
     }
     this.remove(id, ExtensionState.DISABLE)
-    this.add(extension, ExtensionState.ENABLE)
+    this.add(extension, true, ExtensionState.ENABLE)
     this.dispatchEvent(id, EVENT_EXTENSION_ENABLE)
     return true
   }
@@ -262,7 +258,7 @@ class ExtensionPool {
       return false
     }
     this.remove(id, ExtensionState.ENABLE)
-    this.add(extension, ExtensionState.DISABLE)
+    this.add(extension, false, ExtensionState.DISABLE)
     this.dispatchEvent(id, EVENT_EXTENSION_DISABLE)
     return true
   }

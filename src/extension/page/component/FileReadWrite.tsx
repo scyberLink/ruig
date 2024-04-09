@@ -27,10 +27,11 @@ interface IFile {
 
 const FileReadWrite: React.FC = () => {
   const [readyToInstall, setReadyToInstall] = useState(false)
+  const [alreadyInstalled, setAlreadyInstalled] = useState(false)
   const [installed, setInstalled] = useState(false)
   const [manifest, setManifest] = useState<IManifest>(null as any)
   const [doc, setDoc] = useState('')
-  const extensionPool = SharedConfig.get(EXTENSION_POOL)
+  const extensionPool: ExtensionPool = SharedConfig.get(EXTENSION_POOL) as ExtensionPool
   const assets = useRef<IFile[]>([])
   const metas = useRef<IFile[]>([])
   const extensionId = useRef('')
@@ -56,7 +57,11 @@ const FileReadWrite: React.FC = () => {
           if (name == 'manifest.json') {
             const manifest = JSON.parse(content as string)
             setManifest(manifest)
-            extensionId.current = `${manifest.publisher}.${manifest.name}`
+            const id = `${manifest.publisher}.${manifest.name}`
+            extensionId.current = id
+            if (extensionPool.isInstalled(id)) {
+              setAlreadyInstalled(true)
+            }
           }
 
           if (name == 'README.md') {
@@ -87,12 +92,15 @@ const FileReadWrite: React.FC = () => {
       }
     }
 
-    ;(extensionPool as ExtensionPool)?.manualInstall({
-      id: extensionId.current,
-      rating: 0,
-      downloads: 0,
-      builtin: false,
-    })
+    ;(extensionPool as ExtensionPool)?.manualInstall(
+      {
+        id: extensionId.current,
+        rating: 0,
+        downloads: 0,
+        builtin: false,
+      },
+      !alreadyInstalled,
+    )
 
     setInstalled(true)
   }
@@ -105,6 +113,7 @@ const FileReadWrite: React.FC = () => {
   function reset() {
     setInstalled(false)
     setReadyToInstall(false)
+    setAlreadyInstalled(false)
     setManifest(null as any)
     setDoc('')
     assets.current = []
@@ -157,7 +166,7 @@ const FileReadWrite: React.FC = () => {
           <>
             {readyToInstall && (
               <button onClick={saveFiles} disabled={installed}>
-                {installed ? 'Installed' : 'Install'}
+                {installed ? 'Installed' : alreadyInstalled ? 'ReInstall' : 'Install'}
               </button>
             )}
             {readyToInstall && (

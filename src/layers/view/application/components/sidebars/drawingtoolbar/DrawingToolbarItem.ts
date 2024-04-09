@@ -1,16 +1,7 @@
 import IAnyObject from '../../../../../../common/models/IAnyObject'
-import DesignElementTypes from '../../../../common/DesignElementTypes'
-import DesignElement from '../../../../design/DesignElement'
-import ActionableIcon from '../../../common/ActionableIcon'
+import Tool from '../../../common/Tool'
 
-class DrawingToolbarItem extends ActionableIcon {
-  supportedDesignElements = DesignElementTypes.All
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  action = (designElement: DesignElement) => {
-    throw new Error('Method not implemented.')
-  }
-
+class DrawingToolbarItem extends Tool {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),

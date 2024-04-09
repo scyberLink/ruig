@@ -15,6 +15,7 @@ export const MIN_Z_INDEX = '-99999'
 export const MAX_Z_INDEX = '99999'
 
 export const ACTIVE_ELEMENT = 'selectedElement'
+export const ACTIVE_TOOL = 'activeTool'
 export const DRAWING_CANVAS = 'drawingCanvas'
 export const DRAWING_CANVAS_MOUSE_COORDINATE = 'mouseCoordinate'
 export const DESIGN_ELEMENT_WRAPPER = 'designElementWrapper'
