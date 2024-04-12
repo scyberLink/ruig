@@ -1,6 +1,6 @@
 import IAnyObject from '../../../../common/models/IAnyObject'
 import DesignElementTypes from '../../common/DesignElementTypes'
-import DesignElement from '../../design/DesignElement'
+import DesignElement from '../../design/base/DesignElement'
 import ActionableIcon from './ActionableIcon'
 import { IActionInit } from './IAction'
 import ShadowMode from './ShadowMode'

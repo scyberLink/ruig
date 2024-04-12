@@ -23,10 +23,7 @@ import StatusBar from './layers/view/application/components/statusbar/StatusBar'
 import TabPane from './layers/view/application/components/tabpane/TabPane'
 import ToolBar from './layers/view/application/components/toolbar/ToolBar'
 import DumpElement from './layers/view/common/DumpElement'
-import DesignElement from './layers/view/design/DesignElement'
-import DesignElementSelectionWrapper from './layers/view/design/DesignElementSelectionWrapper'
-import BaseDesignComponent from './layers/view/design/base/BaseDesignComponent'
-import LinkDesignElement from './layers/view/design/designitem/LinkDesignElement'
+import DesignElement from './layers/view/design/base/DesignElement'
 
 export function register() {
   const CustomElements: any = {
@@ -53,9 +50,6 @@ export function register() {
     ToolBar,
     DumpElement,
     DesignElement,
-    DesignElementSelectionWrapper,
-    BaseDesignComponent,
-    LinkDesignElement,
   }
 
   for (const [name, customElement] of Object.entries<typeof HTMLElement>(CustomElements)) {

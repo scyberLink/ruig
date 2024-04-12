@@ -1,7 +1,10 @@
-import { registerElement, register } from '../customElementRegistration'
+import { register, registerElement } from '../customElementRegistration'
+import BaseExtension from './BaseExtension'
+import ExtensionDevelopment from './ExtensionDevelopment'
+import DesignElementTypes from '../layers/view/common/DesignElementTypes'
+import DesignElement from '../layers/view/design/base/DesignElement'
 import ParserContainer from '../layers/view/application/components/ParserContainer'
 import ActionBar from '../layers/view/application/components/actionbar/ActionBar'
-import AppContainer from '../layers/view/application/components/base/AppContainer'
 import ColorPalette from '../layers/view/application/components/colorpalette/ColorPalette'
 import ConsoleCanvas from '../layers/view/application/components/consolecanvas/ConsoleCanvas'
 import ContextMenu from '../layers/view/application/components/contextmenu/ContextMenu'
@@ -18,11 +21,10 @@ import LeftSideBar from '../layers/view/application/components/sidebars/leftside
 import StatusBar from '../layers/view/application/components/statusbar/StatusBar'
 import TabPane from '../layers/view/application/components/tabpane/TabPane'
 import ToolBar from '../layers/view/application/components/toolbar/ToolBar'
-import DesignElementTypes from '../layers/view/common/DesignElementTypes'
-import DesignElement from '../layers/view/design/DesignElement'
-import BaseComponent from '../layers/view/design/base/BaseDesignComponent'
-import BaseExtension from './BaseExtension'
-import ExtensionDevelopment from './ExtensionDevelopment'
+import AppContainer from '../layers/view/application/components/base/AppContainer'
+import BaseComponent from '../layers/view/application/components/base/BaseComponent'
+import App from '../App'
+import initAppContainer from '../init'
 
 const REI = {
   BaseExtension,
@@ -51,6 +53,9 @@ const REI = {
   AppContainer,
   DesignElement,
   DesignElementTypes,
+  App: ({ extensions }: { extensions?: BaseExtension[] }) => (
+    <App appContainer={initAppContainer()} extensions={extensions} />
+  ),
 }
 
 export default REI

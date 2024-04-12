@@ -7,6 +7,7 @@ import Color from '../../common/Color'
 import ShadowMode from '../../common/ShadowMode'
 import InvalidTagNameException from '../exceptions/InvalidTagNameException'
 import type IDelegateModel from './IDelegateModel'
+import IStyle from './model/IStyle'
 
 class BaseComponent extends HTMLElement implements IDelegateModel {
   protected shadow: ShadowRoot
@@ -35,7 +36,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     this.style.transform = `scale(${value})`
   }
 
-  constructor(style?: IAnyObject, mode?: ShadowMode) {
+  constructor(style?: IStyle, mode?: ShadowMode) {
     super()
     this.shadow = this.attachShadow({ mode: mode ?? ShadowMode.CLOSE })
     this.shadowWrapper = document.createElement('div')
@@ -152,6 +153,10 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
 
   set draggable(value: boolean) {
     this.shadowWrapper.draggable = value
+  }
+
+  get children() {
+    return this.shadowWrapper.children
   }
 
   get hidden(): boolean {

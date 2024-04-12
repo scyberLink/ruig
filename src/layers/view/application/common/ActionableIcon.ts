@@ -4,7 +4,7 @@ import { ACTIVE_ELEMENT, DESIGN_ELEMENT_EVENT_DATA, EVENT_DESELECT, EVENT_SELECT
 import IAnyObject from '../../../../common/models/IAnyObject'
 import DesignElementTypes from '../../common/DesignElementTypes'
 import { createSVGElement } from '../../common/utils'
-import DesignElement, { DESIGN_ELEMENT_EVENT_DATA_TYPE } from '../../design/DesignElement'
+import DesignElement from '../../design/base/DesignElement'
 import BaseComponent from '../components/base/BaseComponent'
 import Color from './Color'
 import IAction, { IActionInit } from './IAction'
@@ -80,7 +80,7 @@ abstract class ActionableIcon extends BaseComponent implements IAction {
 
   enableCheck(ev: any) {
     ev?.preventDefault()
-    const { [DESIGN_ELEMENT_EVENT_DATA]: designElement } = ev?.detail as DESIGN_ELEMENT_EVENT_DATA_TYPE
+    const { [DESIGN_ELEMENT_EVENT_DATA]: designElement } = ev?.detail as any
 
     if (designElement) {
       const designType = designElement.type

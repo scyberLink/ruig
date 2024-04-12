@@ -1,15 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import NullException from '../../../../common/exceptions/NullException'
+import { rand } from '../../../../common/md5'
 import IAnyObject from '../../../../common/models/IAnyObject'
 import IPair from '../../../../common/models/IPair'
-import { cssString } from '../../../../common/utils'
-import Color from '../../application/common/Color'
+import { cssString, snakeCase } from '../../../../common/utils'
 import IDelegateModel from '../../application/components/base/IDelegateModel'
+import InvalidTagNameException from '../../application/components/exceptions/InvalidTagNameException'
 
-class BaseDesignComponent extends HTMLElement implements IDelegateModel {
+class DesignElement extends HTMLElement implements IDelegateModel {
+  protected shadowWrapper: HTMLElement
   protected shadowStyle: HTMLStyleElement
   private _scale: number = 1
   private _rotate: number = 0
+  private initialDisplay: string = 'initial'
+  private showing: boolean = true
+  class: string
 
   public get rotate(): number {
     return this._rotate
@@ -29,102 +35,97 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
     this.style.transform = `scale(${value})`
   }
 
-  constructor(style?: IAnyObject) {
+  constructor(element: HTMLElement) {
     super()
+    this.shadowWrapper = element
     this.shadowStyle = document.createElement('style')
-    this.id = `${this.tagName?.toLowerCase()}`
+    this.class = `${this.tagName?.toLowerCase() + rand()}`
+    this.shadowWrapper.classList.add(this.class)
     this.shadowStyle.textContent = `
-    #${this.tagName?.toLowerCase()} {
-        ${cssString({
-          background: Color.lightAsh,
-          color: Color.black,
-          border: `0.5px solid ${Color.ash}`,
-          display: 'block',
-          position: 'fixed',
-          'user-select': 'none',
-          ...(style ?? {}),
-        })}
+    .${this.class} {
+        ${cssString({})}
       }
     `
+    this.appendChild(this.shadowWrapper)
     this.appendChild(this.shadowStyle)
   }
 
   removeChild<T extends Node>(child: T): T {
-    return this.removeChild(child)
+    return this.shadowWrapper.removeChild(child)
   }
 
   // Delegate properties and methods to the shadowWrapper
 
   get accessKey(): string {
-    return this.accessKey
+    return this.shadowWrapper.accessKey
   }
 
   set accessKey(value: string) {
-    this.accessKey = value
+    this.shadowWrapper.accessKey = value
   }
 
   get attributes(): NamedNodeMap {
-    return this.attributes
+    return this.shadowWrapper.attributes
   }
 
   get classList(): DOMTokenList {
-    return this.classList
+    return this.shadowWrapper.classList
   }
 
   get className(): string {
-    return this.className
+    return this.shadowWrapper.className
   }
 
   set className(value: string) {
-    this.className = value
+    this.shadowWrapper.className = value
   }
 
   get contentEditable(): string {
-    return this.contentEditable
+    return this.shadowWrapper.contentEditable
   }
 
   set contentEditable(value: string) {
-    this.contentEditable = value
+    this.shadowWrapper.contentEditable = value
   }
 
   get clientWidth(): number {
-    return this.clientWidth
+    return this.shadowWrapper.clientWidth
   }
 
   set clientWidth(value: number) {
-    ;(this as any).clientWidth = value
+    ;(this.shadowWrapper as any).clientWidth = value
   }
 
   get clientHeight(): number {
-    return this.clientHeight
+    return this.shadowWrapper.clientHeight
   }
 
   set clientHeight(value: number) {
-    ;(this as any).clientHeight = value
+    ;(this.shadowWrapper as any).clientHeight = value
   }
 
   get innerText(): string {
-    return this.innerText
+    return this.shadowWrapper.innerText
   }
 
   set innerText(value: string) {
-    this.innerText = value
+    this.shadowWrapper.innerText = value
   }
 
   get innerHTML(): string {
-    return this.innerHTML
+    return this.shadowWrapper.innerHTML
   }
 
   set innerHTML(value: string) {
-    this.innerHTML = value
+    this.shadowWrapper.innerHTML = value
   }
 
   get dataset(): DOMStringMap {
-    return this.dataset
+    return this.shadowWrapper.dataset
   }
 
   get dir(): string {
-    return this.dir
+    return this.shadowWrapper.dir
   }
 
   appendChildren(...children: HTMLElement[]) {
@@ -134,67 +135,81 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
   }
 
   set dir(value: string) {
-    this.dir = value
+    this.shadowWrapper.dir = value
   }
 
   get draggable(): boolean {
-    return this.draggable
+    return this.shadowWrapper.draggable
   }
 
   set draggable(value: boolean) {
-    this.draggable = value
+    this.shadowWrapper.draggable = value
+  }
+
+  get children() {
+    return this.shadowWrapper.children
   }
 
   get hidden(): boolean {
-    return this.hidden
+    return this.shadowWrapper.hidden
   }
 
   set hidden(value: boolean) {
-    this.hidden = value
+    this.shadowWrapper.hidden = value
   }
 
   get id(): string {
-    return this.id
+    return this.shadowWrapper.id
   }
 
   set id(value: string) {
-    this.id = value
+    this.shadowWrapper.id = value
   }
 
   get textContent(): string {
-    return this.textContent as string
+    return this.shadowWrapper.textContent!
   }
 
   set textContent(value: string) {
-    this.textContent = value
+    this.shadowWrapper.textContent = value
+  }
+
+  toggleDisplay() {
+    if (this.showing) {
+      this.initialDisplay = this.shadowWrapper.style.display || this.initialDisplay
+      this.shadowWrapper.style.display = 'none'
+    } else {
+      this.shadowWrapper.style.display = this.initialDisplay
+    }
+    this.showing = !this.showing
   }
 
   get lang(): string {
-    return this.lang
+    return this.shadowWrapper.lang
   }
 
   set lang(value: string) {
-    this.lang = value
+    this.shadowWrapper.lang = value
   }
 
   get offsetHeight(): number {
-    return this.offsetHeight
+    return this.shadowWrapper.offsetHeight
   }
 
   get offsetLeft(): number {
-    return this.offsetLeft
+    return this.shadowWrapper.offsetLeft
   }
 
   get offsetParent(): Element | null {
-    return this.offsetParent
+    return this.shadowWrapper.offsetParent
   }
 
   get offsetTop(): number {
-    return this.offsetTop
+    return this.shadowWrapper.offsetTop
   }
 
   get offsetWidth(): number {
-    return this.offsetWidth
+    return this.shadowWrapper.offsetWidth
   }
 
   get disabled() {
@@ -206,45 +221,49 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
   }
 
   getDisable() {
-    return this.hasAttribute('disabled')
+    return this.shadowWrapper.hasAttribute('disabled')
   }
 
-  appendChild<T extends Node>(node: T): T {
-    return this.appendChild(node)
-  }
+  /*   appendChild<T extends Node>(node: T): T {
+    return this.shadowWrapper.appendChild(node)
+  } */
 
   setDisable(value: boolean) {
     if (value) {
-      this.setAttribute('disabled', '')
+      this.shadowWrapper.setAttribute('disabled', '')
     } else {
-      this.removeAttribute('disabled')
+      this.shadowWrapper.removeAttribute('disabled')
     }
   }
 
   get style(): CSSStyleDeclaration {
-    return this.style
+    return this.shadowWrapper.style
   }
 
   get tabIndex(): number {
-    return this.tabIndex
+    return this.shadowWrapper.tabIndex
   }
 
   set tabIndex(value: number) {
-    this.tabIndex = value
+    this.shadowWrapper.tabIndex = value
   }
 
   get title(): string {
-    return this.title
+    return this.shadowWrapper.title
   }
 
   set title(value: string) {
-    this.title = value
+    this.shadowWrapper.title = value
   }
 
   set onselect(value: any) {}
 
   oncopy = (ev: any) => {
     ev?.preventDefault()
+  }
+
+  addEvent(eventName: string, listener: (e: any) => any) {
+    this.shadowWrapper.addEventListener(eventName, listener)
   }
 
   oncut = (ev: any) => {
@@ -263,6 +282,13 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
     ev?.preventDefault()
   }
 
+  ondragover = (event: DragEvent) => {
+    event.preventDefault()
+  }
+
+  ondrop = (event: DragEvent) => {
+    event.preventDefault()
+  }
   // ... (other delegated methods)
 
   addEventListener(
@@ -270,23 +296,23 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
     listener: EventListenerOrEventListenerObject,
     options?: boolean | AddEventListenerOptions,
   ): void {
-    this.addEventListener(type, listener, options)
+    this.shadowWrapper.addEventListener(type, listener, options)
   }
 
   getBoundingClientRect(): DOMRect {
-    return this.getBoundingClientRect()
+    return this.shadowWrapper.getBoundingClientRect()
   }
 
-  append(...nodes: (Node | string)[]): void {
-    this.append(...nodes)
+  append(...nodes: Array<Node | string>): void {
+    this.shadowWrapper.append(...nodes)
   }
 
   blur(): void {
-    this.blur()
+    this.shadowWrapper.blur()
   }
 
   click(): void {
-    this.click()
+    this.shadowWrapper.click()
   }
 
   oncontextmenu = (e: any) => {
@@ -294,67 +320,67 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
   }
 
   closest(selectors: string): Element | null {
-    return this.closest(selectors)
+    return this.shadowWrapper.closest(selectors)
   }
 
   dispatchEvent(event: Event): boolean {
-    return this.dispatchEvent(event)
+    return this.shadowWrapper.dispatchEvent(event)
   }
 
   focus(options?: FocusOptions): void {
-    this.focus(options)
+    this.shadowWrapper.focus(options)
   }
 
   getAttribute(name: string): string | null {
-    return this.getAttribute(name)
+    return this.shadowWrapper.getAttribute(name)
   }
 
   getAttributeNS(namespaceURI: string | null, localName: string): string | null {
-    return this.getAttributeNS(namespaceURI, localName)
+    return this.shadowWrapper.getAttributeNS(namespaceURI, localName)
   }
 
   getAttributeNode(name: string): Attr | null {
-    return this.getAttributeNode(name)
+    return this.shadowWrapper.getAttributeNode(name)
   }
 
   getAttributeNodeNS(namespaceURI: string | null, localName: string): Attr | null {
-    return this.getAttributeNodeNS(namespaceURI, localName)
+    return this.shadowWrapper.getAttributeNodeNS(namespaceURI, localName)
   }
 
   hasAttribute(name: string): boolean {
-    return this.hasAttribute(name)
+    return this.shadowWrapper.hasAttribute(name)
   }
 
   hasAttributeNS(namespaceURI: string | null, localName: string): boolean {
-    return this.hasAttributeNS(namespaceURI, localName)
+    return this.shadowWrapper.hasAttributeNS(namespaceURI, localName)
   }
 
   hasAttributes(): boolean {
-    return this.hasAttributes()
+    return this.shadowWrapper.hasAttributes()
   }
 
   insertAdjacentElement(position: InsertPosition, insertedElement: Element): Element | null {
-    return this.insertAdjacentElement(position, insertedElement)
+    return this.shadowWrapper.insertAdjacentElement(position, insertedElement)
   }
 
   insertAdjacentHTML(position: InsertPosition, text: string): void {
-    this.insertAdjacentHTML(position, text)
+    this.shadowWrapper.insertAdjacentHTML(position, text)
   }
 
   insertAdjacentText(position: InsertPosition, text: string): void {
-    this.insertAdjacentText(position, text)
+    this.shadowWrapper.insertAdjacentText(position, text)
   }
 
   removeAttribute(name: string): void {
-    this.removeAttribute(name)
+    this.shadowWrapper.removeAttribute(name)
   }
 
   removeAttributeNS(namespaceURI: string | null, localName: string): void {
-    this.removeAttributeNS(namespaceURI, localName)
+    this.shadowWrapper.removeAttributeNS(namespaceURI, localName)
   }
 
   removeAttributeNode(attr: Attr): Attr {
-    return this.removeAttributeNode(attr)
+    return this.shadowWrapper.removeAttributeNode(attr)
   }
 
   removeEventListener(
@@ -362,31 +388,31 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
     listener: EventListenerOrEventListenerObject,
     options?: boolean | EventListenerOptions,
   ): void {
-    this.removeEventListener(type, listener, options)
+    this.shadowWrapper.removeEventListener(type, listener, options)
   }
 
   setAttribute(name: string, value: string): void {
-    this.setAttribute(name, value)
+    this.shadowWrapper.setAttribute(name, value)
   }
 
   setAttributeNS(namespaceURI: string | null, qualifiedName: string, value: string): void {
-    this.setAttributeNS(namespaceURI, qualifiedName, value)
+    this.shadowWrapper.setAttributeNS(namespaceURI, qualifiedName, value)
   }
 
   setAttributeNode(attr: Attr): Attr | null {
-    return this.setAttributeNode(attr)
+    return this.shadowWrapper.setAttributeNode(attr)
   }
 
   setAttributeNodeNS(attr: Attr): Attr | null {
-    return this.setAttributeNodeNS(attr)
+    return this.shadowWrapper.setAttributeNodeNS(attr)
   }
 
   toggleAttribute(qualifiedName: string, force?: boolean): boolean {
-    return this.toggleAttribute(qualifiedName, force)
+    return this.shadowWrapper.toggleAttribute(qualifiedName, force)
   }
 
   public getShadowWrapper(): HTMLElement {
-    return this
+    return this.shadowWrapper
   }
 
   /* addStylesheets(...paths: string[]) {
@@ -400,12 +426,12 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
   addStyle(style: string[] | IAnyObject | string): HTMLStyleElement {
     let styleString: string = ''
     let previousStyle = this.shadowStyle.textContent ?? ''
-    if (typeof style == 'string') {
+    if (typeof style === 'string') {
       styleString = style
       this.shadowStyle.textContent = previousStyle + styleString
     } else if (!Array.isArray(style)) {
-      styleString = `${cssString(style as IAnyObject)}`
-      const startOfThisIdStyle = `#${this.id} {`
+      styleString = `${cssString(style)}`
+      const startOfThisIdStyle = `.${this.class} {`
       previousStyle = previousStyle.replace(startOfThisIdStyle, `${startOfThisIdStyle}${styleString}`)
       this.shadowStyle.textContent = previousStyle
     } else if (Array.isArray(style)) {
@@ -415,7 +441,7 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
       this.shadowStyle.textContent = previousStyle + styleString
     }
 
-    return this.shadowStyle as HTMLStyleElement
+    return this.shadowStyle
   }
 
   addPseudoClass(clazz: string, style: IAnyObject) {
@@ -430,8 +456,8 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
     if (!clazz.includes(':')) {
       clazz = `:${clazz}`
     }
-    clazz = `${this.id}${clazz}`
-    this.addStyle(`#${clazz}{${cssString(style)}}`)
+    clazz = `${this.class}${clazz}`
+    this.addStyle(`.${clazz}{${cssString(style)}}`)
   }
 
   hovered(style: IAnyObject) {
@@ -439,49 +465,49 @@ class BaseDesignComponent extends HTMLElement implements IDelegateModel {
   }
 
   setCursor(name: string) {
-    this.style.cursor = `url('cursor/${name}.svg'), auto`
+    import(`../../../../assets/raws/cursor/${name}.svg`)
+      .then(({ default: cursor }) => {
+        this.style.cursor = `url(${cursor}), auto`
+      })
+      .catch((error) => {
+        console.error('Failed to load cursor:', error)
+      })
   }
 
   addInlineStyle({ name, value }: IPair) {
-    this.style[name as never] = value
+    this.shadowWrapper.style[name as any] = value
   }
 
   addClassNames(...classNames: string[]) {
-    this.classList.add(...classNames)
+    this.shadowWrapper.classList.add(...classNames)
   }
 
   removeClassNames(...classNames: string[]) {
-    this.classList.remove(...classNames)
+    this.shadowWrapper.classList.remove(...classNames)
   }
 
   replaceClassName(oldClassName: string, newClassName: string) {
-    return this.classList.replace(oldClassName, newClassName)
+    return this.shadowWrapper.classList.replace(oldClassName, newClassName)
   }
 
-  public static new(element: BaseDesignComponent | HTMLElement): BaseDesignComponent {
+  public static register(
+    element: typeof DesignElement | typeof HTMLElement,
+  ): typeof DesignElement | typeof HTMLElement {
     if (!element) {
-      throw new NullException()
+      throw new InvalidTagNameException()
     }
-    const wrapper = new BaseDesignComponent()
-    wrapper.appendChildren(element)
-    return wrapper
+    const tagName = snakeCase(element.name)
+    try {
+      customElements.define(tagName, element)
+    } catch (error: any) {
+      console.warn(error.message)
+    }
+    return element
   }
 
   setScale(scale: number) {
     this.scale = scale
   }
-
-  ondragover = (event: DragEvent) => {
-    event.preventDefault()
-  }
-
-  ondrop = (event: DragEvent) => {
-    event.preventDefault()
-  }
-
-  removeLastChild() {
-    this.removeChild(this.lastChild as HTMLElement)
-  }
 }
 
-export default BaseDesignComponent
+export default DesignElement

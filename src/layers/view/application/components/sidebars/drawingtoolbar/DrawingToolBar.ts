@@ -1,10 +1,10 @@
-import IAnyObject from '../../../../../../common/models/IAnyObject'
 import BaseComponent from '../../base/BaseComponent'
 import IDrawingToolBar from '../../base/model/IDrawingToolBar'
+import IStyle from '../../base/model/IStyle'
 import DrawingToolbarItem from './DrawingToolbarItem'
 
 class DrawingToolBar extends BaseComponent implements IDrawingToolBar {
-  constructor(style?: IAnyObject) {
+  constructor(style?: IStyle) {
     super({
       ...(style ?? {}),
       display: 'flex',

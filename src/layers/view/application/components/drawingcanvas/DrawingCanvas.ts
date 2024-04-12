@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MIN_Z_INDEX } from '../../../../../common/constants'
 import NullException from '../../../../../common/exceptions/NullException'
-import IAnyObject from '../../../../../common/models/IAnyObject'
 import IPosition from '../../../../../common/models/IPosition'
 import { spreadTo } from '../../../../../common/utils'
-import BaseDesignComponent from '../../../design/base/BaseDesignComponent'
+import DesignElement from '../../../design/base/DesignElement'
 import BaseComponent from '../base/BaseComponent'
 import IDrawingCanvas from '../base/model/IDrawingCanvas'
+import IStyle from '../base/model/IStyle'
 
 export enum DesignMode {
   PREVIEWING,
@@ -14,11 +15,12 @@ export enum DesignMode {
 
 class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
   mode = DesignMode.PREVIEWING
-
-  constructor(style?: IAnyObject) {
+  designElements: DesignElement[] = []
+  constructor(style?: IStyle) {
     super({
       ...(style ?? {}),
       background: 'transparent',
+      overflow: 'none',
       'z-index': MIN_Z_INDEX,
     })
   }
@@ -46,41 +48,29 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
   }
 
   activateDesignMode() {
-    this.traverseAndActivateDesignMode(this)
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children.item(i) as HTMLElement
+      if (child && !(child instanceof DesignElement)) {
+        const newChild = new DesignElement(child)
+        if (this.contains(child)) {
+          this.replaceChild(newChild, child)
+        }
+      }
+    }
     this.mode = DesignMode.DESIGNING
   }
 
   activatePreviewMode() {
-    this.traverseAndActivatePreviewMode(this)
-    this.mode = DesignMode.PREVIEWING
-  }
-
-  private traverseAndActivateDesignMode(element: HTMLElement) {
-    for (let i = 0; i < element.children.length; i++) {
-      const child = element.children.item(i)
-      if (child instanceof HTMLElement) {
-        if (!(child instanceof BaseDesignComponent)) {
-          const newChild = BaseDesignComponent.new(child)
-          element.replaceChild(newChild, child)
-        } else {
-          this.traverseAndActivateDesignMode(child)
-        }
-      }
-    }
-  }
-
-  private traverseAndActivatePreviewMode(element: HTMLElement) {
-    for (let i = 0; i < element.children.length; i++) {
-      const child = element.children.item(i)
-      if (child instanceof BaseDesignComponent) {
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children.item(i)
+      if (child instanceof DesignElement) {
         const originalChild = child.childNodes[0] as HTMLElement
-        if (originalChild) {
-          element.replaceChild(originalChild, child)
+        if (originalChild && this.contains(child)) {
+          this.replaceChild(originalChild, child)
         }
-      } else if (child instanceof HTMLElement) {
-        this.traverseAndActivatePreviewMode(child)
       }
     }
+    this.mode = DesignMode.PREVIEWING
   }
 
   addDesignElement(element: HTMLElement, position?: IPosition) {
@@ -88,16 +78,15 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
       throw NullException
     }
 
-    const { x, y } = position || { x: 10, y: 10, metric: 'px' }
+    const { x, y } = position || { x: 1, y: 1, metric: 'px' }
 
     spreadTo(element.style, {
-      position: 'absolute',
       top: `${y}${position?.metric || 'px'}`,
       left: `${x}${position?.metric || 'px'}`,
     })
 
-    if (!(element instanceof BaseDesignComponent)) {
-      element = BaseDesignComponent.new(element)
+    if (!(element instanceof DesignElement)) {
+      element = new DesignElement(element)
     }
 
     this.appendChildren(element)
@@ -118,6 +107,12 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
     element!.style.top = y + 'px';
   }
  */
+
+  addEventToDesignElement(eventName: string, listener: (e: Event) => any) {
+    for (const designElement of this.designElements) {
+      designElement.addEventListener(eventName, listener)
+    }
+  }
 }
 
 export default DrawingCanvas

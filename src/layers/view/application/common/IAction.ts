@@ -1,5 +1,5 @@
 import DesignElementTypes from '../../common/DesignElementTypes'
-import DesignElement from '../../design/DesignElement'
+import DesignElement from '../../design/base/DesignElement'
 
 export type IActionInit = { svgPathData: string; hint: string; description: string }
 

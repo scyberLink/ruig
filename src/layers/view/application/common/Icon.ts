@@ -1,10 +1,8 @@
 import IAnyObject from '../../../../common/models/IAnyObject'
-import DesignElementTypes from '../../common/DesignElementTypes'
-import DesignElement from '../../design/DesignElement'
-import ActionableIcon from './ActionableIcon'
 import ShadowMode from './ShadowMode'
+import Tool from './Tool'
 
-class Icon extends ActionableIcon {
+class Icon extends Tool {
   constructor(style?: IAnyObject, mode?: ShadowMode) {
     super(
       {
@@ -14,13 +12,6 @@ class Icon extends ActionableIcon {
       mode,
     )
   }
-
-  supportedDesignElements: DesignElementTypes[] = []
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  action = (_designElement: DesignElement) => {}
-
-  subscribe() {}
 }
 
 export default Icon
