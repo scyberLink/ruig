@@ -46,3 +46,7 @@ export const EVENT_EXTENSION_DISABLE = 'eventExtensionDisable'
 export const EVENT_EXTENSION_UNINSTALL = 'eventExtensionUninstall'
 
 export const SHAREDCONFIG_ADDTOOBJECT_INITIAL_INDEX = 'SharedConfigAddToObjectInitialIndex'
+
+export const HTML_PARSER = 'parserContainer'
+
+export const SAVED_DESIGN = 'savedDesignElements'

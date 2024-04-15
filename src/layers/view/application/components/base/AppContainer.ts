@@ -18,7 +18,13 @@ import TabPane from '../tabpane/TabPane'
 import ParserContainer from '../ParserContainer'
 import ContextMenu from '../contextmenu/ContextMenu'
 import SharedConfig from '../../../../../common/SharedConfig'
-import { CONTEXT_MENU, DRAWING_CANVAS, EXTENSION_POOL, RUIG_EXTENSION_INTERFACE } from '../../../../../common/constants'
+import {
+  CONTEXT_MENU,
+  DRAWING_CANVAS,
+  EXTENSION_POOL,
+  HTML_PARSER,
+  RUIG_EXTENSION_INTERFACE,
+} from '../../../../../common/constants'
 import ShadowMode from '../../common/ShadowMode'
 import IAppContainer from './model/IAppContainer'
 import ExtensionPool from '../../../../../extension/ExtensionPool'
@@ -30,6 +36,7 @@ import ObjectManagerSelector from '../objectmanagerselector/ObjectManagerSelecto
 import IDrawingCanvas from './model/IDrawingCanvas'
 import DesignElementTypes from '../../../common/DesignElementTypes'
 import DesignElement from '../../../design/base/DesignElement'
+import IParserContainer from './model/IParserContainer'
 
 enum Dimension {
   top = '0',
@@ -161,7 +168,7 @@ class AppContainer extends BaseComponent implements IAppContainer {
   }) as BaseComponent
 
   private leftSideBar: BaseComponent = new LeftSideBar() as BaseComponent
-  private parserContainer: BaseComponent = new ParserContainer() as BaseComponent
+  private parserContainer: IParserContainer = new ParserContainer()
   private tabPane: BaseComponent = new TabPane() as BaseComponent
 
   /* private designElementWrapper: IDesignElementSelectWrapper =
@@ -242,9 +249,49 @@ class AppContainer extends BaseComponent implements IAppContainer {
     this.menuBar.disabled = true
 
     this.setCursor('default')
+    SharedConfig.set(HTML_PARSER, this.parserContainer)
     SharedConfig.set(RUIG_EXTENSION_INTERFACE, this.REI)
     const extensionPool = new ExtensionPool(this as unknown as IAppContainer, true)
     SharedConfig.set(EXTENSION_POOL, extensionPool)
+//TODO Add another container to wrap canvas to foster zooming of canvas
+    onwheel = (event: WheelEvent) => {
+      if (event.ctrlKey) {
+        event.preventDefault()
+
+        const delta = event.deltaY
+        const zoomFactor = 0.02 // Adjust for zoom sensitivity
+
+        // Get initial offset of the canvas (assuming it's statically positioned)
+        const canvasOffsetLeft = this.drawingCanvas.offsetLeft
+        const canvasOffsetTop = this.drawingCanvas.offsetTop
+
+        // Get cursor position relative to the canvas (not viewport)
+        const cursorX = event.clientX - canvasOffsetLeft
+        const cursorY = event.clientY - canvasOffsetTop
+
+        // Get current scale (assuming it's stored in this.style.transform)
+        const currentScale = parseFloat(this.drawingCanvas.style.transform?.replace('scale(', '').replace(')', '')) || 1
+
+        // Calculate new scale based on delta
+        let newScale = currentScale + (delta > 0 ? -zoomFactor : zoomFactor)
+
+        // Ensure minimum zoom (optional)
+        newScale = Math.max(0.1, newScale) // Adjust minimum zoom as needed
+
+        // Calculate relative cursor position within the canvas
+        const relativeCursorX = cursorX / this.drawingCanvas.clientWidth
+        const relativeCursorY = cursorY / this.drawingCanvas.clientHeight
+
+        // Calculate transform origin based on relative cursor position
+        const transformOriginX = `${relativeCursorX * 100}%`
+        const transformOriginY = `${relativeCursorY * 100}%`
+
+        // Animate the zoom with smooth transition
+        this.drawingCanvas.style.transition = `transform 100ms ease-in-out` // Adjust duration and easing as desired
+        this.drawingCanvas.style.transform = `scale(${newScale})`
+        this.drawingCanvas.style.transformOrigin = `${transformOriginX} ${transformOriginY}`
+      }
+    }
   }
 
   getMenuBar() {

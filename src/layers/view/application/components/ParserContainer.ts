@@ -10,6 +10,16 @@ class ParserContainer extends BaseComponent implements IParserContainer {
       ...(style ?? {}),
     })
   }
+
+  parse(html = ''): HTMLElement[] {
+    this.innerHTML = html
+    const parsed: HTMLElement[] = []
+    for (const child of this.children) {
+      parsed.push(child as HTMLElement)
+    }
+    this.innerHTML = ''
+    return parsed
+  }
 }
 
 export default ParserContainer

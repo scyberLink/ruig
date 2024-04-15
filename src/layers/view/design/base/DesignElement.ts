@@ -7,6 +7,7 @@ import IPair from '../../../../common/models/IPair'
 import { cssString, snakeCase } from '../../../../common/utils'
 import IDelegateModel from '../../application/components/base/IDelegateModel'
 import InvalidTagNameException from '../../application/components/exceptions/InvalidTagNameException'
+import DumpElement from '../../common/DumpElement'
 
 class DesignElement extends HTMLElement implements IDelegateModel {
   protected shadowWrapper: HTMLElement
@@ -35,12 +36,12 @@ class DesignElement extends HTMLElement implements IDelegateModel {
     this.style.transform = `scale(${value})`
   }
 
-  constructor(element: HTMLElement) {
+  constructor(element: HTMLElement = new DumpElement()) {
     super()
     this.shadowWrapper = element
     this.shadowStyle = document.createElement('style')
     this.class = `${this.tagName?.toLowerCase() + rand()}`
-    this.shadowWrapper.classList.add(this.class)
+    this.shadowWrapper.classList?.add(this.class)
     this.shadowStyle.textContent = `
     .${this.class} {
         ${cssString({})}

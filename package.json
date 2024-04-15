@@ -40,7 +40,7 @@
     "build": "npm run build:workers && GENERATE_SOURCEMAP=false react-scripts build && find build -type f -name '*.js' -exec terser {} -o {} --compress --mangle toplevel \\;",
     "format": "prettier --write .",
     "lint": "eslint .",
-    "build:workers": "npx webpack --config webpack.sw.config.js",
+  "build:workers": "npx webpack --config webpack.sw.config.js",
     "lint:autofix": "eslint . --fix",
     "prettier": "prettier .",
     "prettier:fix": "prettier --write .",
