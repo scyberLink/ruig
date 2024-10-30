@@ -37,6 +37,8 @@ import IDrawingCanvas from './model/IDrawingCanvas'
 import DesignElementTypes from '../../../common/DesignElementTypes'
 import DesignElement from '../../../design/base/DesignElement'
 import IParserContainer from './model/IParserContainer'
+import MouseMovement from '../MouseMovement'
+import IMouseMovement from './model/IMouseMovement'
 
 enum Dimension {
   top = '0',
@@ -170,6 +172,7 @@ class AppContainer extends BaseComponent implements IAppContainer {
   private leftSideBar: BaseComponent = new LeftSideBar() as BaseComponent
   private parserContainer: IParserContainer = new ParserContainer()
   private tabPane: BaseComponent = new TabPane() as BaseComponent
+  private mouseMovement: IMouseMovement = new MouseMovement()
 
   /* private designElementWrapper: IDesignElementSelectWrapper =
     new DesignElementSelectionWrapper() as IDesignElementSelectWrapper
@@ -210,6 +213,8 @@ class AppContainer extends BaseComponent implements IAppContainer {
     DesignElement,
     DesignElementTypes,
   }
+  lastClientX!: number
+  lastClientY!: number
 
   constructor() {
     super()
@@ -245,6 +250,7 @@ class AppContainer extends BaseComponent implements IAppContainer {
       this.consolecanvas,
       this.leftSideBar,
       this.parserContainer,
+      this.mouseMovement,
     )
     this.menuBar.disabled = true
 
@@ -253,21 +259,13 @@ class AppContainer extends BaseComponent implements IAppContainer {
     SharedConfig.set(RUIG_EXTENSION_INTERFACE, this.REI)
     const extensionPool = new ExtensionPool(this as unknown as IAppContainer, true)
     SharedConfig.set(EXTENSION_POOL, extensionPool)
-//TODO Add another container to wrap canvas to foster zooming of canvas
+
     onwheel = (event: WheelEvent) => {
       if (event.ctrlKey) {
-        event.preventDefault()
+        event.stopPropagation()
 
         const delta = event.deltaY
         const zoomFactor = 0.02 // Adjust for zoom sensitivity
-
-        // Get initial offset of the canvas (assuming it's statically positioned)
-        const canvasOffsetLeft = this.drawingCanvas.offsetLeft
-        const canvasOffsetTop = this.drawingCanvas.offsetTop
-
-        // Get cursor position relative to the canvas (not viewport)
-        const cursorX = event.clientX - canvasOffsetLeft
-        const cursorY = event.clientY - canvasOffsetTop
 
         // Get current scale (assuming it's stored in this.style.transform)
         const currentScale = parseFloat(this.drawingCanvas.style.transform?.replace('scale(', '').replace(')', '')) || 1
@@ -278,18 +276,38 @@ class AppContainer extends BaseComponent implements IAppContainer {
         // Ensure minimum zoom (optional)
         newScale = Math.max(0.1, newScale) // Adjust minimum zoom as needed
 
-        // Calculate relative cursor position within the canvas
-        const relativeCursorX = cursorX / this.drawingCanvas.clientWidth
-        const relativeCursorY = cursorY / this.drawingCanvas.clientHeight
+        const x2 = event.clientX
+        const y2 = event.clientY
 
-        // Calculate transform origin based on relative cursor position
-        const transformOriginX = `${relativeCursorX * 100}%`
-        const transformOriginY = `${relativeCursorY * 100}%`
+        const canvasRect = this.drawingCanvas.getBoundingClientRect()
+        const x1 = canvasRect.left
+        const y1 = canvasRect.top
 
-        // Animate the zoom with smooth transition
-        this.drawingCanvas.style.transition = `transform 100ms ease-in-out` // Adjust duration and easing as desired
-        this.drawingCanvas.style.transform = `scale(${newScale})`
-        this.drawingCanvas.style.transformOrigin = `${transformOriginX} ${transformOriginY}`
+        const xb = x2 - x1
+        const yb = y2 - y1
+
+        const x = xb
+        const y = yb
+
+        this.mouseMovement.innerHTML = `
+        <div><span float: left; text-overflow: wrap" >${newScale} </span><span style="float: right">scale</span><hr></div>
+        <div><span float: left; text-overflow: wrap" >${this.drawingCanvas.origin.x} </span><span style="float: right">pox</span><hr></div>
+        <div><span float: left; text-overflow: wrap" >${this.drawingCanvas.origin.y} </span><span style="float: right">poy</span><hr></div>
+        <div><span float: left; text-overflow: wrap" >${x} </span><span style="float: right">cox</span><hr></div>
+        <div><span float: left; text-overflow: wrap" >${y} </span><span style="float: right">coy</span><hr></div>
+        <div><span float: left; text-overflow: wrap" >${x1}</span> <span style="float: right">left</span><hr></div>
+        <div><span float: left; text-overflow: wrap" >${y1}</span> <span style="float: right">top</span><hr></div>
+        <div><span float: left; text-overflow: wrap" >${x2}</span> <span style="float: right">mx</span><hr></div>
+        <div><span float: left; text-overflow: wrap" >${y2}</span> <span style="float: right">my</span><hr></div>
+        <div><span float: left; text-overflow: wrap" >${xb}</span> <span style="float: right">xb</span><hr></div>
+        <div><span float: left; text-overflow: wrap" >${yb}</span> <span style="float: right">yb</span><hr></div>      
+      `
+
+        this.drawingCanvas.origin = {
+          x,
+          y,
+        }
+        this.drawingCanvas.scale = newScale
       }
     }
   }
@@ -335,6 +353,9 @@ class AppContainer extends BaseComponent implements IAppContainer {
   }
   getParserContainer() {
     return this.parserContainer
+  }
+  getMouseMovement() {
+    return this.mouseMovement
   }
   getTabPane() {
     return this.tabPane

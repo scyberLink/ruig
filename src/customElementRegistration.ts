@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { snakeCase } from './common/utils'
 import TextIcon from './layers/view/application/common/TextIcon'
+import MouseMovement from './layers/view/application/components/MouseMovement'
 import ParserContainer from './layers/view/application/components/ParserContainer'
 import ActionBar from './layers/view/application/components/actionbar/ActionBar'
 import AppContainer from './layers/view/application/components/base/AppContainer'
@@ -50,6 +51,7 @@ export function register() {
     ToolBar,
     DumpElement,
     DesignElement,
+    MouseMovement,
   }
 
   for (const [name, customElement] of Object.entries<typeof HTMLElement>(CustomElements)) {

@@ -17,7 +17,8 @@ export enum DesignMode {
 
 class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
   initDelayedTimeout = 2000
-  saveInterval = 5000
+  saveInterval = 20000
+  hasInit = false
   mode = DesignMode.PREVIEWING
   designElements: DesignElement[] = []
 
@@ -26,6 +27,7 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
       ...(style ?? {}),
       background: 'transparent',
       overflow: 'none',
+      transition: `transform 100ms ease-in-out`,
       'z-index': MIN_Z_INDEX,
     })
     this.init = this.init.bind(this)
@@ -151,7 +153,14 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
 </div>    
 
     `
-
+    this.init()
+    const intervalID = setInterval(() => {
+      if (this.hasInit) {
+        this.refreshCanvas()
+        setInterval(this.save, this.saveInterval)
+        clearInterval(intervalID)
+      }
+    }, this.initDelayedTimeout)
     setTimeout(this.init, this.initDelayedTimeout)
   }
 
@@ -163,8 +172,7 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
       this.makeDesignElement(element)
     }
     this.designElements = [...(parsed as DesignElement[])]
-    this.refreshCanvas()
-    setInterval(this.save, this.saveInterval)
+    this.hasInit = true
   }
 
   getSaved() {
@@ -175,28 +183,6 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
   save() {
     SharedConfig.setLocalData(SAVED_DESIGN, this.innerHTML)
   }
-
-  /* onwheel = (event: WheelEvent) => {
-    // Check if Ctrl key is pressed
-    if (event.ctrlKey) {
-      //event.preventDefault();
-
-      // Calculate the new scale factor based on the wheel delta
-
-      const delta = event.deltaY
-      const zoomFactor = 0.02 // You can adjust this value based on your zoom sensitivity
-      const currentScale = parseFloat(this.style.transform.replace('scale(', '').replace(')', '')) || 1
-      let scale
-      if (delta < 0) {
-        scale = currentScale + zoomFactor
-      } else {
-        scale = currentScale - zoomFactor
-      }
-
-      // Set the new scale factor
-      this.scale = scale
-    }
-  } */
 
   activateDesignMode() {
     for (let i = 0; i < this.children.length; i++) {
@@ -250,7 +236,7 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
 
   makeDesignElement(element: HTMLElement | DesignElement) {
     if (!(element instanceof DesignElement)) {
-      return new DesignElement(element)
+      return new DesignElement(element, this)
     }
     return element
   }
@@ -276,6 +262,13 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
   appendChildren(...children: HTMLElement[]): void {
     for (const child of children) {
       this.addDesignElement(child)
+    }
+  }
+
+  onkeydown = (e: KeyboardEvent) => {
+    if (e.ctrlKey || e.key == 's') {
+      e.preventDefault()
+      this.save()
     }
   }
 

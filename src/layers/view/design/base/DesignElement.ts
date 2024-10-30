@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import SharedConfig from '../../../../common/SharedConfig'
+import { DRAWING_CANVAS } from '../../../../common/constants'
 import NullException from '../../../../common/exceptions/NullException'
 import { rand } from '../../../../common/md5'
 import IAnyObject from '../../../../common/models/IAnyObject'
 import IPair from '../../../../common/models/IPair'
 import { cssString, snakeCase } from '../../../../common/utils'
 import IDelegateModel from '../../application/components/base/IDelegateModel'
+import IDrawingCanvas from '../../application/components/base/model/IDrawingCanvas'
 import InvalidTagNameException from '../../application/components/exceptions/InvalidTagNameException'
 import DumpElement from '../../common/DumpElement'
 
@@ -17,6 +20,7 @@ class DesignElement extends HTMLElement implements IDelegateModel {
   private initialDisplay: string = 'initial'
   private showing: boolean = true
   class: string
+  drawingCanvas: IDrawingCanvas
 
   public get rotate(): number {
     return this._rotate
@@ -36,8 +40,16 @@ class DesignElement extends HTMLElement implements IDelegateModel {
     this.style.transform = `scale(${value})`
   }
 
-  constructor(element: HTMLElement = new DumpElement()) {
+  constructor(element: HTMLElement, drawingCanvas?: IDrawingCanvas) {
+    if (!element) {
+      throw new NullException()
+    }
     super()
+    if (!drawingCanvas) {
+      this.drawingCanvas = SharedConfig.get(DRAWING_CANVAS) as any
+    } else {
+      this.drawingCanvas = drawingCanvas
+    }
     this.shadowWrapper = element
     this.shadowStyle = document.createElement('style')
     this.class = `${this.tagName?.toLowerCase() + rand()}`
@@ -276,10 +288,6 @@ class DesignElement extends HTMLElement implements IDelegateModel {
   }
 
   onresize = (ev: any) => {
-    ev?.preventDefault()
-  }
-
-  onwheel = (ev: any) => {
     ev?.preventDefault()
   }
 

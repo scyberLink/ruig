@@ -17,6 +17,8 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   private _rotate: number = 0
   private initialDisplay: string = 'initial'
   private showing: boolean = true
+  xOrigin?: number
+  yOrigin?: number
 
   public get rotate(): number {
     return this._rotate
@@ -34,6 +36,16 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
   public set scale(value: number) {
     this._scale = value
     this.style.transform = `scale(${value})`
+  }
+
+  public get origin(): { x: number; y: number } {
+    return { x: this.xOrigin || this.clientWidth / 2, y: this.yOrigin || this.clientHeight / 2 }
+  }
+
+  public set origin({ x, y }: { x: number; y: number }) {
+    this.xOrigin = x
+    this.yOrigin = y
+    this.style.transformOrigin = `${this.xOrigin}px ${this.yOrigin}px`
   }
 
   constructor(style?: IStyle, mode?: ShadowMode) {

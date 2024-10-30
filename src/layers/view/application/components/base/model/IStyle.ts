@@ -10,9 +10,10 @@ type IStyle = {
   top?: string | number
   right?: string | number
   left?: string | number
-  bottom?: string
+  bottom?: string | number
   padding?: string
   transform?: string
+  transition?: string
   'border-radius'?: string
   'flex-wrap'?: 'wrap' | 'nowrap' | ''
   'flex-direction'?: 'column' | 'grid' | ''
