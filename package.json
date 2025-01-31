@@ -1,7 +1,7 @@
 {
   "name": "ruig",
-  "version": "0.1.0",
-  "description": "React UI Generator - A tool to generate React user interfaces effortlessly.",
+  "version": "0.1.1",
+  "description": "RUIG (Rapid UI Generator) is a powerful **client-based Progressive Web App (PWA)** that revolutionizes the way developers design and generate frontend components. With an intuitive **drag-and-drop interface**, real-time rendering, and **full support for npm packages**, RUIG provides a **seamless, framework-agnostic development experience**—all within your browser.",
   "author": "Emmanuel Paul Elom <scansioquielom@gmail.com>",
   "license": "MIT",
   "devDependencies": {
