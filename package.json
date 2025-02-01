@@ -4,6 +4,7 @@
   "description": "RUIG (Rapid UI Generator) is a powerful **client-based Progressive Web App (PWA)** that revolutionizes the way developers design and generate frontend components. With an intuitive **drag-and-drop interface**, real-time rendering, and **full support for npm packages**, RUIG provides a **seamless, framework-agnostic development experience**—all within your browser.",
   "author": "Emmanuel Paul Elom <scansioquielom@gmail.com>",
   "license": "MIT",
+  "homepage": "/ruig",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/user-event": "^13.5.0",
