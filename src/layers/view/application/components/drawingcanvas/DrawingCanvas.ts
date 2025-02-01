@@ -167,6 +167,10 @@ class DrawingCanvas extends BaseComponent implements IDrawingCanvas {
   init() {
     const savedDesignElements = this.getSaved()
     const parser = SharedConfig.get(HTML_PARSER) as ParserContainer
+    if (!parser) {
+      this.hasInit = true
+      return
+    }
     const parsed = parser.parse(savedDesignElements)
     for (const element of parsed) {
       this.makeDesignElement(element)

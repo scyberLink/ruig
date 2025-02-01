@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import SharedConfig from '../../../../common/SharedConfig'
 import { DRAWING_CANVAS } from '../../../../common/constants'
 import IAnyObject from '../../../../common/models/IAnyObject'
