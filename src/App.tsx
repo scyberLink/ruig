@@ -49,7 +49,7 @@ function App({ extensions = [], appContainer }: { extensions?: BaseExtension[]; 
           />
 
           <a
-            href="/"
+            href="./"
             style={{
               background: 'pink',
               height: '20px',

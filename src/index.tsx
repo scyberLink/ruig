@@ -11,8 +11,8 @@ const appContainer = initAppContainer()
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" Component={() => <App appContainer={appContainer} />} />
-      <Route path="*" Component={() => <Navigate to="/" />} />
+      <Route path="/ruig" Component={() => <App appContainer={appContainer} />} />
+      <Route path="*" Component={() => <Navigate to="/ruig" />} />
     </Routes>
   </BrowserRouter>,
 )
