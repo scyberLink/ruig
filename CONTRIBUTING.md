@@ -61,10 +61,6 @@ Please include the following with each issue:
   - **Note:** Because the developers need to copy and paste the code snippet, including a code snippet as a media file (i.e. .gif) is not sufficient.
 - Errors from the Dev Tools Console (open from the menu: Help > Toggle Developer Tools)
 
-### Creating Pull Requests
-
-- Please refer to the article on [creating pull requests](https://github.com/scyberLink/ruig/wiki/How-to-Contribute#pull-requests) and contributing to this project.
-
 ## Pull Request Formatting
 
 To maintain consistency and readability in PR submissions, please follow these guidelines:  
