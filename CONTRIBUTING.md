@@ -61,9 +61,16 @@ Please include the following with each issue:
   - **Note:** Because the developers need to copy and paste the code snippet, including a code snippet as a media file (i.e. .gif) is not sufficient.
 - Errors from the Dev Tools Console (open from the menu: Help > Toggle Developer Tools)
 
-### Creating Pull Requests
+## Pull Request Formatting
 
-- Please refer to the article on [creating pull requests](https://github.com/scyberLink/ruig/wiki/How-to-Contribute#pull-requests) and contributing to this project.
+To maintain consistency and readability in PR submissions, please follow these guidelines:  
+
+- Use clear commit messages
+- Ensure PR titles follow the `<type>: <subject>` convention (e.g., `docs: Update CONTRIBUTING.md`). Refer to the [Conventional Commits](https://www.conventionalcommits.org/) specification for more details.
+- Provide a detailed description in the PR body, outlining the changes and their impact
+- Link related issues using GitHub's syntax (Fixes #<issue_number> or Related to #<issue_number>).
+- If applicable, include screenshots or examples for UI-related changes
+- Use bullet points for clarity if making multiple changes.
 
 ### Final Checklist
 
