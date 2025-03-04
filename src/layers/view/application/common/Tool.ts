@@ -11,11 +11,14 @@ export interface IToolInit {
   svgPathData: string
   hint: string
   description: string
-  deactivate(): void
-  activate(): void
+  deactivate?: () => void
+  activate?: () => Promise<void>
 }
 
 abstract class Tool extends BaseComponent {
+  active = false
+  initialBackgroundColor: string = 'initial'
+
   constructor(style?: IAnyObject, mode?: ShadowMode) {
     super(
       {
@@ -40,38 +43,46 @@ abstract class Tool extends BaseComponent {
   svgPathData!: string
   hint!: string
   description!: string
-  deactivate!: () => any
-  activate!: () => any
+  deactivate?: () => any
 
   enable() {
+    this.initialBackgroundColor = this.style.background
     this.style.background = 'blue'
+    this.active = true
   }
 
   disable() {
-    this.style.background = 'white'
+    this.style.background = this.initialBackgroundColor
+    this.active = false
   }
 
   init(init: IToolInit) {
     const { svgPathData, hint, description, deactivate, activate } = init
-    this.svgPathData = svgPathData
-    this.hint = hint
-    this.description = description
-    this.deactivate = deactivate
-    this.activate = activate
-    const svg = createSVGElement({ path: this.svgPathData })
-    this.appendChild(svg)
-    this.title = this.hint
+    this.svgPathData = svgPathData || this.svgPathData
+    this.hint = hint || this.hint
+    this.description = description || this.description
+    this.deactivate = deactivate || this.deactivate
+    this.activate = activate || this.activate
+    if (this.svgPathData) {
+      const svg = createSVGElement({ path: this.svgPathData })
+      this.appendChild(svg)
+      this.title = this.hint
+    } else {
+      this.innerHTML = this.hint
+    }
   }
 
   onclick = (event: MouseEvent) => {
     event?.preventDefault()
     const previousActiveTool: Tool = SharedConfig.get(ACTIVE_TOOL) as any
     previousActiveTool?.disable()
-    previousActiveTool?.deactivate()
-    this.activate()
+    previousActiveTool?.deactivate && previousActiveTool?.deactivate()
+    this.activate && this.activate()
     this.enable()
     SharedConfig.set(ACTIVE_TOOL, this)
   }
+
+  activate?: () => Promise<void>
 }
 
 export default Tool

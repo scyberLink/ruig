@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 import ActionBar from '../actionbar/ActionBar'
 import BaseComponent from './BaseComponent'
@@ -23,6 +24,7 @@ import {
   DRAWING_CANVAS,
   EXTENSION_POOL,
   HTML_PARSER,
+  MOUSE_MOVEMENT_ELEMENT,
   RUIG_EXTENSION_INTERFACE,
 } from '../../../../../common/constants'
 import ShadowMode from '../../common/ShadowMode'
@@ -39,6 +41,15 @@ import DesignElement from '../../../design/base/DesignElement'
 import IParserContainer from './model/IParserContainer'
 import MouseMovement from '../MouseMovement'
 import IMouseMovement from './model/IMouseMovement'
+import NotificationManager from '../NotificationManager'
+import {
+  getContextMenu,
+  getDrawingCanvas,
+  getParserContainer,
+  getREI,
+  getExtensionPool,
+  showContextContent,
+} from '../../../common/utils'
 
 enum Dimension {
   top = '0',
@@ -173,17 +184,12 @@ class AppContainer extends BaseComponent implements IAppContainer {
   private parserContainer: IParserContainer = new ParserContainer()
   private tabPane: BaseComponent = new TabPane() as BaseComponent
   private mouseMovement: IMouseMovement = new MouseMovement()
+  private notificationManager: BaseComponent = new NotificationManager()
 
   /* private designElementWrapper: IDesignElementSelectWrapper =
     new DesignElementSelectionWrapper() as IDesignElementSelectWrapper
  */
-  contextMenu: BaseComponent = new ContextMenu({
-    position: 'absolute',
-    bottom: '0',
-    display: 'flex',
-    borderRadius: '10px',
-    border: '0.5px solid gray',
-  }) as BaseComponent
+  private contextMenu: BaseComponent = new ContextMenu()
 
   REI = {
     BaseExtension,
@@ -212,6 +218,12 @@ class AppContainer extends BaseComponent implements IAppContainer {
     AppContainer,
     DesignElement,
     DesignElementTypes,
+    getContextMenu,
+    getDrawingCanvas,
+    getParserContainer,
+    getREI,
+    getExtensionPool,
+    showContextContent,
   }
   lastClientX!: number
   lastClientY!: number
@@ -250,66 +262,61 @@ class AppContainer extends BaseComponent implements IAppContainer {
       this.consolecanvas,
       this.leftSideBar,
       this.parserContainer,
-      this.mouseMovement,
+      this.mouseMovement as any,
+      this.contextMenu,
+      this.notificationManager,
     )
     this.menuBar.disabled = true
 
     this.setCursor('default')
     SharedConfig.set(HTML_PARSER, this.parserContainer)
+    SharedConfig.set(MOUSE_MOVEMENT_ELEMENT, this.mouseMovement)
     SharedConfig.set(RUIG_EXTENSION_INTERFACE, this.REI)
     const extensionPool = new ExtensionPool(this as unknown as IAppContainer, true)
     SharedConfig.set(EXTENSION_POOL, extensionPool)
 
-    onwheel = (event: WheelEvent) => {
-      if (event.ctrlKey) {
-        event.stopPropagation()
+    window.addEventListener(
+      'wheel',
+      (event: WheelEvent) => {
+        if (event.ctrlKey) {
+          event.preventDefault()
+          event.stopPropagation()
 
-        const delta = event.deltaY
-        const zoomFactor = 0.02 // Adjust for zoom sensitivity
+          const delta = event.deltaY
+          const zoomFactor = 0.02 // Adjust for zoom sensitivity
 
-        // Get current scale (assuming it's stored in this.style.transform)
-        const currentScale = parseFloat(this.drawingCanvas.style.transform?.replace('scale(', '').replace(')', '')) || 1
+          // Get current scale (assuming it's stored in this.style.transform)
+          const currentScale =
+            parseFloat(this.drawingCanvas.style.transform?.replace('scale(', '').replace(')', '')) || 1
 
-        // Calculate new scale based on delta
-        let newScale = currentScale + (delta > 0 ? -zoomFactor : zoomFactor)
+          // Calculate new scale based on delta
+          let newScale = currentScale + (delta > 0 ? -zoomFactor : zoomFactor)
 
-        // Ensure minimum zoom (optional)
-        newScale = Math.max(0.1, newScale) // Adjust minimum zoom as needed
+          // Ensure minimum zoom (optional)
+          newScale = Math.max(0.1, newScale) // Adjust minimum zoom as needed
 
-        const x2 = event.clientX
-        const y2 = event.clientY
+          const x2 = event.clientX
+          const y2 = event.clientY
 
-        const canvasRect = this.drawingCanvas.getBoundingClientRect()
-        const x1 = canvasRect.left
-        const y1 = canvasRect.top
+          const canvasRect = this.drawingCanvas.getBoundingClientRect()
+          const x1 = canvasRect.left
+          const y1 = canvasRect.top
 
-        const xb = x2 - x1
-        const yb = y2 - y1
+          const xb = x2 - x1
+          const yb = y2 - y1
 
-        const x = xb
-        const y = yb
+          const x = xb
+          const y = yb
 
-        this.mouseMovement.innerHTML = `
-        <div><span float: left; text-overflow: wrap" >${newScale} </span><span style="float: right">scale</span><hr></div>
-        <div><span float: left; text-overflow: wrap" >${this.drawingCanvas.origin.x} </span><span style="float: right">pox</span><hr></div>
-        <div><span float: left; text-overflow: wrap" >${this.drawingCanvas.origin.y} </span><span style="float: right">poy</span><hr></div>
-        <div><span float: left; text-overflow: wrap" >${x} </span><span style="float: right">cox</span><hr></div>
-        <div><span float: left; text-overflow: wrap" >${y} </span><span style="float: right">coy</span><hr></div>
-        <div><span float: left; text-overflow: wrap" >${x1}</span> <span style="float: right">left</span><hr></div>
-        <div><span float: left; text-overflow: wrap" >${y1}</span> <span style="float: right">top</span><hr></div>
-        <div><span float: left; text-overflow: wrap" >${x2}</span> <span style="float: right">mx</span><hr></div>
-        <div><span float: left; text-overflow: wrap" >${y2}</span> <span style="float: right">my</span><hr></div>
-        <div><span float: left; text-overflow: wrap" >${xb}</span> <span style="float: right">xb</span><hr></div>
-        <div><span float: left; text-overflow: wrap" >${yb}</span> <span style="float: right">yb</span><hr></div>      
-      `
-
-        this.drawingCanvas.origin = {
-          x,
-          y,
+          this.drawingCanvas.origin = {
+            x,
+            y,
+          }
+          this.drawingCanvas.scale = newScale
         }
-        this.drawingCanvas.scale = newScale
-      }
-    }
+      },
+      { passive: false },
+    )
   }
 
   getMenuBar() {

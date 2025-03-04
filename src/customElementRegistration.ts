@@ -2,16 +2,22 @@
 import { snakeCase } from './common/utils'
 import TextIcon from './layers/view/application/common/TextIcon'
 import MouseMovement from './layers/view/application/components/MouseMovement'
+import NotificationManager from './layers/view/application/components/NotificationManager'
 import ParserContainer from './layers/view/application/components/ParserContainer'
 import ActionBar from './layers/view/application/components/actionbar/ActionBar'
 import AppContainer from './layers/view/application/components/base/AppContainer'
 import BaseComponent from './layers/view/application/components/base/BaseComponent'
 import ColorPalette from './layers/view/application/components/colorpalette/ColorPalette'
 import ConsoleCanvas from './layers/view/application/components/consolecanvas/ConsoleCanvas'
+import ContextContentContainer from './layers/view/application/components/contextmenu/ContextContentContainer'
+import ContextItem from './layers/view/application/components/contextmenu/ContextItem'
+import ContextItemGroup from './layers/view/application/components/contextmenu/ContextItemGroup'
 import ContextMenu from './layers/view/application/components/contextmenu/ContextMenu'
+import ContextSession from './layers/view/application/components/contextmenu/ContextSession'
 import DrawingCanvas from './layers/view/application/components/drawingcanvas/DrawingCanvas'
 import InvalidTagNameException from './layers/view/application/components/exceptions/InvalidTagNameException'
 import MenuBar from './layers/view/application/components/menubar/MenuBar'
+import MenuBarItem from './layers/view/application/components/menubar/MenuBarItem'
 import ObjectManagerSelector from './layers/view/application/components/objectmanagerselector/ObjectManagerSelector'
 import HorizontalRuler from './layers/view/application/components/rulers/horizontalruler/HorizontalRuler'
 import VerticalRuler from './layers/view/application/components/rulers/verticalruler/VerticalRuler'
@@ -52,6 +58,12 @@ export function register() {
     DumpElement,
     DesignElement,
     MouseMovement,
+    ContextContentContainer,
+    ContextSession,
+    ContextItem,
+    ContextItemGroup,
+    NotificationManager,
+    MenuBarItem,
   }
 
   for (const [name, customElement] of Object.entries<typeof HTMLElement>(CustomElements)) {

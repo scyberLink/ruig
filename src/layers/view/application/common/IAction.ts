@@ -1,7 +1,13 @@
 import DesignElementTypes from '../../common/DesignElementTypes'
 import DesignElement from '../../design/base/DesignElement'
 
-export type IActionInit = { svgPathData: string; hint: string; description: string }
+export type IActionInit = {
+  svgPathData: string
+  hint: string
+  description: string
+  action: (designElement?: DesignElement) => void
+  subscribe?: () => void
+}
 
 interface IAction {
   supportedDesignElements: DesignElementTypes | DesignElementTypes[]

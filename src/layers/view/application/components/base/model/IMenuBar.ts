@@ -1,10 +1,10 @@
-import ActionableIcon from '../../../common/ActionableIcon'
+import MenuBarItem from '../../menubar/MenuBarItem'
 
 interface IMenuBar {
-  getFileMenu(): ActionableIcon
-  getEditMenu(): ActionableIcon
-  getViewMenu(): ActionableIcon
-  getToolMenu(): ActionableIcon
+  getFileMenu(): MenuBarItem
+  getEditMenu(): MenuBarItem
+  getViewMenu(): MenuBarItem
+  getToolMenu(): MenuBarItem
 }
 
 export default IMenuBar

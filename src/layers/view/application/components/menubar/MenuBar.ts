@@ -1,15 +1,12 @@
 import IAnyObject from '../../../../../common/models/IAnyObject'
-import ActionableIcon from '../../common/ActionableIcon'
 import ShadowMode from '../../common/ShadowMode'
-import TextIcon from '../../common/TextIcon'
 import BaseComponent from '../base/BaseComponent'
 import IMenuBar from '../base/model/IMenuBar'
+import ContextItem from '../contextmenu/ContextItem'
+import MenuBarItem from './MenuBarItem'
 
 class MenuBar extends BaseComponent implements IMenuBar {
-  fileMenuItem: ActionableIcon = new TextIcon() as ActionableIcon
-  editMenuItem: ActionableIcon = new TextIcon() as ActionableIcon
-  viewMenuItem: ActionableIcon = new TextIcon() as ActionableIcon
-  toolMenuItem: ActionableIcon = new TextIcon() as ActionableIcon
+  menuItems: { [menuItemName: string]: MenuBarItem }
 
   constructor(style?: IAnyObject, mode?: ShadowMode) {
     super(
@@ -21,28 +18,53 @@ class MenuBar extends BaseComponent implements IMenuBar {
       mode,
     )
 
-    this.fileMenuItem.init({ hint: 'File', description: '', svgPathData: '' })
-    this.editMenuItem.init({ hint: 'Edit', description: '', svgPathData: '' })
-    this.viewMenuItem.init({ hint: 'View', description: '', svgPathData: '' })
-    this.toolMenuItem.init({ hint: 'Tool', description: '', svgPathData: '' })
+    const fileMenuItem = new MenuBarItem()
+    const editMenuItem = new MenuBarItem()
+    const viewMenuItem = new MenuBarItem()
+    const toolMenuItem = new MenuBarItem()
 
-    this.appendChildren(this.fileMenuItem, this.editMenuItem, this.viewMenuItem, this.toolMenuItem)
+    fileMenuItem.init({ hint: 'File', description: '', svgPathData: '' })
+    editMenuItem.init({ hint: 'Edit', description: '', svgPathData: '' })
+    viewMenuItem.init({ hint: 'View', description: '', svgPathData: '' })
+    toolMenuItem.init({ hint: 'Tool', description: '', svgPathData: '' })
+
+    this.menuItems = { fileMenuItem, editMenuItem, viewMenuItem, toolMenuItem }
+
+    const items = new Array(10).fill(0).map((_, i) => {
+      const item = new ContextItem()
+      const span = document.createElement('div')
+      span.innerText = 'This is context item ' + i
+      span.onclick = () => alert(span.innerText)
+      item.init(span, 'First Group')
+      return item
+    })
+
+    const items1 = new Array(10).fill(0).map((_, i) => {
+      const item = new ContextItem()
+      item.init(document.createTextNode('This is context item ' + i), 'Second Group')
+      return item
+    })
+
+    fileMenuItem.addItems(...items)
+    editMenuItem.addItems(...items1)
+
+    this.appendChildren(...Object.values(this.menuItems))
   }
 
-  getFileMenu(): ActionableIcon {
-    return this.fileMenuItem
+  getFileMenu(): MenuBarItem {
+    return this.menuItems['fileMenuItem']
   }
 
-  getEditMenu(): ActionableIcon {
-    return this.editMenuItem
+  getEditMenu(): MenuBarItem {
+    return this.menuItems['editMenuItem']
   }
 
-  getViewMenu(): ActionableIcon {
-    return this.viewMenuItem
+  getViewMenu(): MenuBarItem {
+    return this.menuItems['viewMenuItem']
   }
 
-  getToolMenu(): ActionableIcon {
-    return this.toolMenuItem
+  getToolMenu(): MenuBarItem {
+    return this.menuItems['toolMenuItem']
   }
 }
 

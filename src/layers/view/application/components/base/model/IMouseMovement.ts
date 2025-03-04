@@ -1,10 +1,8 @@
-import BaseComponent from '../BaseComponent'
-
-interface IMouseMovement extends BaseComponent {
-  cx: number
-  cy: number
-  sx: number
-  sy: number
+interface IMouseMovement {
+  clientX: number
+  clientY: number
+  screenX: number
+  screenY: number
 }
 
 export default IMouseMovement

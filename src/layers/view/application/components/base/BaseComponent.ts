@@ -66,6 +66,28 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
           ...(style ?? {}),
         })}
       }
+
+        /* width */
+        ::-webkit-scrollbar {
+          width: 5px;
+          margin: 5px;
+          display: none;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+          background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
     `
     this.shadow.appendChild(this.shadowWrapper)
     this.shadow.appendChild(this.shadowStyle)
@@ -195,8 +217,8 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     this.shadowWrapper.textContent = value
   }
 
-  toggleDisplay() {
-    if (this.showing) {
+  toggleDisplay(hide = false) {
+    if (hide || this.showing) {
       this.initialDisplay = this.shadowWrapper.style.display || this.initialDisplay
       this.shadowWrapper.style.display = 'none'
     } else {
@@ -279,7 +301,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
 
   set onselect(value: any) {}
 
-  oncopy = (ev: any) => {
+  /* oncopy = (ev: any) => {
     ev?.preventDefault()
   }
 
@@ -305,7 +327,7 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
 
   ondrop = (event: DragEvent) => {
     event.preventDefault()
-  }
+  } */
   // ... (other delegated methods)
 
   addEventListener(
@@ -332,10 +354,10 @@ class BaseComponent extends HTMLElement implements IDelegateModel {
     this.shadowWrapper.click()
   }
 
-  oncontextmenu = (e: any) => {
+  /* oncontextmenu = (e: any) => {
     e?.preventDefault()
   }
-
+ */
   closest(selectors: string): Element | null {
     return this.shadowWrapper.closest(selectors)
   }
