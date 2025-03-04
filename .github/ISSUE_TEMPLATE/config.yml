@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: "\U0001F914 All other questions, including if you're not sure what to do."
+    url: https://stackoverflow.com/questions/tagged/ruig
+    about: Ask about bug,Errors you are facing while setting up ruig
