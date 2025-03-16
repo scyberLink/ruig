@@ -1,0 +1,13 @@
+.github/
+.ruig/
+build/
+src/
+out/test/
+out/**/*.d.ts
+.dockerignore
+.gitignore
+Dockerfile
+SECURITY.md
+tsconfig.json
+api-extractor.json
+**/*.js.map

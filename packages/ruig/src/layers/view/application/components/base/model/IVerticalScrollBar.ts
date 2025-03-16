@@ -1,0 +1,3 @@
+interface IVerticalScrollBar {}
+
+export { IVerticalScrollBar }

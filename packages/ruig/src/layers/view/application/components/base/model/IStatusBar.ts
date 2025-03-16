@@ -1,0 +1,3 @@
+interface IStatusBar {}
+
+export { IStatusBar }

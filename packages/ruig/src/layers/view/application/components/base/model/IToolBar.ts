@@ -1,0 +1,3 @@
+interface IToolBar {}
+
+export { IToolBar }

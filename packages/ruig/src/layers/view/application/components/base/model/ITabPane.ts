@@ -1,0 +1,3 @@
+interface ITabPane {}
+
+export { ITabPane }

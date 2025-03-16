@@ -1,0 +1,8 @@
+# Ignore all JavaScript files
+*.js
+
+# Ignore all files in hidden directories
+.*
+
+# Include all files in the src directory
+!/src/
