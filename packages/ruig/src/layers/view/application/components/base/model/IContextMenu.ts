@@ -1,0 +1,3 @@
+interface IContextMenu {}
+
+export { IContextMenu }

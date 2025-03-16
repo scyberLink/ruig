@@ -1,0 +1,3 @@
+interface IActionBar {}
+
+export { IActionBar }

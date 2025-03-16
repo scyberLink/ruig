@@ -1,0 +1,47 @@
+{
+  "name": "internal-extension",
+  "version": "0.1.0",
+  "description": "Ruig extension development workspace",
+  "publisher": "ruig",
+  "classname": "InternalExtension",
+  "doc": "README.md",
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.2",
+    "react-scripts": "5.0.1",
+    "remark-gfm": "^4.0.1",
+    "ruig": "latest",
+    "typescript": "^5.4.2"
+  },
+  "scripts": {
+    "start": "npm run setupServiceWorker && react-scripts start",
+    "build": "npm run setupServiceWorker && react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "setupServiceWorker": "node ./swSetup.js",
+    "package": "npx ruigem package"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "ruigem": "latest"
+  }
+}

@@ -1,0 +1,3 @@
+interface IDumpElement {}
+
+export { IDumpElement }

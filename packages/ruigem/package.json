@@ -1,0 +1,43 @@
+{
+  "name": "ruigem",
+  "version": "1.0.6",
+  "description": "Ruig Extensions Manager",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scyberLink/ruigem.git"
+  },
+  "homepage": "https://code.visualstudio.com",
+  "bugs": "https://github.com/scyberLink/ruigem/issues",
+  "keywords": [
+    "ruig",
+    "ruigem",
+    "extension"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "contributors": [
+    "scyberLink"
+  ],
+  "author": "scyberLink",
+  "license": "MIT",
+  "typings": "out/ruigem.d.ts",
+  "bin": {
+    "ruigem": "ruigem"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublish": "npm run build && chmod +x ruigem"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "leven": "^3.1.0",
+    "terser": "^5.29.1",
+    "yazl": "^2.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.25",
+    "@types/yazl": "^2.4.5",
+    "typescript": "^5.4.2"
+  }
+}

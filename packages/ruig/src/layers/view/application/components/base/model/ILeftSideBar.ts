@@ -1,0 +1,3 @@
+interface ILeftSideBar {}
+
+export { ILeftSideBar }
