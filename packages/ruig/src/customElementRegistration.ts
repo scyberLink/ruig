@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { snakeCase } from './common/utils'
 import { TextIcon } from './layers/view/application/common/TextIcon'
-import { MouseMovement } from './layers/view/application/components/MouseMovement'
+import { MouseMovementManager } from './layers/view/application/components/MouseMovement'
 import { NotificationManager } from './layers/view/application/components/NotificationManager'
 import { ParserContainer } from './layers/view/application/components/ParserContainer'
 import { ActionBar } from './layers/view/application/components/actionbar/ActionBar'
@@ -57,7 +57,7 @@ export function register() {
     ToolBar,
     DumpElement,
     DesignElement,
-    MouseMovement,
+    MouseMovement: MouseMovementManager,
     ContextContentContainer,
     ContextSession,
     ContextItem,

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useRef, useState } from 'react'
+import Reblend, { useEffect, useRef, useState } from 'reblendjs'
 import JSZip, { JSZipObject } from 'jszip'
 import { FileManagement, Table } from '../../../common/FileManagement'
 import remarkGfm from 'remark-gfm'
@@ -7,6 +7,8 @@ import ReactMarkdown from 'react-markdown'
 import { ExtensionPool } from '../../ExtensionPool'
 import { SharedConfig } from '../../../common/SharedConfig'
 import { EXTENSION_POOL } from '../../../common/constants'
+
+const ReactMarkdownT = ReactMarkdown as any
 
 type DataType = 'string' | 'blob'
 
@@ -25,8 +27,8 @@ interface IFile {
   extension: string
 }
 
-const FileReadWrite: React.FC = () => {
-  const [readyToInstall, setReadyToInstall] = useState(false)
+const FileReadWrite = () => {
+  const [readyToInstall, setReadyToInstall] = useState<boolean | null>(null)
   const [alreadyInstalled, setAlreadyInstalled] = useState(false)
   const [installed, setInstalled] = useState(false)
   const [manifest, setManifest] = useState<IManifest>(null as any)
@@ -69,9 +71,9 @@ const FileReadWrite: React.FC = () => {
           }
 
           if (name.includes('extension-store')) {
-            assets.current.push({ name, content, extension })
+            assets.current?.push({ name, content, extension })
           } else {
-            metas.current.push({ name, content, extension })
+            metas.current?.push({ name, content, extension })
           }
         }
       })
@@ -80,13 +82,13 @@ const FileReadWrite: React.FC = () => {
   }
 
   const saveFiles = () => {
-    for (const file of assets.current) {
+    for (const file of assets.current || []) {
       if (file.content) {
         fileManager.saveFile(file.name, file.content, file.extension)
       }
     }
 
-    for (const file of metas.current) {
+    for (const file of metas.current || []) {
       if (file.content) {
         fileManager.saveFile(`${extensionId.current}/${file.name}`, file.content, file.extension, Table.METAS)
       }
@@ -94,7 +96,7 @@ const FileReadWrite: React.FC = () => {
 
     ;(extensionPool as ExtensionPool)?.manualInstall(
       {
-        id: extensionId.current,
+        id: extensionId.current!,
         rating: 0,
         downloads: 0,
         builtin: false,
@@ -180,7 +182,7 @@ const FileReadWrite: React.FC = () => {
                 </div>
                 <h3>{manifest.description}</h3>
                 <div>
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{doc}</ReactMarkdown>
+                  <ReactMarkdownT remarkPlugins={[remarkGfm]}>{doc}</ReactMarkdownT>
                 </div>
               </div>
             )}

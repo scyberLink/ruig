@@ -8,7 +8,7 @@ module.exports = {
   entry: './src/workers/sw.ts',
   devtool: 'source-map',
   output: {
-    path: path.resolve(__dirname, 'src/workers'), // Output directory
+    path: path.resolve(__dirname, 'lib/workers'), // Output directory
     filename: 'sw.min.js', // Output filename
   },
   resolve: {

@@ -25,16 +25,10 @@ import { AppContainer } from '../layers/view/application/components/base/AppCont
 import { BaseComponent } from '../layers/view/application/components/base/BaseComponent'
 import { App } from '../App'
 import { initAppContainer } from '../init'
+import Reblend from 'reblendjs'
 
-export { IToolInit } from '../layers/view/application/common/Tool'
 export { BaseComponent }
-
-export * from '../layers/view/application/components/base/model'
 export * as Endpoints from '../configs/RestEndpoints'
-export * from '../common'
-export { IAnyObject } from '../common/models/IAnyObject'
-
-import ReactDOM from 'react-dom/client'
 
 const REI = {
   BaseExtension,
@@ -64,8 +58,8 @@ const REI = {
   DesignElement,
   DesignElementTypes,
   start: ({ extensions }: { extensions?: BaseExtension[] }) => {
-    const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-    root.render(<App appContainer={initAppContainer()} extensions={extensions} />)
+    initAppContainer()
+    Reblend.mountOn('root', App, { extensions })
   },
 }
 
