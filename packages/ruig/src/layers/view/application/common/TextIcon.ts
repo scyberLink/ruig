@@ -18,7 +18,6 @@ class TextIcon extends ActionableIcon {
 
   supportedDesignElements: DesignElementTypes[] = []
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   action = (_designElement: DesignElement) => {}
 
   subscribe() {}

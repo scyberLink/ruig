@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { IDBPDatabase, openDB } from 'idb'
 
 enum FileManagementMode {

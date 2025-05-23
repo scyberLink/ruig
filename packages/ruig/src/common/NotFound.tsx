@@ -1,4 +1,4 @@
-import React from 'react'
+import Reblend from 'reblendjs'
 
 function NotFound() {
   return (

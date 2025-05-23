@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { BaseComponent } from '../layers/view/application/components/base/BaseComponent'
+
+import { BaseManager } from '../layers/view/application/components/base/BaseComponent'
 import { DAY } from './constants'
 import { NullException } from './exceptions/NullException'
 import { IAnyObject } from './models/IAnyObject'
@@ -199,7 +199,7 @@ export const snakeCase = (camelCase: string): string => {
   return camelCase.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`).substring(1)
 }
 
-export const appendChildren = (parent: BaseComponent | null, ...children: HTMLElement[]) => {
+export const appendChildren = (parent: BaseManager | null, ...children: HTMLElement[]) => {
   if (!parent) {
     throw new NullException()
   }
@@ -209,7 +209,7 @@ export const appendChildren = (parent: BaseComponent | null, ...children: HTMLEl
   return parent
 }
 
-export const removeLastChild = (parent: BaseComponent | null) => {
+export const removeLastChild = (parent: BaseManager | null) => {
   if (!parent) {
     throw new NullException()
   }

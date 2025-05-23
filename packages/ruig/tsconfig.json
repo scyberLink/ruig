@@ -14,9 +14,12 @@
     "resolveJsonModule": true,
     //"isolatedModules": true,
     "noEmit": false,
-    "jsx": "react-jsx",
     //"declaration": true,
-    "inlineSourceMap": true
+    "outDir": "./lib",
+    "inlineSourceMap": true,
+    "jsx": "preserve",
+    "jsxFactory": "Reblend.construct",
+    "jsxFragmentFactory": "Reblend"
   },
   "include": ["src"],
   "exclude": ["lib"]

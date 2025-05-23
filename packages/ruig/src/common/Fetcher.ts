@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /* eslint-disable require-jsdoc */
 import { SharedConfig } from './SharedConfig'
 import { md5, rand } from './md5'

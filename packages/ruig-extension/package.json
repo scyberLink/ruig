@@ -6,27 +6,22 @@
   "classname": "InternalExtension",
   "doc": "README.md",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "react-scripts": "5.0.1",
-    "remark-gfm": "^4.0.1",
+    "reblend-scripts": "latest",
     "ruig": "latest",
     "typescript": "^5.4.2"
   },
   "scripts": {
-    "start": "npm run setupServiceWorker && react-scripts start",
-    "build": "npm run setupServiceWorker && react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "npm run setupServiceWorker && reblend-scripts start",
+    "build": "npm run setupServiceWorker && reblend-scripts build",
+    "test": "reblend-scripts test",
+    "eject": "reblend-scripts eject",
     "setupServiceWorker": "node ./swSetup.js",
     "package": "npx ruigem package"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "reblend-app",
+      "reblend-app/jest"
     ]
   },
   "browserslist": {

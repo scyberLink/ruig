@@ -13,7 +13,7 @@ import { ContextItem } from '../application/components/contextmenu/ContextItem'
 import type { ContextMenu } from '../application/components/contextmenu/ContextMenu'
 import { ContextConfig } from '../application/components/contextmenu/ContextSession'
 import type { DrawingCanvas } from '../application/components/drawingcanvas/DrawingCanvas'
-import { MouseMovement } from '../application/components/MouseMovement'
+import { MouseMovementManager } from '../application/components/MouseMovement'
 import type { ParserContainer } from '../application/components/ParserContainer'
 import { ISVG } from './models/ISVG'
 
@@ -32,7 +32,7 @@ export const createSVGElement = (svgData: ISVG | IAnyObject) => {
 }
 
 export const getMouseMovementElement = () => {
-  const mouseMovementElement = SharedConfig.get(MOUSE_MOVEMENT_ELEMENT) as MouseMovement
+  const mouseMovementElement = SharedConfig.get(MOUSE_MOVEMENT_ELEMENT) as MouseMovementManager
   if (!mouseMovementElement) {
     console.error('mouseMovementElement', 'not yet initialize')
     return

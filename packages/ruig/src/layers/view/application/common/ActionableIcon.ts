@@ -1,16 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { SharedConfig } from '../../../../common/SharedConfig'
 import { ACTIVE_ELEMENT, DESIGN_ELEMENT_EVENT_DATA, EVENT_DESELECT, EVENT_SELECT } from '../../../../common/constants'
 import { IAnyObject } from '../../../../common/models/IAnyObject'
 import { DesignElementTypes } from '../../common/DesignElementTypes'
 import { createSVGElement } from '../../common/utils'
 import { DesignElement } from '../../design/base/DesignElement'
-import { BaseComponent } from '../components/base/BaseComponent'
+import { BaseManager } from '../components/base/BaseComponent'
 import { Color } from './Color'
 import { IAction, IActionInit } from './IAction'
 import { ShadowMode } from './ShadowMode'
 
-abstract class ActionableIcon extends BaseComponent implements IAction {
+abstract class ActionableIcon extends BaseManager implements IAction {
   constructor(style?: IAnyObject, mode?: ShadowMode) {
     super(
       {
@@ -58,7 +58,6 @@ abstract class ActionableIcon extends BaseComponent implements IAction {
 
   abstract supportedDesignElements: DesignElementTypes | DesignElementTypes[]
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   action = (designElement: DesignElement) => {}
 
   subscribe(): void {

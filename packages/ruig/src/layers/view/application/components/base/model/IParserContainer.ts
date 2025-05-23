@@ -1,6 +1,6 @@
-import { BaseComponent } from '../BaseComponent'
+import { BaseManager } from '../BaseComponent'
 
-interface IParserContainer extends BaseComponent {
+interface IParserContainer extends BaseManager {
   parse(html: string): HTMLElement[]
 }
 
