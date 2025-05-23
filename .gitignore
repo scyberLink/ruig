@@ -1,2 +1,3 @@
 node_modules
 packages/ruig/public/sw.js
+.npmrc
