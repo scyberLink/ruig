@@ -1,8 +1,8 @@
 import { IAnyObject } from '../../../../common/models/IAnyObject'
-import { BaseComponent } from './base/BaseComponent'
+import { BaseManager } from './base/BaseComponent'
 import { IParserContainer } from './base/model/IParserContainer'
 
-class ParserContainerManager extends BaseComponent implements IParserContainer {
+class ParserContainerManager extends BaseManager implements IParserContainer {
   constructor(style?: IAnyObject) {
     super({
       display: 'none',

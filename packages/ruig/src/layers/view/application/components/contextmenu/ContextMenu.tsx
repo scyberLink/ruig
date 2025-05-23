@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { IAnyObject } from '../../../../../common/models/IAnyObject'
-import { BaseComponent } from '../base/BaseComponent'
+import { BaseManager } from '../base/BaseComponent'
 import { IContextMenu } from '../base/model/IContextMenu'
 import { ContextContentContainer } from './ContextContentContainer'
 import { ContextItem } from './ContextItem'
 import { ContextConfig } from './ContextSession'
 
-class ContextMenuManager extends BaseComponent implements IContextMenu {
+class ContextMenuManager extends BaseManager implements IContextMenu {
   contextContentContainer = new ContextContentContainer()
 
   constructor(style?: IAnyObject) {

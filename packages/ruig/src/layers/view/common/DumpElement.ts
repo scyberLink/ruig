@@ -1,8 +1,8 @@
 import { IAnyObject } from '../../../common/models/IAnyObject'
-import { BaseComponent } from '../application/components/base/BaseComponent'
+import { BaseManager } from '../application/components/base/BaseComponent'
 import { IDumpElement } from './models/IDumpElement'
 
-class DumpElement extends BaseComponent implements IDumpElement {
+class DumpElement extends BaseManager implements IDumpElement {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),

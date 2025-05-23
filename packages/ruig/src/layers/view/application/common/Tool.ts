@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { SharedConfig } from '../../../../common/SharedConfig'
 import { ACTIVE_TOOL } from '../../../../common/constants'
 import { IAnyObject } from '../../../../common/models/IAnyObject'
 import { createSVGElement } from '../../common/utils'
-import { BaseComponent } from '../components/base/BaseComponent'
+import { BaseManager } from '../components/base/BaseComponent'
 import { Color } from './Color'
 import { ShadowMode } from './ShadowMode'
 
@@ -15,7 +15,7 @@ export interface IToolInit {
   activate?: () => Promise<void>
 }
 
-abstract class Tool extends BaseComponent {
+abstract class Tool extends BaseManager {
   active = false
   initialBackgroundColor: string = 'initial'
 

@@ -1,10 +1,10 @@
 import { Color } from '../../../common/Color'
-import { BaseComponent } from '../../base/BaseComponent'
+import { BaseManager } from '../../base/BaseComponent'
 import { IDrawingToolBar } from '../../base/model/IDrawingToolBar'
 import { IStyle } from '../../base/model/IStyle'
 import { DrawingToolbarItem } from './DrawingToolbarItem'
 
-class DrawingToolBarManager extends BaseComponent implements IDrawingToolBar {
+class DrawingToolBarManager extends BaseManager implements IDrawingToolBar {
   constructor(style?: IStyle) {
     super({
       ...(style ?? {}),
@@ -20,7 +20,7 @@ class DrawingToolBarManager extends BaseComponent implements IDrawingToolBar {
   }
 }
 
-import Reblend from 'reblendjs'
+import Reblend, { ReblendTyping } from 'reblendjs'
 
 async function DrawingToolBar({ style }: { style: ReblendTyping.CSSProperties }) {
   return (

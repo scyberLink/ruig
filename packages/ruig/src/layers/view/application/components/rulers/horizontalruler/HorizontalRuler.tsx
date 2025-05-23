@@ -1,9 +1,9 @@
 import { IAnyObject } from '../../../../../../common/models/IAnyObject'
 import { Color } from '../../../common/Color'
-import { BaseComponent } from '../../base/BaseComponent'
+import { BaseManager } from '../../base/BaseComponent'
 import { IHorizontalRuler } from '../../base/model/IHorizontalRuler'
 
-class HorizontalRulerManager extends BaseComponent implements IHorizontalRuler {
+class HorizontalRulerManager extends BaseManager implements IHorizontalRuler {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),

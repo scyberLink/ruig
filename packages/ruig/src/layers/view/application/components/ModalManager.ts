@@ -1,7 +1,7 @@
 import { IAnyObject } from '../../../../common/models/IAnyObject'
-import { BaseComponent } from './base/BaseComponent'
+import { BaseManager } from './base/BaseComponent'
 
-class ModalManager extends BaseComponent {
+class ModalManager extends BaseManager {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),

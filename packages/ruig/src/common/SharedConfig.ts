@@ -24,7 +24,6 @@ class GlobalConfig {
     where?: StorageType,
   ) => IAnyObject | string | null
   private __has!: (key: string, where: StorageType) => boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private __removeFromObject!: (fromKey: string, keyToRemove: string, where?: StorageType) => any
 
   constructor() {

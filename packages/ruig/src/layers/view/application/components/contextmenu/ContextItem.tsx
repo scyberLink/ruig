@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { BaseComponent } from '../base/BaseComponent'
 
-class ContextItemManager extends BaseComponent {
+import { BaseManager } from '../base/BaseComponent'
+
+class ContextItemManager extends BaseManager {
   groupName = 'Miscellenous'
 
   constructor() {

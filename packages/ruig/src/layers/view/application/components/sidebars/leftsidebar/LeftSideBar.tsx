@@ -1,9 +1,9 @@
 import { IAnyObject } from '../../../../../../common/models/IAnyObject'
 import { Color } from '../../../common/Color'
-import { BaseComponent } from '../../base/BaseComponent'
+import { BaseManager } from '../../base/BaseComponent'
 import { ILeftSideBar } from '../../base/model/ILeftSideBar'
 
-class LeftSideBarManager extends BaseComponent implements ILeftSideBar {
+class LeftSideBarManager extends BaseManager implements ILeftSideBar {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),

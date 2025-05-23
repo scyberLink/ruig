@@ -6,7 +6,7 @@
 @font-face {
   font-family: 'codicon';
   font-display: block;
-  src: url('../codicon.ttf') format('truetype');
+  src: url('/codicon.ttf') format('truetype');
 }
 
 .codicon[class*='codicon-'] {
@@ -20,6 +20,10 @@
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
   -webkit-user-select: none;
+}
+
+:root {
+  --ruig-menubar-selectionBackground: rgba(184, 184, 184, 0.31);
 }
 
 /* icon rules are dynamically created by the platform theme service (see iconsStyleSheet.ts) */

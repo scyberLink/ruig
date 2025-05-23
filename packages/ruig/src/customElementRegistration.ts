@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { snakeCase } from './common/utils'
 import { TextIcon } from './layers/view/application/common/TextIcon'
 import { MouseMovementManager } from './layers/view/application/components/MouseMovement'
@@ -6,7 +6,7 @@ import { NotificationManager } from './layers/view/application/components/Notifi
 import { ParserContainer } from './layers/view/application/components/ParserContainer'
 import { ActionBar } from './layers/view/application/components/actionbar/ActionBar'
 import { AppContainer } from './layers/view/application/components/base/AppContainer'
-import { BaseComponent } from './layers/view/application/components/base/BaseComponent'
+import { BaseManager } from './layers/view/application/components/base/BaseComponent'
 import { ColorPalette } from './layers/view/application/components/colorpalette/ColorPalette'
 import { ConsoleCanvas } from './layers/view/application/components/consolecanvas/ConsoleCanvas'
 import { ContextContentContainer } from './layers/view/application/components/contextmenu/ContextContentContainer'
@@ -17,7 +17,7 @@ import { ContextSession } from './layers/view/application/components/contextmenu
 import { DrawingCanvas } from './layers/view/application/components/drawingcanvas/DrawingCanvas'
 import { InvalidTagNameException } from './layers/view/application/components/exceptions/InvalidTagNameException'
 import { MenuBar } from './layers/view/application/components/menubar/MenuBar'
-import { MenuBarItem } from './layers/view/application/components/menubar/MenuBarItem'
+import { MenuBarItem } from './layers/view/application/components/menubar/MenuItem'
 import { ObjectManagerSelector } from './layers/view/application/components/objectmanagerselector/ObjectManagerSelector'
 import { HorizontalRuler } from './layers/view/application/components/rulers/horizontalruler/HorizontalRuler'
 import { VerticalRuler } from './layers/view/application/components/rulers/verticalruler/VerticalRuler'
@@ -38,7 +38,7 @@ export function register() {
     AppContainer,
     ActionBar,
     ParserContainer,
-    BaseComponent,
+    BaseComponent: BaseManager,
     ColorPalette,
     ConsoleCanvas,
     ContextMenu,
@@ -71,7 +71,7 @@ export function register() {
   }
 }
 
-export function registerElement(name: string, element: typeof HTMLElement): typeof BaseComponent | typeof HTMLElement {
+export function registerElement(name: string, element: typeof HTMLElement): typeof BaseManager | typeof HTMLElement {
   if (!element) {
     throw new InvalidTagNameException()
   }

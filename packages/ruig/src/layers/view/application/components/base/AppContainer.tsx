@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 import { ActionBar } from '../actionbar/ActionBar'
 import { ColorPalette } from '../colorpalette/ColorPalette'
 import { DrawingCanvas } from '../drawingcanvas/DrawingCanvas'

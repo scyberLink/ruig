@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { SharedConfig } from '../../../../../common/SharedConfig'
 import { HTML_PARSER, MIN_Z_INDEX, SAVED_DESIGN } from '../../../../../common/constants'
 import { NullException } from '../../../../../common/exceptions/NullException'
@@ -7,7 +7,7 @@ import { spreadTo } from '../../../../../common/utils'
 import { DesignElement } from '../../../design/base/DesignElement'
 import { Color } from '../../common/Color'
 import { ParserContainer } from '../ParserContainer'
-import { BaseComponent } from '../base/BaseComponent'
+import { BaseManager } from '../base/BaseComponent'
 import { IDrawingCanvas } from '../base/model/IDrawingCanvas'
 import { IStyle } from '../base/model/IStyle'
 
@@ -16,7 +16,8 @@ export enum DesignMode {
   DESIGNING,
 }
 
-class DrawingCanvasManager extends BaseComponent implements IDrawingCanvas {
+class DrawingCanvasManager extends BaseManager implements IDrawingCanvas {
+  initialize(): void {}
   initDelayedTimeout = 2000
   saveInterval = 20000
   hasInit = false
@@ -301,8 +302,6 @@ class DrawingCanvasManager extends BaseComponent implements IDrawingCanvas {
 import Reblend from 'reblendjs'
 
 async function DrawingCanvas({ style }: { style: ReblendTyping.CSSProperties }) {
-  await new Promise((resolve) => setTimeout(resolve, 10000))
-
   return (
     <div
       style={{

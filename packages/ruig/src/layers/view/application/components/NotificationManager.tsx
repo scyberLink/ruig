@@ -1,8 +1,8 @@
 import { IAnyObject } from '../../../../common/models/IAnyObject'
-import { BaseComponent } from './base/BaseComponent'
+import { BaseManager } from './base/BaseComponent'
 import Reblend from 'reblendjs'
 
-class NotificationManager extends BaseComponent {
+class NotificationManager extends BaseManager {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 /* eslint-disable require-jsdoc */
 import { YEAR } from './constants'
 

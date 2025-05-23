@@ -1,10 +1,11 @@
 import { IAnyObject } from '../../../../../common/models/IAnyObject'
 import { Color } from '../../common/Color'
 import { ShadowMode } from '../../common/ShadowMode'
-import { BaseComponent } from '../base/BaseComponent'
+import { BaseManager } from '../base/BaseComponent'
 import { IMenuBar } from '../base/model/IMenuBar'
 import { ContextItem } from '../contextmenu/ContextItem'
-import { MenuBarItem } from './MenuBarItem'
+import { Menu } from './Menu'
+import { MenuBarItem } from './MenuItem'
 
 enum MenuItemNames {
   FILE = 'File',
@@ -18,7 +19,9 @@ Object.values(MenuItemNames).forEach((item) => (menus[item] = []))
 
 const menuContext = createContext(menus)
 
-class MenuBarManager extends BaseComponent implements IMenuBar {
+/* class MenuBarManager extends BaseManager implements IMenuBar {
+  initialize(): void {
+  }
   static MenuItemNames = MenuItemNames
 
   private constructor() {
@@ -42,7 +45,7 @@ class MenuBarManager extends BaseComponent implements IMenuBar {
   getToolMenu(): MenuBarItem {
     return this.menuItems['toolMenuItem']
   }
-}
+} */
 
 import Reblend, { createContext, ReblendTyping } from 'reblendjs'
 
@@ -60,9 +63,13 @@ async function MenuBar({ style }: { style: ReblendTyping.CSSProperties }) {
           ...style,
         }}
         title="MenuBar"
-      ></div>
+      >
+        {Object.values(MenuItemNames).map((title, i) => (
+          <Menu title={title} content={[i as never]} />
+        ))}
+      </div>
     </>
   )
 }
 
-export { MenuBarManager, MenuBar }
+export { /* MenuBarManager,  */MenuBar }

@@ -1,9 +1,9 @@
 import { IAnyObject } from '../../../../../common/models/IAnyObject'
 import { Color } from '../../common/Color'
-import { BaseComponent } from '../base/BaseComponent'
+import { BaseManager } from '../base/BaseComponent'
 import { ITabPane } from '../base/model/ITabPane'
 
-class TabPaneManager extends BaseComponent implements ITabPane {
+class TabPaneManager extends BaseManager implements ITabPane {
   constructor(style?: IAnyObject) {
     super()
   }

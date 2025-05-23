@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { IAnyObject } from '../../../../../common/models/IAnyObject'
-import { BaseComponent } from '../base/BaseComponent'
+import { BaseManager } from '../base/BaseComponent'
 import { ContextItem } from './ContextItem'
 import { ContextItemGroup } from './ContextItemGroup'
 import { ContextSession, ContextConfig, ContextGroup } from './ContextSession'
 
-class ContextContentContainerManager extends BaseComponent {
+class ContextContentContainerManager extends BaseManager {
   sessions: ContextSession[] = []
 
   constructor(style?: IAnyObject) {

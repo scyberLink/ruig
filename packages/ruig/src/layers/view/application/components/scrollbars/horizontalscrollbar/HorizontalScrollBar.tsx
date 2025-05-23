@@ -1,9 +1,9 @@
 import { IAnyObject } from '../../../../../../common/models/IAnyObject'
 import { Color } from '../../../common/Color'
-import { BaseComponent } from '../../base/BaseComponent'
+import { BaseManager } from '../../base/BaseComponent'
 import { IHorizontalScrollBar } from '../../base/model/IHorizontalScrollBar'
 
-class HorizontalScrollBarManager extends BaseComponent implements IHorizontalScrollBar {
+class HorizontalScrollBarManager extends BaseManager implements IHorizontalScrollBar {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),

@@ -18,7 +18,7 @@
     "resolveJsonModule": true,
     "isolatedModules": false,
     "noEmit": false,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "outDir": "dist"
   },
   "include": [

@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { BaseComponent } from '../base/BaseComponent'
+
+import { BaseManager } from '../base/BaseComponent'
 import { ContextItem } from './ContextItem'
 
-class ContextItemGroupManager extends BaseComponent {
+class ContextItemGroupManager extends BaseManager {
   constructor() {
     super({
       position: 'initial',

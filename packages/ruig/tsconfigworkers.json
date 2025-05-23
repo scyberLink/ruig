@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "noEmit": false,
     "declaration": false,
-    "jsx": "react-jsx"
+    "jsx": "preserve"
   },
   "include": ["src/workers"]
 }

@@ -1,9 +1,9 @@
 import { IAnyObject } from '../../../../../common/models/IAnyObject'
 import { Color } from '../../common/Color'
-import { BaseComponent } from '../base/BaseComponent'
+import { BaseManager } from '../base/BaseComponent'
 import { IStatusBar } from '../base/model/IStatusBar'
 
-class StatusBarManager extends BaseComponent implements IStatusBar {
+class StatusBarManager extends BaseManager implements IStatusBar {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),

@@ -1,9 +1,9 @@
 import { IAnyObject } from '../../../../../common/models/IAnyObject'
 import { Color } from '../../common/Color'
-import { BaseComponent } from '../base/BaseComponent'
+import { BaseManager } from '../base/BaseComponent'
 import { IColorPalette } from '../base/model/IColorPalette'
 
-class ColorPaletteManager extends BaseComponent implements IColorPalette {
+class ColorPaletteManager extends BaseManager implements IColorPalette {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),

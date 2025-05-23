@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 const md5cycle = (x: any, k: any) => {
   let a = x[0],
     b = x[1],

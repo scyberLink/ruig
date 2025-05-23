@@ -1,13 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import Reblend, { IStyle } from 'reblendjs'
 import { SharedConfig } from '../../../../common/SharedConfig'
 import { DRAWING_CANVAS } from '../../../../common/constants'
 import { IAnyObject } from '../../../../common/models/IAnyObject'
-import { BaseComponent } from './base/BaseComponent'
+import { BaseManager } from './base/BaseComponent'
 import { IDrawingCanvas } from './base/model/IDrawingCanvas'
 import { IMouseMovement } from './base/model/IMouseMovement'
 
-class MouseMovementManager extends BaseComponent implements IMouseMovement {
+class MouseMovementManager extends BaseManager implements IMouseMovement {
   clientX: number = 0
   clientY: number = 0
   screenX: number = 0

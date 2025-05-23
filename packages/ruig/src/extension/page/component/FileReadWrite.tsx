@@ -1,14 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import Reblend, { useEffect, useRef, useState } from 'reblendjs'
+
+import Reblend, { ReblendTyping, useEffect, useRef, useState } from 'reblendjs'
 import JSZip, { JSZipObject } from 'jszip'
 import { FileManagement, Table } from '../../../common/FileManagement'
-import remarkGfm from 'remark-gfm'
-import ReactMarkdown from 'react-markdown'
 import { ExtensionPool } from '../../ExtensionPool'
 import { SharedConfig } from '../../../common/SharedConfig'
 import { EXTENSION_POOL } from '../../../common/constants'
-
-const ReactMarkdownT = ReactMarkdown as any
 
 type DataType = 'string' | 'blob'
 
@@ -45,7 +41,7 @@ const FileReadWrite = () => {
     return fileManager.close()
   }, [])
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: ReblendTyping.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0]
     if (file) {
       reset()
@@ -182,7 +178,6 @@ const FileReadWrite = () => {
                 </div>
                 <h3>{manifest.description}</h3>
                 <div>
-                  <ReactMarkdownT remarkPlugins={[remarkGfm]}>{doc}</ReactMarkdownT>
                 </div>
               </div>
             )}

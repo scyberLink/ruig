@@ -1,9 +1,9 @@
 import { IAnyObject } from '../../../../../common/models/IAnyObject'
 import { Color } from '../../common/Color'
-import { BaseComponent } from '../base/BaseComponent'
+import { BaseManager } from '../base/BaseComponent'
 import { IConsoleCanvas } from '../base/model/IConsoleCanvas'
 
-class ConsoleCanvasManager extends BaseComponent implements IConsoleCanvas {
+class ConsoleCanvasManager extends BaseManager implements IConsoleCanvas {
   constructor(style?: IAnyObject) {
     super({
       ...(style ?? {}),

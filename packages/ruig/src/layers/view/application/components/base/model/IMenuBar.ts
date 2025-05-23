@@ -1,4 +1,4 @@
-import { MenuBarItem } from '../../menubar/MenuBarItem'
+import { MenuBarItem } from '../../menubar/MenuItem'
 
 interface IMenuBar {
   getFileMenu(): MenuBarItem

@@ -22,19 +22,19 @@ import { StatusBar } from '../layers/view/application/components/statusbar/Statu
 import { TabPane } from '../layers/view/application/components/tabpane/TabPane'
 import { ToolBar } from '../layers/view/application/components/toolbar/ToolBar'
 import { AppContainer } from '../layers/view/application/components/base/AppContainer'
-import { BaseComponent } from '../layers/view/application/components/base/BaseComponent'
+import { BaseManager } from '../layers/view/application/components/base/BaseComponent'
 import { App } from '../App'
 import { initAppContainer } from '../init'
 import Reblend from 'reblendjs'
 
-export { BaseComponent }
+export { BaseManager as BaseComponent }
 export * as Endpoints from '../configs/RestEndpoints'
 
 const REI = {
   BaseExtension,
   ExtensionDevelopment,
   ActionBar,
-  BaseComponent,
+  BaseComponent: BaseManager,
   ColorPalette,
   DrawingCanvas,
   DrawingToolBar,

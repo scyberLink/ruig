@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { IAnyObject } from '../../../../../common/models/IAnyObject'
 import { getMouseMovement } from '../../../common/utils'
-import { BaseComponent } from '../base/BaseComponent'
+import { BaseManager } from '../base/BaseComponent'
 import { ContextItemGroup } from './ContextItemGroup'
 
 export type ContextConfig = {
@@ -11,7 +11,7 @@ export type ContextConfig = {
 
 export type ContextGroup = ContextItemGroup[]
 
-class ContextSessionManager extends BaseComponent {
+class ContextSessionManager extends BaseManager {
   group?: ContextGroup
   config?: ContextConfig
 
